@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "jazzy"
+version = "0.0.3"
+description = "Jazzy"
+authors = ["Gian Marco Ghiandoni <gianmarco.ghiandoni@astrazeneca.com>", "Eike Caldeweyher <eike.caldeweyher@astrazeneca.com>"]
+license = "Apache-2.0"
+readme = "README.rst"
+homepage = "https://github.com/f3rmion/jazzy"
+repository = "https://github.com/f3rmion/jazzy"
+documentation = "https://jazzy.readthedocs.io"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.urls]
+Changelog = "https://github.com/f3rmion/jazzy/releases"
+
+[tool.poetry.dependencies]
+python = "^3.7.1"
+click = "<8.0.0"
+rdkit-pypi = "^2021.3.5"
+kallisto = "^1.0.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.0"
+coverage = {extras = ["toml"], version = "^6.3"}
+safety = "^1.10.3"
+mypy = "^0.931"
+typeguard = "^2.13.3"
+xdoctest = {extras = ["colors"], version = "^0.15.5"}
+sphinx = "^4.3.2"
+sphinx-autobuild = "^2021.3.14"
+pre-commit = "^2.17.0"
+flake8 = "^4.0.1"
+black = "^21.12b0"
+flake8-bandit = "^2.1.2"
+flake8-bugbear = "^22.1.11"
+flake8-docstrings = "^1.6.0"
+flake8-rst-docstrings = "^0.2.5"
+pep8-naming = "^0.12.1"
+darglint = "^1.8.1"
+reorder-python-imports = "^2.7.1"
+pre-commit-hooks = "^4.1.0"
+sphinx-rtd-theme = "^1.0.0"
+sphinx-click = "^3.1.0"
+Pygments = "^2.11.2"
+
+[tool.poetry.scripts]
+jazzy = "jazzy.__main__:cli"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["jazzy"]
+omit = ["*visualisation*"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+
+[tool.mypy]
+strict = true
+pretty = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
