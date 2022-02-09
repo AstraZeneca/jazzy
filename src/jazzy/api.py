@@ -1,0 +1,227 @@
+"""Application programming interface for the jazzy package."""
+# src/jazzy/api.py
+import base64
+from typing import Tuple
+
+from jazzy.config import Config
+from jazzy.core import calculate_delta_apolar
+from jazzy.core import calculate_delta_interaction
+from jazzy.core import calculate_delta_polar
+from jazzy.core import calculate_polar_strength_map
+from jazzy.core import condense_atomic_map
+from jazzy.core import convert_map_to_tuples
+from jazzy.core import get_charges_from_kallisto_molecule
+from jazzy.core import get_covalent_atom_idx
+from jazzy.core import kallisto_molecule_from_rdkit_molecule
+from jazzy.core import rdkit_molecule_from_smiles
+from jazzy.core import sum_atomic_map
+from jazzy.visualisation import depict_strength
+
+
+# global jazzy config (parameter)
+config = Config()
+
+
+def molecular_vector_from_smiles(
+    smiles: str, minimisation_method=None, only_strengths=False
+):
+    """API route to calculate molecular free energy vector.
+
+    Calculates the apolar (dga), the polar (dgp), and the interaction (dgi)
+    contribution to the free energy.
+
+    Args:
+    smiles: A molecule SMILES string representation (default '')
+    minimisation_method: One of the conformer energy minimisation methods
+    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+    only_strengths: Boolean value that determines wheather to calculate only
+    strengts or even more.
+
+    Returns:
+    Molecular strength vector with or without free energy contributions.
+
+    """
+    mol_vector = dict()
+    # generate an RDKit molecule
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
+    if rdkit_molecule is None:
+        raise RuntimeError("Invalid SMILES entered.")
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    atomic_map = calculate_polar_strength_map(
+        rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
+    )
+    mol_vector = sum_atomic_map(atomic_map)
+
+    # add free energy contributions
+    if not only_strengths:
+        dg = dict()
+        dg["dga"] = calculate_delta_apolar(
+            rdkit_molecule,
+            atomic_map,
+            config.g0,
+            config.gs,
+            config.gr,
+            config.gpi1,
+            config.gpi2,
+        )
+        dg["dgp"] = calculate_delta_polar(
+            atomic_map, atoms_and_nbrs, config.gd, config.ga, config.expd, config.expa
+        )
+        dgi = calculate_delta_interaction(
+            rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa
+        )
+        dg["tot"] = sum(dg.values()) + dgi
+        mol_vector = {**mol_vector, **dg}  # type: ignore
+    return mol_vector
+
+
+def deltag_from_smiles(smiles: str, minimisation_method=None):
+    """API route to calculate molecular free energy scalar.
+
+    Args:
+    smiles: A molecule SMILES string representation (default '')
+    minimisation_method: One of the conformer energy minimisation methods
+    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+
+    Returns:
+    Free energy as scalar rounded to four decimal numbers.
+
+    """
+    # generate basic descriptors
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
+    if rdkit_molecule is None:
+        raise RuntimeError("Invalid SMILES entered.")
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    atomic_map = calculate_polar_strength_map(
+        rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
+    )
+
+    # generate free energy scalar
+    dg = dict()
+    dg["dga"] = calculate_delta_apolar(
+        rdkit_molecule,
+        atomic_map,
+        config.g0,
+        config.gs,
+        config.gr,
+        config.gpi1,
+        config.gpi2,
+    )
+    dg["dgp"] = calculate_delta_polar(
+        atomic_map, atoms_and_nbrs, config.gd, config.ga, config.expd, config.expa
+    )
+    dg["dgi"] = calculate_delta_interaction(
+        rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa
+    )
+    return round(sum(dg.values()), 4)
+
+
+def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):
+    """API route to generate a tuple representation on the atomic map.
+
+    Not recommended if serialization is needed.
+
+    Args:
+    smiles: A molecule SMILES string representation (default '')
+    minimisation_method: One of the conformer energy minimisation methods
+    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+
+    Returns:
+    Tuple representation of the atomic map.
+
+    """
+    # generate basic descriptors
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
+    if rdkit_molecule is None:
+        raise RuntimeError("Invalid SMILES entered.")
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    atomic_map = calculate_polar_strength_map(
+        rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
+    )
+    return convert_map_to_tuples(atomic_map)
+
+
+def atomic_map_from_smiles(smiles: str, minimisation_method=None):
+    """API route to generate a condensed representation on the atomic map.
+
+    Recommended if serialization is needed.
+
+    Args:
+    smiles: A molecule SMILES string representation (default '')
+    minimisation_method: One of the conformer energy minimisation methods
+    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+
+    Returns:
+    Condensed representation of the atomic map.
+
+    """
+    # generate basic descriptors
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
+    if rdkit_molecule is None:
+        raise RuntimeError("Invalid SMILES entered.")
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    atomic_map = calculate_polar_strength_map(
+        rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
+    )
+    return condense_atomic_map(atomic_map)
+
+
+def atomic_strength_vis_from_smiles(
+    smiles: str,
+    minimisation_method: str,
+    encode: bool,
+    fig_size: Tuple[int, int],
+    flatten_molecule: bool,
+    highlight_atoms: bool,
+    ignore_sdc: bool,
+    ignore_sdx: bool,
+    ignore_sa: bool,
+    sdc_treshold: float,
+    sdx_treshold: float,
+    sa_treshold: float,
+):
+    """API route to generate an SVG image from SMILES string.
+
+    Args:
+    smiles: A molecule SMILES string representation (default '')
+    minimisation_method: One of the conformer energy minimisation methods
+    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+
+    Returns:
+    SVG image either 2D or 3D.
+
+    """
+    # generate basic descriptors
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
+    if rdkit_molecule is None:
+        raise RuntimeError("Invalid SMILES entered.")
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    atomic_map = calculate_polar_strength_map(
+        rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
+    )
+    img_txt = depict_strength(
+        rdkit_molecule=rdkit_molecule,
+        atomic_map=atomic_map,
+        fig_size=fig_size,
+        flatten_molecule=flatten_molecule,
+        highlight_atoms=highlight_atoms,
+        ignore_sdc=ignore_sdc,
+        ignore_sdx=ignore_sdx,
+        ignore_sa=ignore_sa,
+        sdc_treshold=sdc_treshold,
+        sdx_treshold=sdx_treshold,
+        sa_treshold=sa_treshold,
+    )
+    if encode:
+        img_txt = base64.b64encode(img_txt.encode("utf-8"))
+    return img_txt
