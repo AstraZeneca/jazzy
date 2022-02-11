@@ -52,7 +52,7 @@ def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
     return mh
 
 
-def get_covalent_atom_idx(rdkit_molecule: Chem.rdchem.Mol) -> list:
+def get_covalent_atom_idxs(rdkit_molecule: Chem.rdchem.Mol) -> list:
     """Get covalent indices for atom_idx.
 
     Creates a list of lists, where indices are atom indices and the content
@@ -222,20 +222,6 @@ def calculate_polar_strength_map(
 
         mol_map[idx] = atom_dict
     return mol_map
-
-
-def sum_atomic_map(atomic_map: dict) -> dict:
-    """Optimized for summing the values within a polar strength map."""
-    atomic_map_values = atomic_map.values()
-    if len(atomic_map_values) == 0:
-        raise IndexError("The atomic map must have length greater than zero.")
-
-    # sum and round the countable values
-    dct = dict()
-    countable = ["sdc", "sdx", "sa"]
-    for k in countable:
-        dct[k] = sum(d[k] for d in atomic_map_values if d)
-    return {key: round(dct[key], 4) for key in dct}
 
 
 def get_lone_pairs(atom) -> int:
@@ -587,43 +573,3 @@ def interaction_strength(idx: int, mol_map: dict, acceptor_exp: float) -> float:
     if num_lp != 0:
         return acceptor_strength * (num_lp ** acceptor_exp)
     return 0.0
-
-
-def convert_map_to_tuples(atomic_map: dict) -> list:
-    """Create tuple representation of polar strength map.
-
-    Tuple representation of the polar strength map generated from
-    `calculate_polar_strength_map()`. Simple example:
-
-    Args:
-    atomic_map: polar strength map for all atoms in the system.
-
-    Returns:
-    List of tuples, where elements are atom indices and tuples are tuples of
-    properties.
-
-    """
-    atomic_map_values = atomic_map.values()
-    if len(atomic_map_values) == 0:
-        raise IndexError("The atomic map must have length greater than zero.")
-
-    tuple_map = list()
-    for props in atomic_map_values:
-        tuple_map.append(tuple((k, v) for k, v in props.items()))
-    return tuple_map
-
-
-def condense_atomic_map(atomic_map: dict) -> list:
-    """Create condensed representation of the polar strength map.
-
-    Polar strength map generated from `calculate_polar_strength_map()`.
-
-    Args:
-    atomic_map: polar strength map for all atoms in the system.
-
-    """
-    condensed_map = list()
-    for idx, props in atomic_map.items():
-        props["idx"] = idx
-        condensed_map.append(props)
-    return condensed_map

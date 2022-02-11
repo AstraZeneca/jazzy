@@ -2,7 +2,7 @@
 import pytest
 
 from jazzy.core import get_all_neighbors
-from jazzy.core import get_covalent_atom_idx
+from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import get_lone_pairs
 from jazzy.core import rdkit_molecule_from_smiles
 
@@ -99,7 +99,7 @@ def test_calculate_correct_covalent_idx_list():
     want = [[1, 11, 12, 13], [0, 2, 14, 15]]
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles)
-    atoms_and_idxs = get_covalent_atom_idx(rdkit_molecule=rdkit_molecule)
+    atoms_and_idxs = get_covalent_atom_idxs(rdkit_molecule=rdkit_molecule)
     assert sorted(atoms_and_idxs[0]) == sorted(want[0])
     assert sorted(atoms_and_idxs[1]) == sorted(want[1])
 
@@ -109,7 +109,7 @@ def test_calculate_correct_all_neighbours_for_atom():
     want = [[4, 9, 19], [3, 5, 10, 20], [2, 3, 6, 10, 11, 16]]
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles=smiles)
-    atoms_and_idxs = get_covalent_atom_idx(rdkit_molecule=rdkit_molecule)
+    atoms_and_idxs = get_covalent_atom_idxs(rdkit_molecule=rdkit_molecule)
     alpha, beta, gamma = get_all_neighbors(rdkit_molecule, atoms_and_idxs)
     assert sorted(alpha[8]) == sorted(want[0])
     assert sorted(beta[8]) == sorted(want[1])

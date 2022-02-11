@@ -7,7 +7,7 @@ from jazzy.core import calculate_delta_interaction
 from jazzy.core import calculate_delta_polar
 from jazzy.core import calculate_polar_strength_map
 from jazzy.core import get_charges_from_kallisto_molecule
-from jazzy.core import get_covalent_atom_idx
+from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import interaction_strength
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
@@ -32,7 +32,7 @@ def test_calculate_delta_apolar():
             rdkit_molecule=rdkit_molecule
         )
         eeq = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
-        aan = get_covalent_atom_idx(rdkit_molecule)
+        aan = get_covalent_atom_idxs(rdkit_molecule)
         mol_map = calculate_polar_strength_map(
             rdkit_molecule, kallisto_molecule, aan, eeq
         )
@@ -72,7 +72,7 @@ def test_calculate_delta_polar():
             rdkit_molecule=rdkit_molecule
         )
         eeq = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
-        aan = get_covalent_atom_idx(rdkit_molecule)
+        aan = get_covalent_atom_idxs(rdkit_molecule)
         mol_map = calculate_polar_strength_map(
             rdkit_molecule, kallisto_molecule, aan, eeq
         )
@@ -121,7 +121,7 @@ def test_alpha_neighbors_interactions():
     """Correctly calculates alpha neighbor contributions."""
     smile = "FF"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles=smile, minimisation_method=None)
-    aan = get_covalent_atom_idx(rdkit_molecule)
+    aan = get_covalent_atom_idxs(rdkit_molecule)
     # fake mol_map
     want = 0.0
     mol_map = {0: {"sa": 1.0, "num_lp": 0}, 1: {"sa": 1.0, "num_lp": 0}}
@@ -144,7 +144,7 @@ def test_gamma_neighbors_interactions():
         rdkit_molecule=rdkit_molecule
     )
     eeq = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
-    aan = get_covalent_atom_idx(rdkit_molecule)
+    aan = get_covalent_atom_idxs(rdkit_molecule)
     mol_map = calculate_polar_strength_map(rdkit_molecule, kallisto_molecule, aan, eeq)
     want = 0.0
     result = calculate_delta_interaction(
@@ -157,7 +157,7 @@ def test_gamma_neighbors_interactions():
         rdkit_molecule=rdkit_molecule
     )
     eeq = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
-    aan = get_covalent_atom_idx(rdkit_molecule)
+    aan = get_covalent_atom_idxs(rdkit_molecule)
     mol_map = calculate_polar_strength_map(rdkit_molecule, kallisto_molecule, aan, eeq)
     want = 25.578745
     result = calculate_delta_interaction(
