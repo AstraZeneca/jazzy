@@ -8,13 +8,13 @@ from jazzy.core import calculate_delta_apolar
 from jazzy.core import calculate_delta_interaction
 from jazzy.core import calculate_delta_polar
 from jazzy.core import calculate_polar_strength_map
-from jazzy.core import condense_atomic_map
-from jazzy.core import convert_map_to_tuples
 from jazzy.core import get_charges_from_kallisto_molecule
-from jazzy.core import get_covalent_atom_idx
+from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
-from jazzy.core import sum_atomic_map
+from jazzy.helpers import condense_atomic_map
+from jazzy.helpers import convert_map_to_tuples
+from jazzy.helpers import sum_atomic_map
 from jazzy.visualisation import depict_strength
 
 
@@ -47,7 +47,7 @@ def molecular_vector_from_smiles(
     if rdkit_molecule is None:
         raise RuntimeError("Invalid SMILES entered.")
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
         rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
@@ -94,7 +94,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
     if rdkit_molecule is None:
         raise RuntimeError("Invalid SMILES entered.")
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
         rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
@@ -139,7 +139,7 @@ def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):
     if rdkit_molecule is None:
         raise RuntimeError("Invalid SMILES entered.")
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
         rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
@@ -166,7 +166,7 @@ def atomic_map_from_smiles(smiles: str, minimisation_method=None):
     if rdkit_molecule is None:
         raise RuntimeError("Invalid SMILES entered.")
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
         rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
@@ -204,7 +204,7 @@ def atomic_strength_vis_from_smiles(
     if rdkit_molecule is None:
         raise RuntimeError("Invalid SMILES entered.")
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
         rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges

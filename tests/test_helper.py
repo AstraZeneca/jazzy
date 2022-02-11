@@ -3,17 +3,17 @@ import numpy as np
 import pytest
 
 from jazzy.core import calculate_polar_strength_map
-from jazzy.core import condense_atomic_map
-from jazzy.core import convert_map_to_tuples
 from jazzy.core import get_atom_and_nbrs_charges
 from jazzy.core import get_atom_neighbours
 from jazzy.core import get_charges_from_atom_list
 from jazzy.core import get_charges_from_kallisto_molecule
-from jazzy.core import get_covalent_atom_idx
+from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import get_donor_atom_strength
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
-from jazzy.core import sum_atomic_map
+from jazzy.helpers import condense_atomic_map
+from jazzy.helpers import convert_map_to_tuples
+from jazzy.helpers import sum_atomic_map
 
 
 def test_calculate_correct_neighbours_for_atom():
@@ -21,7 +21,7 @@ def test_calculate_correct_neighbours_for_atom():
     want = [[4, 9, 19], [3, 5, 10, 20], [2, 3, 6, 10, 11, 16]]
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles=smiles)
-    atoms_and_idxs = get_covalent_atom_idx(rdkit_molecule=rdkit_molecule)
+    atoms_and_idxs = get_covalent_atom_idxs(rdkit_molecule=rdkit_molecule)
     alpha, beta, gamma = get_atom_neighbours(8, atoms_and_idxs)
     assert sorted(alpha) == sorted(want[0])
     assert sorted(beta) == sorted(want[1])
@@ -43,7 +43,7 @@ def test_get_atom_and_nbrs_charges():
     want = [-0.14491844176443144, 0.007563609354876652]
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method="MMFF94")
-    atoms_and_idxs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_idxs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
         rdkit_molecule=rdkit_molecule
     )
@@ -59,7 +59,7 @@ def test_donor_atom_strength():
     want = [-8.749496986634238]
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method="MMFF94")
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
         rdkit_molecule=rdkit_molecule
     )
@@ -81,7 +81,7 @@ def test_convert_map_to_tuples():
     """It creates correctly a list of tuples from a polar strength map."""
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method="MMFF94")
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
         rdkit_molecule=rdkit_molecule
     )
@@ -123,7 +123,7 @@ def test_condense_atomic_map():
     """It correctly condenses an atomic map."""
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method="MMFF94")
-    atoms_and_nbrs = get_covalent_atom_idx(rdkit_molecule)
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
         rdkit_molecule=rdkit_molecule
     )
