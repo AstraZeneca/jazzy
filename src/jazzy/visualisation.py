@@ -206,7 +206,7 @@ def create_hs_to_remove(
     return hs_to_remove
 
 
-def depict_strength(
+def depict_strengths(
     rdkit_molecule: Chem.rdchem.Mol,
     atomic_map: dict,
     fig_size=(500, 500),

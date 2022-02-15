@@ -1,5 +1,6 @@
 """Core functions of the jazzy package."""
 # src/jazzy/core.py
+import logging
 import numpy as np
 from kallisto.atom import Atom
 from kallisto.methods import getPolarizabilities
@@ -12,6 +13,8 @@ from rdkit.Chem import GetPeriodicTable
 from rdkit.Chem import PeriodicTable
 from rdkit.Chem import rdchem
 from rdkit.Chem import rdMolDescriptors
+from jazzy.utils import KallistoError
+logging.basicConfig(format='Jazzy %(levelname)s: [%(asctime)s] %(message)s', level=logging.WARNING, datefmt='%H:%M:%S')
 
 
 def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
@@ -34,21 +37,31 @@ def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
     # create molecule, add hydrogens, and generate embedding
     m = Chem.MolFromSmiles(smiles)
     if m is None:
-        return
+        logging.error("The RDKit SMILES parsing has failed for the molecule: %s", smiles)
+        return None
     mh = Chem.AddHs(m)
-    AllChem.EmbedMolecule(mh)
+    emb_code = Chem.AllChem.EmbedMolecule(mh, randomSeed=11)
+    if emb_code == -1:
+        logging.error("The RDKit embedding has failed for the molecule: %s", smiles)
+        return None
 
     # energy minimisation
     valid_methods = [None, "MMFF94", "MMFF94s", "UFF"]
     if minimisation_method is not None:
-        if minimisation_method == valid_methods[1]:
-            Chem.AllChem.MMFFOptimizeMolecule(mh)
-        elif minimisation_method == valid_methods[2]:
-            Chem.AllChem.MMFFOptimizeMolecule(mh, mmffVariant="MMFF94s")
-        elif minimisation_method == valid_methods[3]:
-            Chem.AllChem.UFFOptimizeMolecule(mh)
-        else:
+        if minimisation_method not in valid_methods:
             raise ValueError(f"Select a valid minimisation method {valid_methods}")
+        try:
+            if minimisation_method == valid_methods[1]:
+                Chem.AllChem.MMFFOptimizeMolecule(mh)
+            elif minimisation_method == valid_methods[2]:
+                Chem.AllChem.MMFFOptimizeMolecule(mh, mmffVariant="MMFF94s")
+            elif minimisation_method == valid_methods[3]:
+                Chem.AllChem.UFFOptimizeMolecule(mh)
+            else:
+                raise RuntimeError("Whooaa! We should never reach this point.")
+        except ValueError:  # When the minimisation fails RDKit raises a ValueError
+            logging.error("The minimisation method has failed for the molecule: %s", smiles)
+            return None
     return mh
 
 
@@ -120,7 +133,12 @@ def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Chem.rdchem.Mol) -> Mo
         position = [float(x) / Bohr, float(y) / Bohr, float(z) / Bohr]
         atom = Atom(symbol=pt.GetAtomicNumber(elem), position=position)
         atoms.append(atom)
-    return Molecule(symbols=atoms)
+    kallisto_mol = Molecule(symbols=atoms)
+    if 'numbers' not in kallisto_mol.arrays.keys():
+        raise KallistoError(
+            "The kallisto molecule was not created for the input '{}'".format(
+            Chem.MolToSmiles(rdkit_molecule)))
+    return kallisto_mol
 
 
 def get_charges_from_kallisto_molecule(

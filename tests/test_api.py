@@ -54,7 +54,7 @@ def test_api_molecular_vector_from_smiles_fails_for_invalid_smiles():
     only_strengths = True
     with pytest.raises(Exception) as error:
         molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
-    assert error.value.args[0] == "Invalid SMILES entered."
+    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
 
 
 def test_deltag_from_smiles():
@@ -73,7 +73,7 @@ def test_api_deltag_from_smiles_fails_for_invalid_smiles():
     minimisation_method = "MMFF94"
     with pytest.raises(Exception) as error:
         deltag_from_smiles(smiles, minimisation_method)
-    assert error.value.args[0] == "Invalid SMILES entered."
+    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
 
 
 def test_atomic_tuples_from_smiles():
@@ -107,7 +107,7 @@ def test_atomic_tuples_from_smiles_fails_for_invalid_smiles():
     smiles = "xxx"
     with pytest.raises(Exception) as error:
         atomic_tuples_from_smiles(smiles)
-    assert error.value.args[0] == "Invalid SMILES entered."
+    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
 
 
 def test_atomic_map_from_smiles():
@@ -126,7 +126,7 @@ def test_atomic_map_from_smiles_fails_for_invalid_smiles():
     smiles = "xxx"
     with pytest.raises(Exception) as error:
         atomic_map_from_smiles(smiles)
-    assert error.value.args[0] == "Invalid SMILES entered."
+    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
 
 
 def test_atomic_strength_vis_from_smiles():

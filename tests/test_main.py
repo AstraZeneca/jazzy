@@ -42,7 +42,7 @@ def test_vec_fails_with_invalid_smiles(runner: CliRunner) -> None:
     """It fails with an invalid smiles."""
     smiles = "xxx"
     result = runner.invoke(__main__.vec, [smiles])
-    assert "{'status': 'error', 'smiles': 'xxx'}" in result.output
+    assert "{'__status': 'error', 'smiles': 'xxx'}" in result.output
 
 
 def test_vis_succeeds(runner: CliRunner) -> None:
@@ -56,7 +56,7 @@ def test_vis_fails_with_invalid_smiles(runner: CliRunner) -> None:
     """It fails with an invalid smiles."""
     smiles = "xxx"
     result = runner.invoke(__main__.vis, ["--opt", "MMFF94", smiles])
-    assert "{'status': 'error', 'smiles': 'xxx'}" in result.output
+    assert "{'__status': 'error', 'smiles': 'xxx'}" in result.output
 
 
 def test_vis_fails_with_invalid_minimisation_method(runner: CliRunner) -> None:
