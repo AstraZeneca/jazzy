@@ -8,6 +8,7 @@ from jazzy.api import atomic_tuples_from_smiles
 from jazzy.api import deltag_from_smiles
 from jazzy.api import molecular_vector_from_smiles
 from jazzy.config import Config
+from jazzy.utils import JazzyError
 
 # global jazzy config (parameter)
 config = Config()
@@ -52,7 +53,7 @@ def test_api_molecular_vector_from_smiles_fails_for_invalid_smiles():
     # first only hydrogen bond strength
     minimisation_method = "MMFF94"
     only_strengths = True
-    with pytest.raises(Exception) as error:
+    with pytest.raises(JazzyError) as error:
         molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
     assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
 

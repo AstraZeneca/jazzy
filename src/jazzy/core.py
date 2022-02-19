@@ -1,6 +1,7 @@
 """Core functions of the jazzy package."""
 # src/jazzy/core.py
 import logging
+
 import numpy as np
 from kallisto.atom import Atom
 from kallisto.methods import getPolarizabilities
@@ -13,8 +14,14 @@ from rdkit.Chem import GetPeriodicTable
 from rdkit.Chem import PeriodicTable
 from rdkit.Chem import rdchem
 from rdkit.Chem import rdMolDescriptors
+
 from jazzy.utils import KallistoError
-logging.basicConfig(format='Jazzy %(levelname)s: [%(asctime)s] %(message)s', level=logging.WARNING, datefmt='%H:%M:%S')
+
+logging.basicConfig(
+    format="Jazzy %(levelname)s: [%(asctime)s] %(message)s",
+    level=logging.WARNING,
+    datefmt="%H:%M:%S",
+)
 
 
 def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
@@ -26,10 +33,9 @@ def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
     as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
 
     Returns:
-    An RDKit molecule (rdkit.Chem.rdchem.Mol)
+    An RDKit molecule (rdkit.Chem.rdchem.Mol) or None if the process fails
 
-    Raises:
-    RuntimeError: If SMILES parsing fails.
+    Returns:
     ValueError: If 'minimisation_method' does not correspond to one of the
     available methods.
 
@@ -37,10 +43,12 @@ def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
     # create molecule, add hydrogens, and generate embedding
     m = Chem.MolFromSmiles(smiles)
     if m is None:
-        logging.error("The RDKit SMILES parsing has failed for the molecule: %s", smiles)
+        logging.error(
+            "The RDKit SMILES parsing has failed for the molecule: %s", smiles
+        )
         return None
     mh = Chem.AddHs(m)
-    emb_code = Chem.AllChem.EmbedMolecule(mh, randomSeed=11)
+    emb_code = AllChem.EmbedMolecule(mh, randomSeed=11)
     if emb_code == -1:
         logging.error("The RDKit embedding has failed for the molecule: %s", smiles)
         return None
@@ -50,18 +58,12 @@ def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
     if minimisation_method is not None:
         if minimisation_method not in valid_methods:
             raise ValueError(f"Select a valid minimisation method {valid_methods}")
-        try:
-            if minimisation_method == valid_methods[1]:
-                Chem.AllChem.MMFFOptimizeMolecule(mh)
-            elif minimisation_method == valid_methods[2]:
-                Chem.AllChem.MMFFOptimizeMolecule(mh, mmffVariant="MMFF94s")
-            elif minimisation_method == valid_methods[3]:
-                Chem.AllChem.UFFOptimizeMolecule(mh)
-            else:
-                raise RuntimeError("Whooaa! We should never reach this point.")
-        except ValueError:  # When the minimisation fails RDKit raises a ValueError
-            logging.error("The minimisation method has failed for the molecule: %s", smiles)
-            return None
+        if minimisation_method == valid_methods[1]:
+            AllChem.MMFFOptimizeMolecule(mh)
+        if minimisation_method == valid_methods[2]:
+            AllChem.MMFFOptimizeMolecule(mh, mmffVariant="MMFF94s")
+        if minimisation_method == valid_methods[3]:
+            AllChem.UFFOptimizeMolecule(mh)
     return mh
 
 
@@ -108,10 +110,13 @@ def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Chem.rdchem.Mol) -> Mo
     """Create a kallisto molecule from RDKit molecule.
 
     Args:
-        rdkit_molecule: RDKit molecule
+    rdkit_molecule: RDKit molecule
 
     Returns:
-        A kallisto molecule (kallisto.molecule.Molecule)
+    A kallisto molecule (kallisto.molecule.Molecule)
+
+    Raises:
+    KallistoError: An error if the kallisto molecule cannot be created
 
     """
     # get all xyz coordinates and split into list of lines
@@ -134,10 +139,12 @@ def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Chem.rdchem.Mol) -> Mo
         atom = Atom(symbol=pt.GetAtomicNumber(elem), position=position)
         atoms.append(atom)
     kallisto_mol = Molecule(symbols=atoms)
-    if 'numbers' not in kallisto_mol.arrays.keys():
+    if "numbers" not in kallisto_mol.arrays.keys():
         raise KallistoError(
             "The kallisto molecule was not created for the input '{}'".format(
-            Chem.MolToSmiles(rdkit_molecule)))
+                Chem.MolToSmiles(rdkit_molecule)
+            )
+        )
     return kallisto_mol
 
 
@@ -147,11 +154,11 @@ def get_charges_from_kallisto_molecule(
     """Calculate electronegativity equilibration (EEQ) atomic partial charges.
 
     Args:
-        kallisto_molecule: kallisto molecule
-        charge: molecular charge (int)
+    kallisto_molecule: kallisto molecule
+    charge: molecular charge (int)
 
     Returns:
-        List of electronegativity equilibration atomic partial charges
+    List of electronegativity equilibration atomic partial charges
 
     """
     return list(kallisto_molecule.get_eeq(charge=charge))
@@ -499,6 +506,34 @@ def calculate_delta_polar(
     return float(gd * don + ga * acc)
 
 
+def any_hydrogen_neighbors(rdkit_atom: Chem.rdchem.Atom):
+    """Returns True is Hydrogen is a neighbor else False.
+
+    Written because `rdkit.Chem.rdchem.Atom.GetTotalHs()` does not work on
+    embedded molecules.
+
+    Args:
+    rdkit_atom: rdkit.Chem.rdchem.Atom object
+
+    Returns:
+    Boolean
+
+    """
+    for nbr in rdkit_atom.GetNeighbors():
+        if nbr.GetAtomicNum() == 1:
+            return True
+    return False
+
+
+def interaction_strength(idx: int, mol_map: dict, acceptor_exp: float) -> float:
+    """Calculate interaction strength for atom with index `idx`."""
+    acceptor_strength = mol_map[idx]["sa"]
+    num_lp = mol_map[idx]["num_lp"]
+    if num_lp != 0:
+        return acceptor_strength * (num_lp ** acceptor_exp)
+    return 0.0
+
+
 def calculate_delta_interaction(
     rdkit_molecule: Chem.rdchem.Mol,
     mol_map: dict,
@@ -563,31 +598,3 @@ def calculate_delta_interaction(
             s_partner = interaction_strength(vc, mol_map, expa)
             dgi += f * s_origin * s_partner
     return gi * dgi
-
-
-def any_hydrogen_neighbors(rdkit_atom: Chem.rdchem.Atom):
-    """Returns True is Hydrogen is a neighbor else False.
-
-    Written because `rdkit.Chem.rdchem.Atom.GetTotalHs()` does not work on
-    embedded molecules.
-
-    Args:
-    rdkit_atom: rdkit.Chem.rdchem.Atom object
-
-    Returns:
-    Boolean
-
-    """
-    for nbr in rdkit_atom.GetNeighbors():
-        if nbr.GetAtomicNum() == 1:
-            return True
-    return False
-
-
-def interaction_strength(idx: int, mol_map: dict, acceptor_exp: float) -> float:
-    """Calculate interaction strength for atom with index `idx`."""
-    acceptor_strength = mol_map[idx]["sa"]
-    num_lp = mol_map[idx]["num_lp"]
-    if num_lp != 0:
-        return acceptor_strength * (num_lp ** acceptor_exp)
-    return 0.0
