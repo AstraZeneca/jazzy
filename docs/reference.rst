@@ -6,8 +6,8 @@ Reference
     :backlinks: none
 
 
-jazzy.__cli__
+jazzy.__main__
 --------------
 
-.. automodule:: jazzy.__cli__
+.. automodule:: jazzy.__main__
    :members:

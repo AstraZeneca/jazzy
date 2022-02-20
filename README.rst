@@ -97,7 +97,7 @@ Create a virtual environment (via ``pyenv`` or ``conda``) and activate it. After
 
 .. code:: console
 
-    $ git clone git@github.com:f3rmion/jazzy.git
+    $ git clone git@github.com:AstraZeneca/jazzy.git
     $ cd jazzy
     $ poetry install
 
@@ -105,7 +105,13 @@ Create a virtual environment (via ``pyenv`` or ``conda``) and activate it. After
 Usage
 -----
 
-Please see the `Command-line Reference <Usage_>`_ for details.
+Please see the `Usage <Usage_>`_ section for details.
+
+
+Cookbook
+--------
+
+Please see the `Cookbook <Cookbook_>`_ section for details.
 
 
 Contributing
@@ -144,6 +150,7 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. github-only
 .. _Contributor Guide: CONTRIBUTING.rst
 .. _Usage: https://jazzy.readthedocs.io/en/latest/usage.html
+.. _Cookbook: https://jazzy.readthedocs.io/en/latest/cookbook.html
 .. _poetry: https://python-poetry.org/docs/#installation
 .. _pyenv: https://github.com/pyenv/pyenv#installation
 .. _conda: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
