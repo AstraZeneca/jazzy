@@ -1,7 +1,6 @@
 """Application programming interface for the jazzy package."""
 # src/jazzy/api.py
 import base64
-from typing import Tuple
 
 from jazzy.config import Config
 from jazzy.core import calculate_delta_apolar
@@ -83,7 +82,7 @@ def molecular_vector_from_smiles(
         dgi = calculate_delta_interaction(
             rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa
         )
-        dg["tot"] = sum(dg.values()) + dgi
+        dg["dgtot"] = sum(dg.values()) + dgi
         mol_vector = {**mol_vector, **dg}  # type: ignore
     return mol_vector
 
@@ -184,17 +183,17 @@ def atomic_map_from_smiles(smiles: str, minimisation_method=None):
 
 def atomic_strength_vis_from_smiles(
     smiles: str,
-    minimisation_method: str,
-    encode: bool,
-    fig_size: Tuple[int, int],
-    flatten_molecule: bool,
-    highlight_atoms: bool,
-    ignore_sdc: bool,
-    ignore_sdx: bool,
-    ignore_sa: bool,
-    sdc_treshold: float,
-    sdx_treshold: float,
-    sa_treshold: float,
+    minimisation_method=None,
+    encode=False,
+    fig_size=(500, 500),
+    flatten_molecule=False,
+    highlight_atoms=False,
+    ignore_sdc=False,
+    ignore_sdx=False,
+    ignore_sa=False,
+    sdc_treshold=0.0,
+    sdx_treshold=0.0,
+    sa_treshold=0.0,
 ):
     """API route to generate an SVG image from SMILES string.
 
