@@ -1,5 +1,6 @@
 """Test cases for the kallisto methods."""
 import numpy as np
+import pytest
 from kallisto.units import Bohr
 from rdkit import Chem
 from tests.store import pyridine
@@ -7,6 +8,7 @@ from tests.store import pyridine
 from jazzy.core import get_charges_from_kallisto_molecule
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
+from jazzy.utils import KallistoError
 
 
 def test_kallisto_charges_are_correct_from_molecule():
@@ -29,6 +31,18 @@ def test_kallisto_charges_are_correct_from_wrapper_function():
     eeq = get_charges_from_kallisto_molecule(m, charge)
     assert np.isclose(eeq[0], want[0])
     assert np.isclose(eeq[1], want[1])
+
+
+def test_kallisto_creation_fails_for_nonembedded_molecule() -> None:
+    """It raises a KallistoError when a nonembedded molecule is entered."""
+    with pytest.raises(KallistoError) as error:
+        smiles = "CC"
+        m = Chem.MolFromSmiles(smiles)
+        kallisto_molecule_from_rdkit_molecule(m)
+        assert (
+            error.value.args[0]
+            == "The kallisto molecule was not created for the input 'CC'"
+        )
 
 
 def test_kallisto_coordinates_match_rdkit_coordinates():

@@ -6,6 +6,7 @@ import click
 from jazzy.api import atomic_strength_vis_from_smiles
 from jazzy.api import molecular_vector_from_smiles
 from jazzy.config import Config
+from jazzy.utils import JazzyError
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
 
@@ -49,10 +50,10 @@ def vec(config, smiles: str, opt: str, strength_only: bool) -> None:
             minimisation_method=opt,
             only_strengths=strength_only,
         )
-        mol_vector["status"] = "success"
+        mol_vector["__status"] = "success"
         mol_vector["smiles"] = config.smiles
-    except RuntimeError:
-        mol_vector["status"] = "error"
+    except JazzyError:
+        mol_vector["__status"] = "error"
         mol_vector["smiles"] = config.smiles
     print(mol_vector)
 
@@ -146,8 +147,8 @@ def vis(
         )
         vis_vector["svg"] = svg
         vis_vector["smiles"] = config.smiles
-        vis_vector["status"] = "success"
-    except RuntimeError:
-        vis_vector["status"] = "error"
+        vis_vector["__status"] = "success"
+    except JazzyError:
+        vis_vector["__status"] = "error"
         vis_vector["smiles"] = config.smiles
     print(vis_vector)
