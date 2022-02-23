@@ -65,10 +65,18 @@ def test_minimisation_fails_for_nonvalid_method() -> None:
     with pytest.raises(Exception):
         smiles = "CC"
         minimisation_method = "MMFF95"
-        rdkit_molecule_from_smiles(
+        m = rdkit_molecule_from_smiles(
             smiles=smiles,
             minimisation_method=minimisation_method,
         )
+        assert m is None
+
+
+def test_embedding_fails_for_particular_smiles() -> None:
+    """It returns a None when a particular molecule cannot be embedded."""
+    smiles = "COc1cc2cc(OC(=C2C=C)N)c1OC"
+    m = rdkit_molecule_from_smiles(smiles=smiles)
+    assert m is None
 
 
 def test_calculate_correct_number_of_lone_pairs():

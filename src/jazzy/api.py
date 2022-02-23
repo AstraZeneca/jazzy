@@ -15,11 +15,23 @@ from jazzy.core import rdkit_molecule_from_smiles
 from jazzy.helpers import condense_atomic_map
 from jazzy.helpers import convert_map_to_tuples
 from jazzy.helpers import sum_atomic_map
-from jazzy.visualisation import depict_strength
+from jazzy.utils import JazzyError
+from jazzy.visualisation import depict_strengths
 
 
 # global jazzy config (parameter)
 config = Config()
+
+
+def __smiles_to_molecule_objects(smiles, minimisation_method=None):
+    """Private method for converting SMILES into RDKit and kallisto objects."""
+    rdkit_mol = rdkit_molecule_from_smiles(
+        smiles, minimisation_method=minimisation_method
+    )
+    if rdkit_mol is None:
+        raise JazzyError("The SMILES '{}' appears to be invalid.".format(smiles))
+    kallisto_mol = kallisto_molecule_from_rdkit_molecule(rdkit_mol)
+    return rdkit_mol, kallisto_mol
 
 
 def molecular_vector_from_smiles(
@@ -43,10 +55,9 @@ def molecular_vector_from_smiles(
     """
     mol_vector = dict()
     # generate an RDKit molecule
-    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
-    if rdkit_molecule is None:
-        raise RuntimeError("Invalid SMILES entered.")
-    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
+        smiles, minimisation_method
+    )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
@@ -90,10 +101,9 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
 
     """
     # generate basic descriptors
-    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
-    if rdkit_molecule is None:
-        raise RuntimeError("Invalid SMILES entered.")
-    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
+        smiles, minimisation_method
+    )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
@@ -135,10 +145,9 @@ def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):
 
     """
     # generate basic descriptors
-    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
-    if rdkit_molecule is None:
-        raise RuntimeError("Invalid SMILES entered.")
-    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
+        smiles, minimisation_method
+    )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
@@ -162,10 +171,9 @@ def atomic_map_from_smiles(smiles: str, minimisation_method=None):
 
     """
     # generate basic descriptors
-    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
-    if rdkit_molecule is None:
-        raise RuntimeError("Invalid SMILES entered.")
-    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
+        smiles, minimisation_method
+    )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
@@ -200,16 +208,15 @@ def atomic_strength_vis_from_smiles(
 
     """
     # generate basic descriptors
-    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method)
-    if rdkit_molecule is None:
-        raise RuntimeError("Invalid SMILES entered.")
-    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(rdkit_molecule)
+    rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
+        smiles, minimisation_method
+    )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
     atomic_map = calculate_polar_strength_map(
         rdkit_molecule, kallisto_molecule, atoms_and_nbrs, kallisto_charges
     )
-    img_txt = depict_strength(
+    img_txt = depict_strengths(
         rdkit_molecule=rdkit_molecule,
         atomic_map=atomic_map,
         fig_size=fig_size,

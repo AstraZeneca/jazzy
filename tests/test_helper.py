@@ -72,7 +72,7 @@ def test_donor_atom_strength():
 def test_sum_atomic_map_fails_for_empty_map():
     """Correctly raise IndexError when atomic map is empty."""
     atomic_map = dict()
-    with pytest.raises(Exception) as error:
+    with pytest.raises(IndexError) as error:
         sum_atomic_map(atomic_map)
     assert error.value.args[0] == "The atomic map must have length greater than zero."
 
