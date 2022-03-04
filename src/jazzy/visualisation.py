@@ -141,9 +141,9 @@ def draw_molecule(
 def create_hs_to_remove(
     rwmol: Chem.rdchem.RWMol,
     atomic_map: dict,
-    sa_treshold: float,
-    sdc_treshold: float,
-    sdx_treshold: float,
+    sa_threshold: float,
+    sdc_threshold: float,
+    sdx_threshold: float,
     ignore_sa: bool,
     ignore_sdc: bool,
     ignore_sdx: bool,
@@ -153,9 +153,9 @@ def create_hs_to_remove(
     Args:
     rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
     atomic_map: molecular map of polar properties (dict)
-    sa_treshold: treshold to show acceptor contribution (float)
-    sdc_treshold: treshold to show donor contribution on Carbon (float)
-    sdx_treshold: treshold to show donor contribution on non-Carbon (float)
+    sa_threshold: threshold to show acceptor contribution (float)
+    sdc_threshold: threshold to show donor contribution on Carbon (float)
+    sdx_threshold: threshold to show donor contribution on non-Carbon (float)
     ignore_sa: ignore acceptor contributions (bool)
     ignore_sdc: ignore donor contributions on Carbon (bool)
     ignore_sdx: ignore donor contributions on non-Carbon (bool)
@@ -177,19 +177,19 @@ def create_hs_to_remove(
 
         # acceptor logic
         # setting two props to avoid mistakes in the highlighting function
-        if sa != 0 and sa > sa_treshold and not ignore_sa:
+        if sa != 0 and sa > sa_threshold and not ignore_sa:
             atom.SetProp("atomNote", str(sa))
             atom.SetProp("sa", str(sa))
             continue
 
         # donor logic
         # setting two props to avoid mistakes in the highlighting function
-        if sdc != 0 and sdc > sdc_treshold and not ignore_sdc:
+        if sdc != 0 and sdc > sdc_threshold and not ignore_sdc:
             atom.SetProp("atomNote", str(sdc))
             atom.SetProp("sd", str(sdc))
             continue
 
-        if sdx != 0 and sdx > sdx_treshold and not ignore_sdx:
+        if sdx != 0 and sdx > sdx_threshold and not ignore_sdx:
             atom.SetProp("atomNote", str(sdx))
             atom.SetProp("sd", str(sdx))
             continue
@@ -215,16 +215,16 @@ def depict_strengths(
     ignore_sdc=False,
     ignore_sdx=False,
     ignore_sa=False,
-    sdc_treshold=0.0,
-    sdx_treshold=0.0,
-    sa_treshold=0.0,
+    sdc_threshold=0.0,
+    sdx_threshold=0.0,
+    sa_threshold=0.0,
 ):
     """Create an SVG image text from an RDKit molecule and its atomic map.
 
     The default configuration simply produces a depiction of the input molecule
     and its strengths. `highlight_atoms` highlights atoms in red (donors) and
     blue (acceptors). `flatten_molecule` produces a 2-dimensional depiction of
-    the molecule. Any `treshold` parameter allows to set a numeric treshold
+    the molecule. Any `threshold` parameter allows to set a numeric threshold
     under which strengths are not included in the output depiction.
 
     Args:
@@ -236,9 +236,9 @@ def depict_strengths(
     ignore_sdc: ignore donor contributions on Carbon (bool)
     ignore_sdx: ignore donor contributions on non-Carbon (bool)
     ignore_sa: ignore acceptor contributions (bool)
-    sdc_treshold: treshold to show donor contribution on Carbon (float)
-    sdx_treshold: treshold to show donor contribution on non-Carbon (float)
-    sa_treshold: treshold to show acceptor contribution (float)
+    sdc_threshold: threshold to show donor contribution on Carbon (float)
+    sdx_threshold: threshold to show donor contribution on non-Carbon (float)
+    sa_threshold: threshold to show acceptor contribution (float)
 
     Returns:
     SVG depiction of given RDKit molecule and its atomic strength map.
@@ -256,9 +256,9 @@ def depict_strengths(
     hs_to_remove = create_hs_to_remove(
         rwmol,
         atomic_map,
-        sa_treshold,
-        sdc_treshold,
-        sdx_treshold,
+        sa_threshold,
+        sdc_threshold,
+        sdx_threshold,
         ignore_sa,
         ignore_sdc,
         ignore_sdx,

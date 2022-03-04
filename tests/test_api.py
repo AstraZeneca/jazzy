@@ -144,9 +144,9 @@ def test_atomic_strength_vis_from_smiles():
         ignore_sa=False,
         ignore_sdc=False,
         ignore_sdx=False,
-        sdc_treshold=0.0,
-        sdx_treshold=0.0,
-        sa_treshold=0.0,
+        sdc_threshold=0.0,
+        sdx_threshold=0.0,
+        sa_threshold=0.0,
     )
     # extract small amount from encoded image
     got = img_txt[:10]
