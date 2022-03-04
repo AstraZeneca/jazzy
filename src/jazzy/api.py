@@ -191,9 +191,9 @@ def atomic_strength_vis_from_smiles(
     ignore_sdc=False,
     ignore_sdx=False,
     ignore_sa=False,
-    sdc_treshold=0.0,
-    sdx_treshold=0.0,
-    sa_treshold=0.0,
+    sdc_threshold=0.0,
+    sdx_threshold=0.0,
+    sa_threshold=0.0,
 ):
     """API route to generate an SVG image from SMILES string.
 
@@ -224,9 +224,9 @@ def atomic_strength_vis_from_smiles(
         ignore_sdc=ignore_sdc,
         ignore_sdx=ignore_sdx,
         ignore_sa=ignore_sa,
-        sdc_treshold=sdc_treshold,
-        sdx_treshold=sdx_treshold,
-        sa_treshold=sa_treshold,
+        sdc_threshold=sdc_threshold,
+        sdx_threshold=sdx_threshold,
+        sa_threshold=sa_threshold,
     )
     if encode:
         img_txt = base64.b64encode(img_txt.encode("utf-8"))

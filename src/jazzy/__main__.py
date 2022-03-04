@@ -75,21 +75,21 @@ def vec(config, smiles: str, opt: str, strength_only: bool) -> None:
     help="Size of SVG image in pixels.",
 )
 @click.option(
-    "--sdc_treshold",
+    "--sdc_threshold",
     default=0.0,
     type=float,
     show_default=True,
     help="Treshold strength to depic Carbon donors.",
 )
 @click.option(
-    "--sdx_treshold",
+    "--sdx_threshold",
     default=0.0,
     type=float,
     show_default=True,
     help="Treshold strength to depic non-Carbon donors.",
 )
 @click.option(
-    "--sa_treshold",
+    "--sa_threshold",
     default=0.0,
     type=float,
     show_default=True,
@@ -113,9 +113,9 @@ def vis(
     ignore_sdc: bool,
     ignore_sdx: bool,
     ignore_sa: bool,
-    sdc_treshold: float,
-    sdx_treshold: float,
-    sa_treshold: float,
+    sdc_threshold: float,
+    sdx_threshold: float,
+    sa_threshold: float,
 ):
     """Create SVG image."""
     # raise ValueError if minimisation method is not valid
@@ -141,9 +141,9 @@ def vis(
             ignore_sdc=ignore_sdc,
             ignore_sdx=ignore_sdx,
             ignore_sa=ignore_sa,
-            sdc_treshold=sdc_treshold,
-            sdx_treshold=sdx_treshold,
-            sa_treshold=sa_treshold,
+            sdc_threshold=sdc_threshold,
+            sdx_threshold=sdx_threshold,
+            sa_threshold=sa_threshold,
         )
         vis_vector["svg"] = svg
         vis_vector["smiles"] = config.smiles
