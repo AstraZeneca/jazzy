@@ -1,4 +1,4 @@
-.. image:: _static/jazzy.png
+.. image:: https://github.com/AstraZeneca/jazzy/blob/feature/cookbook/docs/_static/jazzy.png
   :width: 400
   :alt: Jazzy
 
