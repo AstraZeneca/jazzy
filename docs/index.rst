@@ -14,4 +14,4 @@
    contributing
    Code of Conduct <codeofconduct>
    License <license>
-   Changelog <https://github.com/f3rmion/jazzy/releases>
+   Changelog <https://github.com/AstraZeneca/jazzy/releases>

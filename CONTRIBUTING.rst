@@ -13,9 +13,9 @@ Here is a list of important resources for contributors:
 - `Code of Conduct`_
 
 .. _Apache 2.0 license: https://opensource.org/licenses/Apache-2.0
-.. _Source Code: https://github.com/f3rmion/jazzy
+.. _Source Code: https://github.com/AstraZeneca/jazzy
 .. _Documentation: https://jazzy.readthedocs.io/
-.. _Issue Tracker: https://github.com/f3rmion/jazzy/issues
+.. _Issue Tracker: https://github.com/AstraZeneca/jazzy/issues
 
 How to report a bug
 -------------------

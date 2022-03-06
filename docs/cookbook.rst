@@ -32,7 +32,7 @@ Depending on your programming expertise and what you are aiming to do with Jazzy
 
 Feedback and Contributions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Jazzy is an open project in every shape and form, thus feedback on how to improve its documentation or functionalities is always welcome. If you want to include new examples or review the existing ones, you can either push them directly in the .rst files used to build the documentation or submit a request to eike.caldeweyher@astrazeneca.com or gianmarco.ghiandoni@astrazeneca.com.
+If you want to include new examples or review the existing ones, please refer to the `Contributor Guide`_. or submit a request to eike.caldeweyher@astrazeneca.com or gianmarco.ghiandoni@astrazeneca.com.
 
 Examples
 --------
@@ -41,8 +41,7 @@ Examples
 
 Command-line Interface
 ^^^^^^^^^^^^^^^^^^^^^^
-..
-   include:: corefunctions.rst
+.. include:: cli.rst
 
 .. _api-label:
 
@@ -55,3 +54,5 @@ APIs
 Core Functions
 ^^^^^^^^^^^^^^
 .. include:: core.rst
+
+.. _Contributor Guide: https://jazzy.readthedocs.io/en/latest/contributing.html
