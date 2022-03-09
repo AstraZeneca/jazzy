@@ -31,7 +31,7 @@ def cli():
 @click.option("--strength_only", is_flag=True)
 @click.argument("smiles", type=str, default=None, required=True)
 def vec(config, smiles: str, opt: str, strength_only: bool) -> None:
-    """Create molecular representation."""
+    """Calculate molecular descriptors."""
     # raise ValueError if minimisation method is not valid
     valid_methods = [None, "MMFF94", "MMFF94s", "UFF"]
     if opt not in valid_methods:

@@ -5,8 +5,8 @@ description = "Jazzy"
 authors = ["Gian Marco Ghiandoni <gianmarco.ghiandoni@astrazeneca.com>", "Eike Caldeweyher <eike.caldeweyher@astrazeneca.com>"]
 license = "Apache-2.0"
 readme = "README.rst"
-homepage = "https://github.com/f3rmion/jazzy"
-repository = "https://github.com/f3rmion/jazzy"
+homepage = "https://github.com/AstraZeneca/jazzy"
+repository = "https://github.com/AstraZeneca/jazzy"
 documentation = "https://jazzy.readthedocs.io"
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/f3rmion/jazzy/releases"
+Changelog = "https://github.com/AstraZeneca/jazzy/releases"
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
