@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/f3rmion/jazzy/main/assets/jazzy.png
+.. image:: https://github.com/AstraZeneca/jazzy/blob/feature/cookbook/docs/_static/jazzy.png
   :width: 400
   :alt: Jazzy
 
@@ -23,11 +23,11 @@
 .. |Read the Docs| image:: https://img.shields.io/readthedocs/jazzy/latest.svg?label=Read%20the%20Docs
    :target: https://jazzy.readthedocs.io/
    :alt: Read the documentation at https://jazzy.readthedocs.io/
-.. |Tests| image:: https://github.com/f3rmion/jazzy/workflows/Tests/badge.svg
-   :target: https://github.com/f3rmion/jazzy/actions?workflow=Tests
+.. |Tests| image:: https://github.com/AstraZeneca/jazzy/workflows/Tests/badge.svg
+   :target: https://github.com/AstraZeneca/jazzy/actions?workflow=Tests
    :alt: Tests
-.. |Codecov| image:: https://codecov.io/gh/f3rmion/jazzy/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/f3rmion/jazzy
+.. |Codecov| image:: https://codecov.io/gh/AstraZeneca/jazzy/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/AstraZeneca/jazzy
    :alt: Codecov
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
    :target: https://github.com/pre-commit/pre-commit
@@ -62,9 +62,9 @@ Requirements
 
 .. code:: console
 
-   click==7.1.2 Composable command line interface toolkit
-   kallisto==1.0.7 Atomic and molecular featurizer
-   numpy==1.21.1  NumPy is the fundamental package for array computing with Python.
+   click==7.1.2      # Composable command line interface toolkit
+   kallisto==1.0.7   # Atomic and molecular featurizer
+   numpy==1.21.1     # NumPy array computing package
 
 
 Installation
@@ -90,28 +90,28 @@ First check that ``poetry`` is running correctly (v1.0.10 at the time of writing
 
 .. code:: console
 
-    $ poetry --version
-    Poetry version 1.0.10
+   $ poetry --version
+   Poetry version 1.0.10
 
 Create a virtual environment (via ``pyenv`` or ``conda``) and activate it. Afterwards, clone the *Jazzy* project from GitHub and install it using ``poetry``
 
 .. code:: console
 
-    $ git clone git@github.com:f3rmion/jazzy.git
-    $ cd jazzy
-    $ poetry install
+   $ git clone git@github.com:AstraZeneca/jazzy.git
+   $ cd jazzy
+   $ poetry install
 
 
-Usage
------
+Usage and Cookbook
+------------------
 
-Please see the `Command-line Reference <Usage_>`_ for details.
+Please see the `Usage <Usage_>`_ and `Cookbook <Cookbook_>`_ sections for details.
 
 
 Contributing
 ------------
 
-Contributions are very welcome.
+Jazzy is an open project in every shape and form, thus feedback on how to improve its documentation or functionalities is always welcome.
 To learn more, see the `Contributor Guide`_.
 
 
@@ -137,13 +137,14 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _Apache 2.0 license: https://opensource.org/licenses/Apache-2.0
-.. _PyPI: https://pypi.org/
-.. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-.. _file an issue: https://github.com/f3rmion/jazzy/issues
-.. _pip: https://pip.pypa.io/
-.. github-only
-.. _Contributor Guide: CONTRIBUTING.rst
-.. _Usage: https://jazzy.readthedocs.io/en/latest/usage.html
 .. _poetry: https://python-poetry.org/docs/#installation
 .. _pyenv: https://github.com/pyenv/pyenv#installation
 .. _conda: https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html
+.. _PyPI: https://pypi.org/
+.. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
+.. _file an issue: https://github.com/AstraZeneca/jazzy/issues
+.. _pip: https://pip.pypa.io/
+.. github-only
+.. _Contributor Guide: contributing.rst
+.. _Usage: https://jazzy.readthedocs.io/en/latest/usage.html
+.. _Cookbook: https://jazzy.readthedocs.io/en/latest/cookbook.html
