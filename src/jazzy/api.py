@@ -80,7 +80,7 @@ def molecular_vector_from_smiles(
             atomic_map, atoms_and_nbrs, config.gd, config.ga, config.expd, config.expa
         )
         dgi = calculate_delta_interaction(
-            rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa
+            rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa, config.f
         )
         dg["dgtot"] = sum(dg.values()) + dgi
         mol_vector = {**mol_vector, **dg}  # type: ignore
@@ -124,7 +124,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
         atomic_map, atoms_and_nbrs, config.gd, config.ga, config.expd, config.expa
     )
     dg["dgi"] = calculate_delta_interaction(
-        rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa
+        rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa, config.f
     )
     return round(sum(dg.values()), 4)
 

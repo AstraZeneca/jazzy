@@ -125,20 +125,20 @@ def test_alpha_neighbors_interactions():
     # fake mol_map
     want = 0.0
     mol_map = {0: {"sa": 1.0, "num_lp": 0}, 1: {"sa": 1.0, "num_lp": 0}}
-    result = calculate_delta_interaction(rdkit_molecule, mol_map, aan, 1.0, 1.0)
+    result = calculate_delta_interaction(rdkit_molecule, mol_map, aan, 1.0, 1.0, 1.0)
     assert result == want
     # fake another mol_map
     want = 2
     mol_map = {0: {"sa": 1.0, "num_lp": 1}, 1: {"sa": 1.0, "num_lp": 1}}
-    result = calculate_delta_interaction(rdkit_molecule, mol_map, aan, 1.0, 1.0)
+    result = calculate_delta_interaction(rdkit_molecule, mol_map, aan, 1.0, 1.0, 1.0)
     assert result == want
 
 
 def test_gamma_neighbors_interactions():
     """Correctly calculates gamma neighbor contributions."""
     smile = "C#CN(O)C"
-    # parameter: gi, expa
-    parameter = [2.35, 0.37]
+    # parameter: gi, expa, f
+    parameter = [2.35, 0.37, 0.51]
     rdkit_molecule = rdkit_molecule_from_smiles(smiles=smile, minimisation_method=None)
     kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
         rdkit_molecule=rdkit_molecule
@@ -148,7 +148,7 @@ def test_gamma_neighbors_interactions():
     mol_map = calculate_polar_strength_map(rdkit_molecule, kallisto_molecule, aan, eeq)
     want = 0.0
     result = calculate_delta_interaction(
-        rdkit_molecule, mol_map, aan, parameter[0], parameter[1]
+        rdkit_molecule, mol_map, aan, parameter[0], parameter[1], parameter[2]
     )
     assert result == want
     smile = "C#CN(OC)C(F)(F)F"
@@ -161,6 +161,6 @@ def test_gamma_neighbors_interactions():
     mol_map = calculate_polar_strength_map(rdkit_molecule, kallisto_molecule, aan, eeq)
     want = 25.578745
     result = calculate_delta_interaction(
-        rdkit_molecule, mol_map, aan, parameter[0], parameter[1]
+        rdkit_molecule, mol_map, aan, parameter[0], parameter[1], parameter[2]
     )
     assert np.isclose(result, want, 3)
