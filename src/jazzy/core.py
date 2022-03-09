@@ -540,7 +540,7 @@ def calculate_delta_interaction(
     atoms_and_nbrs: list,
     gi: float,
     expa: float,
-    f=0.514,
+    f: float,
 ):
     """Calculate interaction contribution to free energy.
 

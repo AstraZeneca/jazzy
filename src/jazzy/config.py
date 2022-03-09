@@ -37,6 +37,7 @@ class Config(object):
         expd=0.50,
         expa=0.34,
         gi=4.9996,
+        f=0.514,
     ):
         """Initialize global config."""
         self.g0 = g0
@@ -49,4 +50,5 @@ class Config(object):
         self.expd = expd
         self.expa = expa
         self.gi = gi
+        self.f = f
         self.smiles = None
