@@ -96,7 +96,7 @@ Hydrogen Bond Strength Depiction
 Creates an SVG rendering of the molecule with its atomistic hydrogen bond donor and acceptor strengths from an input SMILES string. Note that, if the SMILES cannot be processed, the function raises a *JazzyError*. The depiction function accepts parameters to:
 
 1. Create a two- or three-dimensional depiction (e.g. ``flatten_molecule=True`` generates a 2D molecule)
-2. Exclude specified types of strengths (e.g. ``ignore_sa=False`` excludes acceptor strengths from the rendering)
+2. Exclude specified types of strengths (e.g. ``ignore_sa=True`` excludes acceptor strengths from the rendering)
 3. Apply minimum strength thresholds (e.g. ``sdc_threshold=0.7`` depicts *sdc* strengths only if greater than 0.7)
 4. Configure the output size (e.g. ``fig_size=[350,350]`` generates an image of 350x350 pixels)
 5. Depict strengths without highlighting their atoms (e.g. ``highlight_atoms=False``)

@@ -32,7 +32,7 @@ Depending on your programming expertise and what you are aiming to do with Jazzy
 
 Feedback and Contributions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-If you want to include new examples or review the existing ones, please refer to the `Contributor Guide`_. or submit a request to eike.caldeweyher@astrazeneca.com or gianmarco.ghiandoni@astrazeneca.com.
+If you want to include new examples or review the existing ones, please refer to the `Contributor Guide`_ or submit a request to eike.caldeweyher@astrazeneca.com or gianmarco.ghiandoni@astrazeneca.com.
 
 Examples
 --------

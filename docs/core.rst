@@ -118,6 +118,10 @@ If you are just interested in calculating the free energy of hydration without c
 
 .. code-block:: python
 
+   from jazzy.core import rdkit_molecule_from_smiles, kallisto_molecule_from_rdkit_molecule
+   from jazzy.core import get_covalent_atom_idxs, get_charges_from_kallisto_molecule, calculate_polar_strength_map
+   from jazzy.core import calculate_delta_polar, calculate_delta_apolar, calculate_delta_interaction
+
    # Then, let's create the molecules and their atomic strengths
    smiles = "NC1=CC=C(C=C1)O"
    rdkit_mol = rdkit_molecule_from_smiles(smiles, minimisation_method="MMFF94")
