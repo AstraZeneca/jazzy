@@ -49,7 +49,7 @@ def deltag_objective(trial):
     gpi1 = trial.suggest_uniform("gpi1", -10.0, 0.0)  # gpi1=-1.82
     gpi2 = trial.suggest_uniform("gpi2", -10.0, 0.0)  # gpi2=-1.29
     gi = trial.suggest_uniform("gi", 0.0, 5.0)  # gi=37.2
-    f = trial.suggest_uniform("F", 0.1, 0.7)  # F=0.325
+    f = trial.suggest_uniform("F", 0.1, 0.7)  # f=0.325
     expd = trial.suggest_uniform("expd", 0.5, 0.7)  # expd=0.68
     expa = trial.suggest_uniform("expa", 0.3, 0.5)  # expa=0.51
 
