@@ -26,7 +26,7 @@
 .. |Tests| image:: https://github.com/AstraZeneca/jazzy/workflows/Tests/badge.svg
    :target: https://github.com/AstraZeneca/jazzy/actions?workflow=Tests
    :alt: Tests
-.. |Codecov| image:: https://codecov.io/gh/AstraZeneca/jazzy/branch/main/graph/badge.svg
+.. |Codecov| image:: https://codecov.io/gh/AstraZeneca/jazzy/branch/master/graph/badge.svg?token=4HCWYH61S5
    :target: https://codecov.io/gh/AstraZeneca/jazzy
    :alt: Codecov
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
