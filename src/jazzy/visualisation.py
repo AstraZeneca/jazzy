@@ -6,7 +6,19 @@ import rdkit
 from rdkit import Chem
 from rdkit.Chem.Draw import rdMolDraw2D
 
+from jazzy.config import ANNOTATION_FONT_SCALE
 from jazzy.config import ROUNDING_DIGITS
+
+
+def _zero_positive_value_check(v: float):
+    """Assert that the input is zero or positive.
+
+    Raises:
+    ValueError: An error if the input is negative
+
+    """
+    if v < 0:
+        raise ValueError("The value should be zero or positive (got {})".format(v))
 
 
 def fix_explicit_hs(rwmol: Chem.rdchem.RWMol, idx: int):
@@ -130,6 +142,7 @@ def draw_molecule(
 
     """
     d2d = rdMolDraw2D.MolDraw2DSVG(fig_size[0], fig_size[1])
+    d2d.drawOptions().annotationFontScale = ANNOTATION_FONT_SCALE
     d2d.DrawMolecule(
         rwmol,
         highlightAtoms=atoms_to_highlight,
@@ -246,6 +259,10 @@ def depict_strengths(
     SVG depiction of given RDKit molecule and its atomic strength map.
 
     """
+    # assert that thresholds are zero or positive
+    for v in [sdc_threshold, sdx_threshold, sa_threshold]:
+        _zero_positive_value_check(v)
+
     # copy RDKit molecule otherwise the input would be affected by processing
     rwmol = rdkit.Chem.RWMol(rdkit_molecule)
 

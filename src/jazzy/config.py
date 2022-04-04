@@ -2,6 +2,7 @@
 # src/jazzy/config.py
 
 ROUNDING_DIGITS = 4
+ANNOTATION_FONT_SCALE = 0.7
 
 
 class Config(object):
