@@ -6,6 +6,8 @@ import rdkit
 from rdkit import Chem
 from rdkit.Chem.Draw import rdMolDraw2D
 
+from jazzy.config import ROUNDING_DIGITS
+
 
 def fix_explicit_hs(rwmol: Chem.rdchem.RWMol, idx: int):
     """Increase number of explicit Hydrogens for atom with index `idx`."""
@@ -169,9 +171,9 @@ def create_hs_to_remove(
         atom_props = atomic_map[idx]
 
         # not involved in Hydrogen bonding
-        sa = round(atom_props["sa"], 3)
-        sdc = round(atom_props["sdc"], 3)
-        sdx = round(atom_props["sdx"], 3)
+        sa = round(atom_props["sa"], ROUNDING_DIGITS)
+        sdc = round(atom_props["sdc"], ROUNDING_DIGITS)
+        sdx = round(atom_props["sdx"], ROUNDING_DIGITS)
         if sa == 0.0 and sdc == 0.0 and sdx == 0.0:
             continue
 

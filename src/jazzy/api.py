@@ -3,6 +3,7 @@
 import base64
 
 from jazzy.config import Config
+from jazzy.config import ROUNDING_DIGITS
 from jazzy.core import calculate_delta_apolar
 from jazzy.core import calculate_delta_interaction
 from jazzy.core import calculate_delta_polar
@@ -83,6 +84,7 @@ def molecular_vector_from_smiles(
             rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa, config.f
         )
         dg["dgtot"] = sum(dg.values()) + dgi
+        dg = {k: round(dg[k], ROUNDING_DIGITS) for k in dg}
         mol_vector = {**mol_vector, **dg}  # type: ignore
     return mol_vector
 
@@ -96,7 +98,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
     as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
 
     Returns:
-    Free energy as scalar rounded to four decimal numbers.
+    Free energy as scalar rounded.
 
     """
     # generate basic descriptors
@@ -126,7 +128,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
     dg["dgi"] = calculate_delta_interaction(
         rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa, config.f
     )
-    return round(sum(dg.values()), 4)
+    return round(sum(dg.values()), ROUNDING_DIGITS)
 
 
 def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):

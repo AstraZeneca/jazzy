@@ -146,5 +146,5 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. _pip: https://pip.pypa.io/
 .. github-only
 .. _Contributor Guide: contributing.rst
-.. _Usage: https://jazzy.readthedocs.io/en/latest/usage.html
 .. _Cookbook: https://jazzy.readthedocs.io/en/latest/cookbook.html
+.. _Usage: https://jazzy.readthedocs.io/en/latest/usage.html

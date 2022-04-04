@@ -1,9 +1,11 @@
 """Global config file of jazzy package."""
 # src/jazzy/config.py
 
+ROUNDING_DIGITS = 4
+
 
 class Config(object):
-    """Golbal config object.
+    """Global config object.
 
     Global jazzy config file for command-line interface (CLI).
     Passable to CLI methods via '@pass_config' decorator.

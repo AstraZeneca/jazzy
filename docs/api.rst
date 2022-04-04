@@ -12,9 +12,9 @@ Creates a dictionary of molecular features from a SMILES string. Features includ
    {'sdc': 4.2822,
     'sdx': 1.3955,
     'sa': 2.4496,
-    'dga': -3.016168135043298,
-    'dgp': -51.26879824722216,
-    'dgtot': -54.28496638226545}
+    'dga': -3.0161,
+    'dgp': -51.2688,
+    'dgtot': -54.5831}
 
 Gibbs Free Energy of Hydration
 """"""""""""""""""""""""""""""
@@ -104,16 +104,17 @@ Creates an SVG rendering of the molecule with its atomistic hydrogen bond donor 
 
 .. code-block:: python
 
+   from IPython.display import SVG
    from jazzy.api import atomic_strength_vis_from_smiles
-   atomic_strength_vis_from_smiles(smiles="CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)S(=O)(=O)N)C(F)(F)F",
-                                   flatten_molecule=True,
-                                   highlight_atoms=True,
-                                   ignore_sdc=False,
-                                   ignore_sdx=False,
-                                   ignore_sa=False,
-                                   sdc_threshold=0.7,
-                                   sdx_threshold=0.6,
-                                   sa_threshold=0.7)
+   SVG(atomic_strength_vis_from_smiles(smiles="CC(=O)NC1=CC=C(C=C1)O",
+                                       flatten_molecule=True,
+                                       highlight_atoms=True,
+                                       ignore_sdc=False,
+                                       ignore_sdx=False,
+                                       ignore_sa=False,
+                                       sdc_threshold=0.7,
+                                       sdx_threshold=0.6,
+                                       sa_threshold=0.7))
 
 .. image:: _static/atomic_strength_vis_from_smiles.png
    :width: 300
