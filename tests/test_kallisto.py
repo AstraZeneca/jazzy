@@ -3,6 +3,7 @@ import numpy as np
 import pytest
 from kallisto.units import Bohr
 from rdkit import Chem
+from rdkit.Chem.rdMolDescriptors import CalcNumAtoms
 from tests.store import pyridine
 
 from jazzy.core import get_charges_from_kallisto_molecule
@@ -69,3 +70,21 @@ def test_kallisto_coordinates_match_rdkit_coordinates():
         assert np.isclose(position[0], want[i][0])
         assert np.isclose(position[1], want[i][1])
         assert np.isclose(position[2], want[i][2])
+
+
+def test_kallisto_from_rdkit_molecule_with_name():
+    """A valid kallisto molecule is generated from an RDKit molecule with _Name."""
+    # create rdkit molecule with a custom name
+    smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles=smiles)
+    rdkit_molecule.SetProp("_Name", "test1")
+
+    # create kallisto molecule
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
+        rdkit_molecule=rdkit_molecule
+    )
+
+    # verify that molecule is created correctly
+    rdkit_atoms = CalcNumAtoms(rdkit_molecule)
+    kallisto_atoms = kallisto_molecule.get_number_of_atoms()
+    assert rdkit_atoms == kallisto_atoms
