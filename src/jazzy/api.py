@@ -29,7 +29,7 @@ def __smiles_to_molecule_objects(smiles, minimisation_method=None):
         smiles, minimisation_method=minimisation_method
     )
     if rdkit_mol is None:
-        raise JazzyError("The SMILES '{}' appears to be invalid.".format(smiles))
+        raise JazzyError("The SMILES '{}' could not be processed.".format(smiles))
     kallisto_mol = kallisto_molecule_from_rdkit_molecule(rdkit_mol)
     return rdkit_mol, kallisto_mol
 
