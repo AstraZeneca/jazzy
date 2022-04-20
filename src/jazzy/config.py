@@ -1,6 +1,8 @@
 """Global config file of jazzy package."""
 # src/jazzy/config.py
 
+ROUNDING_DIGITS = 4
+
 
 class Config(object):
     """Golbal config object.

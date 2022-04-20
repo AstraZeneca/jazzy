@@ -15,7 +15,9 @@ from rdkit.Chem import PeriodicTable
 from rdkit.Chem import rdchem
 from rdkit.Chem import rdMolDescriptors
 
+from jazzy.config import ROUNDING_DIGITS
 from jazzy.utils import KallistoError
+
 
 logging.basicConfig(
     format="Jazzy %(levelname)s: [%(asctime)s] %(message)s",
@@ -240,13 +242,13 @@ def calculate_polar_strength_map(
         atom_dict = {
             "z": z,
             "q": q,
-            "eeq": round(eeq, 4),
-            "alp": round(alp, 4),
+            "eeq": round(eeq, ROUNDING_DIGITS),
+            "alp": round(alp, ROUNDING_DIGITS),
             "hyb": hyb,
             "num_lp": nlps,
-            "sdc": round(sdc, 4),
-            "sdx": round(sdx, 4),
-            "sa": round(sa, 4),
+            "sdc": round(sdc, ROUNDING_DIGITS),
+            "sdx": round(sdx, ROUNDING_DIGITS),
+            "sa": round(sa, ROUNDING_DIGITS),
         }
 
         mol_map[idx] = atom_dict
