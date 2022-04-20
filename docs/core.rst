@@ -49,8 +49,9 @@ Jazzy wraps kallisto and maps its partial charges onto RDKit - i.e., the indices
 
 .. code-block:: python
 
-   from jazzy.core import get_covalent_atom_idxs, get_charges_from_kallisto_molecule
-   atoms_and_nbrs = get_covalent_atom_idxs(rdkit_mol)
+   from jazzy.core import rdkit_molecule_from_smiles, kallisto_molecule_from_rdkit_molecule, get_charges_from_kallisto_molecule
+   rdkit_mol = rdkit_molecule_from_smiles("NC1=CC=C(C=C1)O", minimisation_method="MMFF94")
+   kallisto_mol = kallisto_molecule_from_rdkit_molecule(rdkit_mol)
    get_charges_from_kallisto_molecule(kallisto_mol, charge=0)
 
 .. code-block:: python
@@ -66,9 +67,12 @@ The same principle described above applies to the generation of atomistic featur
 
 .. code-block:: python
 
+   from jazzy.core import rdkit_molecule_from_smiles, kallisto_molecule_from_rdkit_molecule
    from jazzy.core import get_covalent_atom_idxs, get_charges_from_kallisto_molecule, calculate_polar_strength_map
+   rdkit_mol = rdkit_molecule_from_smiles("NC1=CC=C(C=C1)O", minimisation_method="MMFF94")
+   kallisto_mol = kallisto_molecule_from_rdkit_molecule(rdkit_mol)
    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_mol)
-   kallisto_mol = get_charges_from_kallisto_molecule(kallisto_mol, charge=0)
+   kallisto_charges = get_charges_from_kallisto_molecule(kallisto_mol, charge=0)
    calculate_polar_strength_map(rdkit_mol, kallisto_mol, atoms_and_nbrs, kallisto_charges)
 
 .. code-block:: python
@@ -94,6 +98,26 @@ The same principle described above applies to the generation of atomistic featur
         'sdx': 0.5973,
         'sa': 0}
    }
+
+* **Molecular Strengths**
+
+Atomic donor strengths are simply summed up to yield molecular donor strengths. Atomic acceptor strengths are slightly different as they represent the strength of a single lone pair, therefore, molecular acceptor strengths are represented by the sum of the atomic strengths multiplied by their corresponding atom lone pairs. This logic can be explained by considering a molecule of water against Jazzy: The two hydrogens have each a donor strength of 1.0, hence producing a molecular donor strength of 2.0; The oxygen has a strength of 1.0 but it has two lone pairs, each one capable to form a hydrogen bond, hence producing a molecular acceptor strength of 2.0. Jazzy implements ``sum_atomic_map()`` within its `helpers`_ that does the job for you.
+
+.. code-block:: python
+
+   from jazzy.core import rdkit_molecule_from_smiles, kallisto_molecule_from_rdkit_molecule
+   from jazzy.core import get_covalent_atom_idxs, get_charges_from_kallisto_molecule, calculate_polar_strength_map
+   from jazzy.helpers import sum_atomic_map
+   rdkit_mol = rdkit_molecule_from_smiles("NC1=CC=C(C=C1)O", minimisation_method="MMFF94")
+   kallisto_mol = kallisto_molecule_from_rdkit_molecule(rdkit_mol)
+   atoms_and_nbrs = get_covalent_atom_idxs(rdkit_mol)
+   kallisto_charges = get_charges_from_kallisto_molecule(kallisto_mol, charge=0)
+   atomic_map = calculate_polar_strength_map(rdkit_mol, kallisto_mol, atoms_and_nbrs, kallisto_charges)
+   sum_atomic_map(atomic_map)
+
+.. code-block:: python
+
+   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 2.8823}
 
 * **Free Energy of Hydration**
 
@@ -160,5 +184,6 @@ If you are just interested in calculating the free energy of hydration without c
 
    -43.074539262505496
 
+.. _helpers: https://github.com/AstraZeneca/jazzy/blob/master/src/jazzy/helpers.py
 .. _parameters: https://github.com/AstraZeneca/jazzy/blob/master/src/jazzy/config.py
 .. _Free Energy of Hydration API: https://jazzy.readthedocs.io/en/latest/cookbook.html#gibbs-free-energy-of-hydration

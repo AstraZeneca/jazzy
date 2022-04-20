@@ -11,10 +11,22 @@ Creates a dictionary of molecular features from a SMILES string. Features includ
 
    {'sdc': 4.2822,
     'sdx': 1.3955,
-    'sa': 2.4496,
+    'sa': 4.1564,
     'dga': -3.0161,
     'dgp': -51.2688,
     'dgtot': -54.5831}
+
+The molecular donor strength can simply be produced by summing *C-H donor strength* (sdc) and *X-H donor strength* (sdx):
+
+.. code-block:: python
+
+   from jazzy.api import molecular_vector_from_smiles
+   mol_vector = molecular_vector_from_smiles("CC(=O)NC1=CC=C(C=C1)O")
+   mol_vector["sdx"] + mol_vector["sdc"]
+
+.. code-block:: python
+
+   5.7138
 
 Gibbs Free Energy of Hydration
 """"""""""""""""""""""""""""""
@@ -27,7 +39,7 @@ Calculates the Gibbs free energy of hydration (kJ/mol) from a SMILES string. If 
 
 .. code-block:: python
 
-   -54.1639
+   -54.5831
 
 Atomic Features
 """""""""""""""
@@ -48,7 +60,7 @@ Creates a list (of tuples) of tuples of atomic features from a SMILES string. Fe
      ('num_lp', 2),
      ('sdc', 0.0),
      ('sdx', 0.0),
-     ('sa', 1.000)),
+     ('sa', 1.0)),
    ...
      (('z', 1),
      ('q', 0),
@@ -57,7 +69,7 @@ Creates a list (of tuples) of tuples of atomic features from a SMILES string. Fe
      ('hyb', 'unspecified'),
      ('num_lp', 0),
      ('sdc', 0.0),
-     ('sdx', 1.000),
+     ('sdx', 1.0),
      ('sa', 0.0))]
 
 The APIs also include ``atomic_map_from_smiles`` which is analoguous to ``atomic_tuples_from_smiles`` yet it produces its output as a list of dictionaries:
@@ -77,7 +89,7 @@ The APIs also include ``atomic_map_from_smiles`` which is analoguous to ``atomic
      'num_lp': 2,
      'sdc': 0.0,
      'sdx': 0.0,
-     'sa': 1.000,
+     'sa': 1.0,
      'idx': 0},
    ...
      {'z': 1,
@@ -87,7 +99,7 @@ The APIs also include ``atomic_map_from_smiles`` which is analoguous to ``atomic
      'hyb': 'unspecified',
      'num_lp': 0,
      'sdc': 0.0,
-     'sdx': 1.000,
+     'sdx': 1.0,
      'sa': 0.0,
      'idx': 2}]
 
@@ -98,9 +110,10 @@ Creates an SVG rendering of the molecule with its atomistic hydrogen bond donor 
 1. Create a two- or three-dimensional depiction (e.g. ``flatten_molecule=True`` generates a 2D molecule)
 2. Exclude specified types of strengths (e.g. ``ignore_sa=True`` excludes acceptor strengths from the rendering)
 3. Apply minimum strength thresholds (e.g. ``sdc_threshold=0.7`` depicts *sdc* strengths only if greater than 0.7)
-4. Configure the output size (e.g. ``fig_size=[350,350]`` generates an image of 350x350 pixels)
-5. Depict strengths without highlighting their atoms (e.g. ``highlight_atoms=False``)
-6. Encode the image into base64 format (e.g. ``encode=True``)
+4. Configure the rounding digits on the image (e.g. ``rounding_digits=2`` rounds strengths to two digits)
+5. Configure the output size (e.g. ``fig_size=[350,350]`` generates an image of 350x350 pixels)
+6. Depict strengths without highlighting their atoms (e.g. ``highlight_atoms=False``)
+7. Encode the image into base64 format (e.g. ``encode=True``)
 
 .. code-block:: python
 
@@ -114,7 +127,8 @@ Creates an SVG rendering of the molecule with its atomistic hydrogen bond donor 
                                        ignore_sa=False,
                                        sdc_threshold=0.7,
                                        sdx_threshold=0.6,
-                                       sa_threshold=0.7))
+                                       sa_threshold=0.7,
+                                       rounding_digits=2))
 
 .. image:: _static/atomic_strength_vis_from_smiles.png
    :width: 300

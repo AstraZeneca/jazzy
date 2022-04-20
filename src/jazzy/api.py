@@ -3,6 +3,7 @@
 import base64
 
 from jazzy.config import Config
+from jazzy.config import MINIMISATION_METHOD
 from jazzy.config import ROUNDING_DIGITS
 from jazzy.core import calculate_delta_apolar
 from jazzy.core import calculate_delta_interaction
@@ -23,7 +24,7 @@ from jazzy.visualisation import depict_strengths
 config = Config()
 
 
-def __smiles_to_molecule_objects(smiles, minimisation_method=None):
+def __smiles_to_molecule_objects(smiles, minimisation_method=MINIMISATION_METHOD):
     """Private method for converting SMILES into RDKit and kallisto objects."""
     rdkit_mol = rdkit_molecule_from_smiles(
         smiles, minimisation_method=minimisation_method
@@ -35,7 +36,7 @@ def __smiles_to_molecule_objects(smiles, minimisation_method=None):
 
 
 def molecular_vector_from_smiles(
-    smiles: str, minimisation_method=None, only_strengths=False
+    smiles: str, minimisation_method=MINIMISATION_METHOD, only_strengths=False
 ):
     """API route to calculate molecular free energy vector.
 
@@ -89,7 +90,7 @@ def molecular_vector_from_smiles(
     return mol_vector
 
 
-def deltag_from_smiles(smiles: str, minimisation_method=None):
+def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     """API route to calculate molecular free energy scalar.
 
     Args:
@@ -131,7 +132,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
     return round(sum(dg.values()), ROUNDING_DIGITS)
 
 
-def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):
+def atomic_tuples_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     """API route to generate a tuple representation on the atomic map.
 
     Not recommended if serialization is needed.
@@ -157,7 +158,7 @@ def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):
     return convert_map_to_tuples(atomic_map)
 
 
-def atomic_map_from_smiles(smiles: str, minimisation_method=None):
+def atomic_map_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     """API route to generate a condensed representation on the atomic map.
 
     Recommended if serialization is needed.
@@ -185,7 +186,7 @@ def atomic_map_from_smiles(smiles: str, minimisation_method=None):
 
 def atomic_strength_vis_from_smiles(
     smiles: str,
-    minimisation_method=None,
+    minimisation_method=MINIMISATION_METHOD,
     encode=False,
     fig_size=(500, 500),
     flatten_molecule=False,

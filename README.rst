@@ -62,9 +62,10 @@ Requirements
 
 .. code:: console
 
-   click==7.1.2      # Composable command line interface toolkit
-   kallisto==1.0.7   # Atomic and molecular featurizer
-   numpy==1.21.1     # NumPy array computing package
+   click==7.1.2            # Composable command line interface toolkit
+   kallisto==1.0.7         # Atomic and molecular featurizer
+   numpy==1.21.1           # NumPy array computing package
+   rdkit-pypi<=2021.9.4    # Chemoinformatics toolkit
 
 
 Installation
@@ -84,7 +85,7 @@ Requirements to install *Jazzy* from sources:
 
 - `poetry`_
 - `pyenv`_ or `conda`_
-- python >=3.6
+- python>=3.6
 
 First check that ``poetry`` is running correctly (v1.0.10 at the time of writing)
 

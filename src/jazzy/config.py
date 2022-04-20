@@ -1,6 +1,7 @@
 """Global config file of jazzy package."""
 # src/jazzy/config.py
 
+MINIMISATION_METHOD = None
 ROUNDING_DIGITS = 4
 ANNOTATION_FONT_SCALE = 0.7
 
