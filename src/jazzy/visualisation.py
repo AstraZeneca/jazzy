@@ -310,7 +310,7 @@ def _get_highlighted_atoms_and_strength_colors(
         idx2reds = _create_color_scale(idx2sd, mode="donor")
         idx2blues = _create_color_scale(idx2sa, mode="acceptor")
         idx2rgb = {**idx2reds, **idx2blues}  # type: ignore
-    return atoms_to_highlight, idx2sa, idx2sd, idx2rgb
+    return atoms_to_highlight, idx2rgb
 
 
 def depict_strengths(
@@ -384,8 +384,6 @@ def depict_strengths(
     # find atoms with properties appended as all indices have changed now
     (
         atoms_to_highlight,
-        idx2sa,
-        idx2sd,
         idx2rgb,
     ) = _get_highlighted_atoms_and_strength_colors(rwmol, highlight_atoms)
 

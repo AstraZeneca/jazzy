@@ -135,3 +135,19 @@ def test_condense_atomic_map():
     condesed_map = condense_atomic_map(mol_map)
     assert np.isclose(condesed_map[0]["alp"], 7.4365)
     assert np.isclose(condesed_map[0]["eeq"], -0.1556)
+
+
+def test_acceptor_strengths_multipled_by_lone_pairs():
+    """Atomic acceptor strengths multiplied by lone pairs."""
+    smiles = "CC(=O)NC1=CC=C(C=C1)O"
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, minimisation_method="MMFF94")
+    atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
+        rdkit_molecule=rdkit_molecule
+    )
+    eeq = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    mol_map = calculate_polar_strength_map(
+        rdkit_molecule, kallisto_molecule, atoms_and_nbrs, eeq
+    )
+    mol_vector = sum_atomic_map(mol_map)
+    assert np.isclose(mol_vector["sa"], 4.1963)
