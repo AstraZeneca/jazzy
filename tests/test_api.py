@@ -8,6 +8,7 @@ from jazzy.api import atomic_tuples_from_smiles
 from jazzy.api import deltag_from_smiles
 from jazzy.api import molecular_vector_from_smiles
 from jazzy.config import Config
+from jazzy.config import ROUNDING_DIGITS
 from jazzy.utils import JazzyError
 
 # global jazzy config (parameter)
@@ -31,9 +32,9 @@ def test_api_molecular_vector_from_smiles():
     assert len(vector.values()) == 6
     assert np.isclose(vector["sdc"], 0.5304)
     assert np.isclose(vector["sdx"], 0.0)
-    assert np.isclose(vector["dga"], 4.877683888869463)
-    assert np.isclose(vector["dgp"], -0.27805373716258514)
-    assert np.isclose(vector["dgtot"], 4.599630151706878)
+    assert np.isclose(vector["dga"], 4.8777)
+    assert np.isclose(vector["dgp"], -0.2781)
+    assert np.isclose(vector["dgtot"], 4.5996)
 
     smiles = "C(Cl)#C"
     minimisation_method = "MMFF94"
@@ -42,9 +43,9 @@ def test_api_molecular_vector_from_smiles():
     assert len(vector.values()) == 6
     assert np.isclose(vector["sdc"], 0.7748)
     assert np.isclose(vector["sdx"], 0.0)
-    assert np.isclose(vector["dga"], -0.5214872778921444)
-    assert np.isclose(vector["dgp"], -4.050171713395187)
-    assert np.isclose(vector["dgtot"], -4.5716589912873316)
+    assert np.isclose(vector["dga"], -0.5215)
+    assert np.isclose(vector["dgp"], -4.0502)
+    assert np.isclose(vector["dgtot"], -4.5717)
 
 
 def test_api_molecular_vector_from_smiles_fails_for_invalid_smiles():
@@ -55,7 +56,7 @@ def test_api_molecular_vector_from_smiles_fails_for_invalid_smiles():
     only_strengths = True
     with pytest.raises(JazzyError) as error:
         molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
-    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
+    assert error.value.args[0] == "The SMILES 'xxx' could not be processed."
 
 
 def test_deltag_from_smiles():
@@ -74,7 +75,7 @@ def test_api_deltag_from_smiles_fails_for_invalid_smiles():
     minimisation_method = "MMFF94"
     with pytest.raises(Exception) as error:
         deltag_from_smiles(smiles, minimisation_method)
-    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
+    assert error.value.args[0] == "The SMILES 'xxx' could not be processed."
 
 
 def test_atomic_tuples_from_smiles():
@@ -108,7 +109,7 @@ def test_atomic_tuples_from_smiles_fails_for_invalid_smiles():
     smiles = "xxx"
     with pytest.raises(Exception) as error:
         atomic_tuples_from_smiles(smiles)
-    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
+    assert error.value.args[0] == "The SMILES 'xxx' could not be processed."
 
 
 def test_atomic_map_from_smiles():
@@ -127,7 +128,7 @@ def test_atomic_map_from_smiles_fails_for_invalid_smiles():
     smiles = "xxx"
     with pytest.raises(Exception) as error:
         atomic_map_from_smiles(smiles)
-    assert error.value.args[0] == "The SMILES 'xxx' appears to be invalid."
+    assert error.value.args[0] == "The SMILES 'xxx' could not be processed."
 
 
 def test_atomic_strength_vis_from_smiles():
@@ -147,6 +148,7 @@ def test_atomic_strength_vis_from_smiles():
         sdc_threshold=0.0,
         sdx_threshold=0.0,
         sa_threshold=0.0,
+        rounding_digits=ROUNDING_DIGITS,
     )
     # extract small amount from encoded image
     got = img_txt[:10]
