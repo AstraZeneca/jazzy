@@ -8,6 +8,7 @@ from jazzy.api import atomic_tuples_from_smiles
 from jazzy.api import deltag_from_smiles
 from jazzy.api import molecular_vector_from_smiles
 from jazzy.config import Config
+from jazzy.config import ROUNDING_DIGITS
 from jazzy.utils import JazzyError
 
 # global jazzy config (parameter)
@@ -147,6 +148,7 @@ def test_atomic_strength_vis_from_smiles():
         sdc_threshold=0.0,
         sdx_threshold=0.0,
         sa_threshold=0.0,
+        rounding_digits=ROUNDING_DIGITS,
     )
     # extract small amount from encoded image
     got = img_txt[:10]

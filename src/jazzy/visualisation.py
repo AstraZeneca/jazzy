@@ -221,6 +221,7 @@ def _exclude_hydrogens(
     ignore_sa: bool,
     ignore_sdc: bool,
     ignore_sdx: bool,
+    rounding_digits=ROUNDING_DIGITS,
 ):
     """Create `excluded_hydrogens` list from RDKit molecule.
 
@@ -324,6 +325,7 @@ def depict_strengths(
     sdc_threshold=0.0,
     sdx_threshold=0.0,
     sa_threshold=0.0,
+    rounding_digits=ROUNDING_DIGITS,
 ):
     """Create an SVG image text from an RDKit molecule and its atomic map.
 
@@ -373,6 +375,7 @@ def depict_strengths(
         ignore_sa,
         ignore_sdc,
         ignore_sdx,
+        rounding_digits,
     )
 
     # remove excluded hydrogen atoms
