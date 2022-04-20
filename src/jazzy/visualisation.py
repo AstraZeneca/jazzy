@@ -21,44 +21,51 @@ def _zero_positive_value_check(v: float):
         raise ValueError("The value should be zero or positive (got {})".format(v))
 
 
-def fix_explicit_hs(rwmol: Chem.rdchem.RWMol, idx: int):
-    """Increase number of explicit Hydrogens for atom with index `idx`."""
+
+def _fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
+    """Increase number of explicit hydrogens for atom with index `idx`.
+
+    Args:
+    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+    idx: index of atom (int)
+
+    """
     oa = rwmol.GetAtomWithIdx(idx)
     if oa.GetAtomicNum() > 1:
         oa.SetNumExplicitHs(oa.GetNumExplicitHs() + 1)
 
 
-def remove_selected_hs(rwmol: Chem.rdchem.RWMol, hs_to_remove: list):
-    """Convert list of Hydrogen atoms into explicit Hydrogens.
+def _remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: list):
+    """Convert list of hydrogen atoms into explicit hydrogens.
 
-    Convert implicit Hydrogen atoms into explicit Hydrogen on the atoms where
+    Convert implicit hydrogen atoms into explicit hydrogen on the atoms where
     they are bonded. E.g., H-N-H is converted to NH2.
 
     Args:
     rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    hs_to_remove: list of implicit Hydrogens to convert into explicit ones.
+    excluded_hydrogens: list of implicit Hydrogens to convert into explicit ones.
 
     Returns:
     rdkit_molecule: An RDKit molecule (rdkit.Chem.rdchem.Mol)
 
     """
-    if not hs_to_remove:
+    if not excluded_hydrogens:
         return rwmol
 
     ai_to_remove = list()
     for bond_idx in reversed(range(rwmol.GetNumBonds())):
         b = rwmol.GetBondWithIdx(bond_idx)
         bidx = b.GetBeginAtomIdx()
-        remove_bidx = bidx in hs_to_remove
+        remove_bidx = bidx in excluded_hydrogens
         eidx = b.GetEndAtomIdx()
-        remove_eidx = eidx in hs_to_remove
+        remove_eidx = eidx in excluded_hydrogens
         if remove_bidx or remove_eidx:
             if remove_bidx:
                 ai_to_remove.append(bidx)
-                fix_explicit_hs(rwmol, eidx)
+                __fix_explicit_hydrogens(rwmol, eidx)
             if remove_eidx:
                 ai_to_remove.append(eidx)
-                fix_explicit_hs(rwmol, bidx)
+                __fix_explicit_hydrogens(rwmol, bidx)
             rwmol.RemoveBond(bidx, eidx)
     for atom_idx in sorted(ai_to_remove, reverse=True):
         rwmol.RemoveAtom(atom_idx)
@@ -66,11 +73,11 @@ def remove_selected_hs(rwmol: Chem.rdchem.RWMol, hs_to_remove: list):
     return rwmol.GetMol()
 
 
-def remove_hs_bonded_to_strong_acceptor(rwmol: Chem.rdchem.RWMol, hs_to_remove: list):
+def _remove_strong_acceptor_hydrogens(rwmol: Chem.rdchem.RWMol, hs_to_remove: list):
     """Remove Hydrogens that are bonded to strong acceptors.
 
-    Goes through a list of Hydrogens and checks wheather any of their neighbors
-    has been annotated with acceptor strength. If so, it removes the Hydrogen
+    Goes through a list of hydrogens and checks wheather any of their neighbors
+    has been annotated with acceptor strength. If so, it removes the hydrogen
     from the removal list to avoid it to collapse with the acceptor atom.
 
     Args:
@@ -78,7 +85,7 @@ def remove_hs_bonded_to_strong_acceptor(rwmol: Chem.rdchem.RWMol, hs_to_remove: 
     hs_to_remove: list of implicit Hydrogens to convert into explicit ones.
 
     Returns:
-    Updated list for Hydrogen atoms to be removed.
+    Updated list for hydrogen atoms to be removed.
 
     """
     updated_hs_to_remove = list()
@@ -92,14 +99,21 @@ def remove_hs_bonded_to_strong_acceptor(rwmol: Chem.rdchem.RWMol, hs_to_remove: 
     return updated_hs_to_remove
 
 
-def create_color_scale(idx2strength: dict, mode):
+def _create_color_scale(idx2strength: dict, mode: str):
     """Create RGB mapping.
 
     Normalises values in a dictionary and creates an RGB red or blue scale
-    mapping for them. `abs(round(0.9-alpha, 3))` is a bit hacky as it avoids
-    the creation of whites by sacrificing a bit of alpha. Also RGB for acceptor
-    has been tweaked a bit to avoid generating scales that might hide atoms
-    rendered with blue fonts (e.g., Nitrogen atoms).
+    mapping for them. `abs(round(0.9-alpha, ROUNDING_DIGITS))` is a bit hacky
+    as it avoids the creation of whites by sacrificing a bit of alpha.
+    Also RGB for acceptor has been tweaked a bit to avoid generating scales
+    that might hide atoms rendered with blue fonts (e.g., Nitrogen atoms).
+
+    Args:
+    idx2strength: mapping between indices and strengths (dict)
+    mode: `acceptor` or `donor` (str)
+
+    Returns:
+    Mapping between indices and RGB colors (dict).
 
     """
     valid_modes = ["donor", "acceptor"]
@@ -113,10 +127,10 @@ def create_color_scale(idx2strength: dict, mode):
     idx2rgb = dict()
     for idx, v in idx2strength.items():
         try:
-            alpha = round((v - amin) / (amax - amin), 3)
+            alpha = round((v - amin) / (amax - amin), ROUNDING_DIGITS)
         except ZeroDivisionError:
-            alpha = round(v, 3)
-        invalpha = abs(round(0.9 - alpha, 3))
+            alpha = round(v, ROUNDING_DIGITS)
+        invalpha = abs(round(0.9 - alpha, ROUNDING_DIGITS))
         if mode == "donor":
             rgb = (1.0, invalpha, invalpha)
         else:
@@ -126,7 +140,7 @@ def create_color_scale(idx2strength: dict, mode):
     return idx2rgb
 
 
-def draw_molecule(
+def _draw_molecule(
     rwmol: Chem.rdchem.RWMol,
     fig_size: Tuple[int, int],
     atoms_to_highlight: list,
@@ -153,7 +167,53 @@ def draw_molecule(
     return d2d.GetDrawingText()
 
 
-def create_hs_to_remove(
+def _set_acceptor_props(
+    atom: rdkit.Chem.rdchem.Atom, sa: float, sa_threshold: float, ignore_sa: bool
+) -> bool:
+    """Setting two props to acceptor to avoid mistakes in the highlighting function.
+
+    Args:
+    atom: An RDKit atom (rdkit.Chem.rdchem.Atom)
+    sa: acceptor strength (float)
+    sa_threshold: threshold to show acceptor contribution (float)
+    ignore_sa: ignore acceptor contributions (bool)
+
+    Returns:
+    If properties have been set to atom (bool).
+
+    """
+    condition = False
+    if sa != 0 and sa > sa_threshold and not ignore_sa:
+        atom.SetProp("atomNote", str(sa))
+        atom.SetProp("sa", str(sa))
+        condition = True
+    return condition
+
+
+def _set_donor_props(
+    atom: rdkit.Chem.rdchem.Atom, sd: float, sd_threshold: float, ignore_sd: bool
+) -> bool:
+    """Setting two props to donor to avoid mistakes in the highlighting function.
+
+    Args:
+    atom: An RDKit atom (rdkit.Chem.rdchem.Atom)
+    sd: donor strength (float)
+    sd_threshold: threshold to show donor contribution (float)
+    ignore_sd: ignore donor contributions (bool)
+
+    Returns:
+    If properties have been set to atom (bool).
+
+    """
+    condition = False
+    if sd != 0 and sd > sd_threshold and not ignore_sd:
+        atom.SetProp("atomNote", str(sd))
+        atom.SetProp("sd", str(sd))
+        condition = True
+    return condition
+
+
+def _exclude_hydrogens(
     rwmol: Chem.rdchem.RWMol,
     atomic_map: dict,
     sa_threshold: float,
@@ -163,7 +223,7 @@ def create_hs_to_remove(
     ignore_sdc: bool,
     ignore_sdx: bool,
 ):
-    """Create `hs_to_remove` list from RDKit molecule.
+    """Create `excluded_hydrogens` list from RDKit molecule.
 
     Args:
     rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
@@ -176,14 +236,14 @@ def create_hs_to_remove(
     ignore_sdx: ignore donor contributions on non-Carbon (bool)
 
     Returns:
-    `hs_to_remove` list.
+    `excluded_hydrogens` list.
 
     """
-    hs_to_remove = list()
+    excluded_hydrogens = list()
     for idx, atom in enumerate(rwmol.GetAtoms()):
         atom_props = atomic_map[idx]
 
-        # not involved in Hydrogen bonding
+        # not involved in hydrogen bonding
         sa = round(atom_props["sa"], ROUNDING_DIGITS)
         sdc = round(atom_props["sdc"], ROUNDING_DIGITS)
         sdx = round(atom_props["sdx"], ROUNDING_DIGITS)
@@ -191,34 +251,66 @@ def create_hs_to_remove(
             continue
 
         # acceptor logic
-        # setting two props to avoid mistakes in the highlighting function
-        if sa != 0 and sa > sa_threshold and not ignore_sa:
-            atom.SetProp("atomNote", str(sa))
-            atom.SetProp("sa", str(sa))
+        if __set_acceptor_props(atom, sa, sa_threshold, ignore_sa):
             continue
 
-        # donor logic
-        # setting two props to avoid mistakes in the highlighting function
-        if sdc != 0 and sdc > sdc_threshold and not ignore_sdc:
-            atom.SetProp("atomNote", str(sdc))
-            atom.SetProp("sd", str(sdc))
+        # donor logic for carbons
+        if __set_donor_props(atom, sdc, sdc_threshold, ignore_sdc):
             continue
 
-        if sdx != 0 and sdx > sdx_threshold and not ignore_sdx:
-            atom.SetProp("atomNote", str(sdx))
-            atom.SetProp("sd", str(sdx))
+        # donor logic for non-carbons
+        if __set_donor_props(atom, sdx, sdx_threshold, ignore_sdx):
             continue
 
-        # Hydrogen does not fall into above conditions
+        # hydrogen does not fall into above conditions
         # then not strong enough and mark for removal
         if atom_props["z"] == 1:
-            hs_to_remove.append(idx)
+            excluded_hydrogens.append(idx)
 
-    # remove hs from hs_to_remove if connected with a strong acceptor
+    # remove strong acceptor hydrogens
     if not ignore_sa:
-        hs_to_remove = remove_hs_bonded_to_strong_acceptor(rwmol, hs_to_remove)
+        excluded_hydrogens = __remove_strong_acceptor_hydrogens(
+            rwmol, excluded_hydrogens
+        )
 
-    return hs_to_remove
+    return excluded_hydrogens
+
+
+def _get_highlighted_atoms_and_strength_colors(
+    rdkit_molecule: Chem.rdchem.Mol,
+    highlight_atoms: bool,
+):
+    """Get donor and acceptor strengths and create RGB colors from them.
+
+    Args:
+    rdkit_molecule: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+    highlight_atoms: show donors in red and acceptors in blue (bool)
+
+    Returns:
+    `atoms_to_highlight`, `idx2sa`, `idx2sd`, and `idx2rgb` lists.
+
+    """
+    idx2sd = dict()
+    idx2sa = dict()
+    idx2rgb = dict()
+    atoms_to_highlight = list()
+    if highlight_atoms:
+        atoms = [x for x in rdkit_molecule.GetAtoms()]
+        for a in atoms:
+            if a.HasProp("sd"):
+                idx = a.GetIdx()
+                atoms_to_highlight.append(idx)
+                idx2sd[idx] = float(a.GetProp("sd"))
+            if a.HasProp("sa"):
+                idx = a.GetIdx()
+                atoms_to_highlight.append(idx)
+                idx2sa[idx] = float(a.GetProp("sa"))
+
+        # convert strengths into relative RGB scale and combine the scales
+        idx2reds = __create_color_scale(idx2sd, mode="donor")
+        idx2blues = __create_color_scale(idx2sa, mode="acceptor")
+        idx2rgb = {**idx2reds, **idx2blues}  # type: ignore
+    return atoms_to_highlight, idx2sa, idx2sd, idx2rgb
 
 
 def depict_strengths(
@@ -272,7 +364,8 @@ def depict_strengths(
     if flatten_molecule:
         rdkit.Chem.rdDepictor.Compute2DCoords(rwmol)
 
-    hs_to_remove = create_hs_to_remove(
+    # create list of excluded hydrogens
+    excluded_hydrogens = _exclude_hydrogens(
         rwmol,
         atomic_map,
         sa_threshold,
@@ -283,33 +376,19 @@ def depict_strengths(
         ignore_sdx,
     )
 
-    # remove Hydrogen atoms that are not strong enough
-    rwmol = remove_selected_hs(rwmol, hs_to_remove)
+    # remove excluded hydrogen atoms
+    rwmol = _remove_excluded_hydrogens(rwmol, excluded_hydrogens)
 
     # find atoms with properties appended as all indices have changed now
-    idx2sd = dict()
-    idx2sa = dict()
-    idx2rgb = dict()
-    atoms_to_highlight = list()
-    if highlight_atoms:
-        atoms = [x for x in rwmol.GetAtoms()]
-        for a in atoms:
-            if a.HasProp("sd"):
-                idx = a.GetIdx()
-                atoms_to_highlight.append(idx)
-                idx2sd[idx] = float(a.GetProp("sd"))
-            if a.HasProp("sa"):
-                idx = a.GetIdx()
-                atoms_to_highlight.append(idx)
-                idx2sa[idx] = float(a.GetProp("sa"))
-
-        # convert strengths into relative RGB scale and combine the scales
-        idx2reds = create_color_scale(idx2sd, mode="donor")
-        idx2blues = create_color_scale(idx2sa, mode="acceptor")
-        idx2rgb = {**idx2reds, **idx2blues}  # type: ignore
+    (
+        atoms_to_highlight,
+        idx2sa,
+        idx2sd,
+        idx2rgb,
+    ) = _get_highlighted_atoms_and_strength_colors(rwmol, highlight_atoms)
 
     # draw the molecule and return render
-    img_txt = draw_molecule(
+    img_txt = _draw_molecule(
         rwmol=rwmol,
         fig_size=fig_size,
         atoms_to_highlight=atoms_to_highlight,

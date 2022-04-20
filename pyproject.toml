@@ -22,23 +22,23 @@ Changelog = "https://github.com/AstraZeneca/jazzy/releases"
 [tool.poetry.dependencies]
 python = "^3.7.1"
 click = "<8.0.0"
-rdkit-pypi = "^2021.3.5"
+rdkit-pypi = ">=2021.3.5,<2023.0.0"
 kallisto = "^1.0.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.1"
 coverage = {extras = ["toml"], version = "^6.3"}
 safety = "^1.10.3"
-mypy = "^0.941"
+mypy = "^0.942"
 typeguard = "^2.13.3"
-xdoctest = {extras = ["colors"], version = "^0.15.5"}
+xdoctest = {extras = ["colors"], version = "^1.0.0"}
 sphinx = "^4.3.2"
 sphinx-autobuild = "^2021.3.14"
-pre-commit = "^2.17.0"
+pre-commit = "^2.18.1"
 flake8 = "^4.0.1"
 black = "^21.12b0"
 flake8-bandit = "^3.0.0"
-flake8-bugbear = "^22.3.20"
+flake8-bugbear = "^22.3.23"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.5"
 pep8-naming = "^0.12.1"

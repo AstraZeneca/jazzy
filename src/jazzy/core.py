@@ -18,6 +18,7 @@ from rdkit.Chem import rdMolDescriptors
 from jazzy.config import ROUNDING_DIGITS
 from jazzy.utils import KallistoError
 
+
 logging.basicConfig(
     format="Jazzy %(levelname)s: [%(asctime)s] %(message)s",
     level=logging.WARNING,
@@ -120,10 +121,14 @@ def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Chem.rdchem.Mol) -> Mo
     KallistoError: An error if the kallisto molecule cannot be created
 
     """
+    # get the name of the molecule if it comes from SDF
+    name = ""
+    if rdkit_molecule.HasProp("_Name"):
+        name = rdkit_molecule.GetProp("_Name")
     # get all xyz coordinates and split into list of lines
     xyz = Chem.rdmolfiles.MolToXYZBlock(rdkit_molecule).split("\n")
-    # remove empty lines from list
-    xyz = [line for line in xyz if line != ""]
+    # remove empty lines or molecule name from list
+    xyz = [string for string in xyz if string != "" and string != name]
     # remove number of atoms as given in xmol files (first line)
     xyz = xyz[1:]
 

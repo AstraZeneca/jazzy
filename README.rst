@@ -1,4 +1,4 @@
-.. image:: https://github.com/AstraZeneca/jazzy/blob/master/docs/_static/jazzy.png
+.. image:: https://raw.githubusercontent.com/AstraZeneca/jazzy/master/docs/_static/jazzy.png
   :width: 400
   :alt: Jazzy
 
