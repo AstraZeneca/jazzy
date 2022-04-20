@@ -10,7 +10,7 @@ Example of calculation of Jazzy descriptors for an individual SMILES string from
 
 .. code:: console
 
-   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 1.999, 'dga': -3.432102037745161, 'dgp': -39.642437224760336, 'tot': -43.074539262505496, 'status': 'success', 'smiles': 'NC1=CC=C(C=C1)O'}
+   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 2.8823, 'dga': -3.4321, 'dgp': -39.6424, 'tot': -43.0745, 'status': 'success', 'smiles': 'NC1=CC=C(C=C1)O'}
 
 
 Atomistic Strength Visualisation from SMILES

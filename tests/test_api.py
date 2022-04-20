@@ -31,9 +31,9 @@ def test_api_molecular_vector_from_smiles():
     assert len(vector.values()) == 6
     assert np.isclose(vector["sdc"], 0.5304)
     assert np.isclose(vector["sdx"], 0.0)
-    assert np.isclose(vector["dga"], 4.877683888869463)
-    assert np.isclose(vector["dgp"], -0.27805373716258514)
-    assert np.isclose(vector["dgtot"], 4.599630151706878)
+    assert np.isclose(vector["dga"], 4.8777)
+    assert np.isclose(vector["dgp"], -0.2781)
+    assert np.isclose(vector["dgtot"], 4.5996)
 
     smiles = "C(Cl)#C"
     minimisation_method = "MMFF94"
@@ -42,9 +42,9 @@ def test_api_molecular_vector_from_smiles():
     assert len(vector.values()) == 6
     assert np.isclose(vector["sdc"], 0.7748)
     assert np.isclose(vector["sdx"], 0.0)
-    assert np.isclose(vector["dga"], -0.5214872778921444)
-    assert np.isclose(vector["dgp"], -4.050171713395187)
-    assert np.isclose(vector["dgtot"], -4.5716589912873316)
+    assert np.isclose(vector["dga"], -0.5215)
+    assert np.isclose(vector["dgp"], -4.0502)
+    assert np.isclose(vector["dgtot"], -4.5717)
 
 
 def test_api_molecular_vector_from_smiles_fails_for_invalid_smiles():

@@ -6,10 +6,23 @@ import rdkit
 from rdkit import Chem
 from rdkit.Chem.Draw import rdMolDraw2D
 
+from jazzy.config import ANNOTATION_FONT_SCALE
 from jazzy.config import ROUNDING_DIGITS
 
 
-def __fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
+def _zero_positive_value_check(v: float):
+    """Assert that the input is zero or positive.
+
+    Raises:
+    ValueError: An error if the input is negative
+
+    """
+    if v < 0:
+        raise ValueError("The value should be zero or positive (got {})".format(v))
+
+
+
+def _fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
     """Increase number of explicit hydrogens for atom with index `idx`.
 
     Args:
@@ -22,7 +35,7 @@ def __fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
         oa.SetNumExplicitHs(oa.GetNumExplicitHs() + 1)
 
 
-def __remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: list):
+def _remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: list):
     """Convert list of hydrogen atoms into explicit hydrogens.
 
     Convert implicit hydrogen atoms into explicit hydrogen on the atoms where
@@ -60,7 +73,7 @@ def __remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: li
     return rwmol.GetMol()
 
 
-def __remove_strong_acceptor_hydrogens(rwmol: Chem.rdchem.RWMol, hs_to_remove: list):
+def _remove_strong_acceptor_hydrogens(rwmol: Chem.rdchem.RWMol, hs_to_remove: list):
     """Remove Hydrogens that are bonded to strong acceptors.
 
     Goes through a list of hydrogens and checks wheather any of their neighbors
@@ -86,7 +99,7 @@ def __remove_strong_acceptor_hydrogens(rwmol: Chem.rdchem.RWMol, hs_to_remove: l
     return updated_hs_to_remove
 
 
-def __create_color_scale(idx2strength: dict, mode: str):
+def _create_color_scale(idx2strength: dict, mode: str):
     """Create RGB mapping.
 
     Normalises values in a dictionary and creates an RGB red or blue scale
@@ -127,7 +140,7 @@ def __create_color_scale(idx2strength: dict, mode: str):
     return idx2rgb
 
 
-def __draw_molecule(
+def _draw_molecule(
     rwmol: Chem.rdchem.RWMol,
     fig_size: Tuple[int, int],
     atoms_to_highlight: list,
@@ -143,6 +156,7 @@ def __draw_molecule(
 
     """
     d2d = rdMolDraw2D.MolDraw2DSVG(fig_size[0], fig_size[1])
+    d2d.drawOptions().annotationFontScale = ANNOTATION_FONT_SCALE
     d2d.DrawMolecule(
         rwmol,
         highlightAtoms=atoms_to_highlight,
@@ -153,7 +167,7 @@ def __draw_molecule(
     return d2d.GetDrawingText()
 
 
-def __set_acceptor_props(
+def _set_acceptor_props(
     atom: rdkit.Chem.rdchem.Atom, sa: float, sa_threshold: float, ignore_sa: bool
 ) -> bool:
     """Setting two props to acceptor to avoid mistakes in the highlighting function.
@@ -176,7 +190,7 @@ def __set_acceptor_props(
     return condition
 
 
-def __set_donor_props(
+def _set_donor_props(
     atom: rdkit.Chem.rdchem.Atom, sd: float, sd_threshold: float, ignore_sd: bool
 ) -> bool:
     """Setting two props to donor to avoid mistakes in the highlighting function.
@@ -199,7 +213,7 @@ def __set_donor_props(
     return condition
 
 
-def __exclude_hydrogens(
+def _exclude_hydrogens(
     rwmol: Chem.rdchem.RWMol,
     atomic_map: dict,
     sa_threshold: float,
@@ -262,7 +276,7 @@ def __exclude_hydrogens(
     return excluded_hydrogens
 
 
-def __get_highlighted_atoms_and_strength_colors(
+def _get_highlighted_atoms_and_strength_colors(
     rdkit_molecule: Chem.rdchem.Mol,
     highlight_atoms: bool,
 ):
@@ -337,6 +351,10 @@ def depict_strengths(
     SVG depiction of given RDKit molecule and its atomic strength map.
 
     """
+    # assert that thresholds are zero or positive
+    for v in [sdc_threshold, sdx_threshold, sa_threshold]:
+        _zero_positive_value_check(v)
+
     # copy RDKit molecule otherwise the input would be affected by processing
     rwmol = rdkit.Chem.RWMol(rdkit_molecule)
 
