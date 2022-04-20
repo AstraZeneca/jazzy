@@ -3,6 +3,7 @@
 import base64
 
 from jazzy.config import Config
+from jazzy.config import ROUNDING_DIGITS
 from jazzy.core import calculate_delta_apolar
 from jazzy.core import calculate_delta_interaction
 from jazzy.core import calculate_delta_polar
@@ -28,7 +29,7 @@ def __smiles_to_molecule_objects(smiles, minimisation_method=None):
         smiles, minimisation_method=minimisation_method
     )
     if rdkit_mol is None:
-        raise JazzyError("The SMILES '{}' appears to be invalid.".format(smiles))
+        raise JazzyError("The SMILES '{}' could not be processed.".format(smiles))
     kallisto_mol = kallisto_molecule_from_rdkit_molecule(rdkit_mol)
     return rdkit_mol, kallisto_mol
 
@@ -83,6 +84,7 @@ def molecular_vector_from_smiles(
             rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa, config.f
         )
         dg["dgtot"] = sum(dg.values()) + dgi
+        dg = {k: round(dg[k], ROUNDING_DIGITS) for k in dg}
         mol_vector = {**mol_vector, **dg}  # type: ignore
     return mol_vector
 
@@ -96,7 +98,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
     as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
 
     Returns:
-    Free energy as scalar rounded to four decimal numbers.
+    Free energy as scalar rounded.
 
     """
     # generate basic descriptors
@@ -126,7 +128,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=None):
     dg["dgi"] = calculate_delta_interaction(
         rdkit_molecule, atomic_map, atoms_and_nbrs, config.gi, config.expa, config.f
     )
-    return round(sum(dg.values()), 4)
+    return round(sum(dg.values()), ROUNDING_DIGITS)
 
 
 def atomic_tuples_from_smiles(smiles: str, minimisation_method=None):
@@ -194,6 +196,7 @@ def atomic_strength_vis_from_smiles(
     sdc_threshold=0.0,
     sdx_threshold=0.0,
     sa_threshold=0.0,
+    rounding_digits=ROUNDING_DIGITS,
 ):
     """API route to generate an SVG image from SMILES string.
 
@@ -227,6 +230,7 @@ def atomic_strength_vis_from_smiles(
         sdc_threshold=sdc_threshold,
         sdx_threshold=sdx_threshold,
         sa_threshold=sa_threshold,
+        rounding_digits=rounding_digits,
     )
     if encode:
         img_txt = base64.b64encode(img_txt.encode("utf-8"))
