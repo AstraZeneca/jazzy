@@ -244,9 +244,9 @@ def _exclude_hydrogens(
         atom_props = atomic_map[idx]
 
         # not involved in hydrogen bonding
-        sa = round(atom_props["sa"], ROUNDING_DIGITS)
-        sdc = round(atom_props["sdc"], ROUNDING_DIGITS)
-        sdx = round(atom_props["sdx"], ROUNDING_DIGITS)
+        sa = round(atom_props["sa"], rounding_digits)
+        sdc = round(atom_props["sdc"], rounding_digits)
+        sdx = round(atom_props["sdx"], rounding_digits)
         if sa == 0.0 and sdc == 0.0 and sdx == 0.0:
             continue
 
