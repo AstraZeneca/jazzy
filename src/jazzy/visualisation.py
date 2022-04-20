@@ -365,7 +365,7 @@ def depict_strengths(
         rdkit.Chem.rdDepictor.Compute2DCoords(rwmol)
 
     # create list of excluded hydrogens
-    excluded_hydrogens = __exclude_hydrogens(
+    excluded_hydrogens = _exclude_hydrogens(
         rwmol,
         atomic_map,
         sa_threshold,
@@ -377,7 +377,7 @@ def depict_strengths(
     )
 
     # remove excluded hydrogen atoms
-    rwmol = __remove_excluded_hydrogens(rwmol, excluded_hydrogens)
+    rwmol = _remove_excluded_hydrogens(rwmol, excluded_hydrogens)
 
     # find atoms with properties appended as all indices have changed now
     (
@@ -385,10 +385,10 @@ def depict_strengths(
         idx2sa,
         idx2sd,
         idx2rgb,
-    ) = __get_highlighted_atoms_and_strength_colors(rwmol, highlight_atoms)
+    ) = _get_highlighted_atoms_and_strength_colors(rwmol, highlight_atoms)
 
     # draw the molecule and return render
-    img_txt = __draw_molecule(
+    img_txt = _draw_molecule(
         rwmol=rwmol,
         fig_size=fig_size,
         atoms_to_highlight=atoms_to_highlight,
