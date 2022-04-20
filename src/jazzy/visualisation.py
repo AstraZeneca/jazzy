@@ -21,7 +21,6 @@ def _zero_positive_value_check(v: float):
         raise ValueError("The value should be zero or positive (got {})".format(v))
 
 
-
 def _fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
     """Increase number of explicit hydrogens for atom with index `idx`.
 
@@ -62,10 +61,10 @@ def _remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: lis
         if remove_bidx or remove_eidx:
             if remove_bidx:
                 ai_to_remove.append(bidx)
-                __fix_explicit_hydrogens(rwmol, eidx)
+                _fix_explicit_hydrogens(rwmol, eidx)
             if remove_eidx:
                 ai_to_remove.append(eidx)
-                __fix_explicit_hydrogens(rwmol, bidx)
+                _fix_explicit_hydrogens(rwmol, bidx)
             rwmol.RemoveBond(bidx, eidx)
     for atom_idx in sorted(ai_to_remove, reverse=True):
         rwmol.RemoveAtom(atom_idx)
@@ -251,15 +250,15 @@ def _exclude_hydrogens(
             continue
 
         # acceptor logic
-        if __set_acceptor_props(atom, sa, sa_threshold, ignore_sa):
+        if _set_acceptor_props(atom, sa, sa_threshold, ignore_sa):
             continue
 
         # donor logic for carbons
-        if __set_donor_props(atom, sdc, sdc_threshold, ignore_sdc):
+        if _set_donor_props(atom, sdc, sdc_threshold, ignore_sdc):
             continue
 
         # donor logic for non-carbons
-        if __set_donor_props(atom, sdx, sdx_threshold, ignore_sdx):
+        if _set_donor_props(atom, sdx, sdx_threshold, ignore_sdx):
             continue
 
         # hydrogen does not fall into above conditions
@@ -269,7 +268,7 @@ def _exclude_hydrogens(
 
     # remove strong acceptor hydrogens
     if not ignore_sa:
-        excluded_hydrogens = __remove_strong_acceptor_hydrogens(
+        excluded_hydrogens = _remove_strong_acceptor_hydrogens(
             rwmol, excluded_hydrogens
         )
 
@@ -307,8 +306,8 @@ def _get_highlighted_atoms_and_strength_colors(
                 idx2sa[idx] = float(a.GetProp("sa"))
 
         # convert strengths into relative RGB scale and combine the scales
-        idx2reds = __create_color_scale(idx2sd, mode="donor")
-        idx2blues = __create_color_scale(idx2sa, mode="acceptor")
+        idx2reds = _create_color_scale(idx2sd, mode="donor")
+        idx2blues = _create_color_scale(idx2sa, mode="acceptor")
         idx2rgb = {**idx2reds, **idx2blues}  # type: ignore
     return atoms_to_highlight, idx2sa, idx2sd, idx2rgb
 
