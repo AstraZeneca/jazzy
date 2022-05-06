@@ -156,6 +156,7 @@ def _draw_molecule(
     """
     d2d = rdMolDraw2D.MolDraw2DSVG(fig_size[0], fig_size[1])
     d2d.drawOptions().annotationFontScale = ANNOTATION_FONT_SCALE
+    d2d.drawOptions().padding = 0.15
     d2d.DrawMolecule(
         rwmol,
         highlightAtoms=atoms_to_highlight,
