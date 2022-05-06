@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jazzy"
-version = "0.0.4"
+version = "0.0.5"
 description = "Jazzy"
 authors = ["Gian Marco Ghiandoni <ghiandoni.g@gmail.com>", "Eike Caldeweyher <e.caldeweyher@gmail.com>"]
 license = "Apache-2.0"
