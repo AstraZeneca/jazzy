@@ -680,7 +680,7 @@ Pillow = "*"
 
 [[package]]
 name = "reorder-python-imports"
-version = "3.0.1"
+version = "3.1.0"
 description = "Tool for reordering python imports"
 category = "dev"
 optional = false
@@ -1067,7 +1067,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "a4948ba2a7a9929bf6c674232330f2c3d3e3def60087e7988eb5821abbabfcbf"
+content-hash = "f1d395c757ca2bf00ab3fa3d800ea1aec140b3654a457914e2c318208dd4a61b"
 
 [metadata.files]
 alabaster = [
@@ -1521,8 +1521,8 @@ rdkit-pypi = [
     {file = "rdkit_pypi-2021.9.4-cp39-cp39-win_amd64.whl", hash = "sha256:40a467123ebd3077fca5d4c51332ded123b741a66c3cd4616e799c222e5810bf"},
 ]
 reorder-python-imports = [
-    {file = "reorder_python_imports-3.0.1-py2.py3-none-any.whl", hash = "sha256:4a87d5ffdd5f34b29040fd8c9dae375b5f74ade9f5ec7b15cbcc3dc6a3117855"},
-    {file = "reorder_python_imports-3.0.1.tar.gz", hash = "sha256:a4e1c28a1bf90a7c8fa4c534058803a7956adc722137d3e54eb91536fe12ffb6"},
+    {file = "reorder_python_imports-3.1.0-py2.py3-none-any.whl", hash = "sha256:b0ad7c75d8dbf0941f005954764dc0c4673416a7cf15fe1710e89bdd2b965ef5"},
+    {file = "reorder_python_imports-3.1.0.tar.gz", hash = "sha256:6b7a810ee77a9be0e646033d034ce02457e32597c5f48e5faec1866ca9eb4957"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
