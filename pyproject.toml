@@ -20,7 +20,7 @@ classifiers = [
 Changelog = "https://github.com/AstraZeneca/jazzy/releases"
 
 [tool.poetry.dependencies]
-python = "^3.7.1"
+python = "^3.8.0"
 click = "<8.0.0"
 rdkit-pypi = "<=2021.9.4"
 kallisto = "^1.0.7"
@@ -47,7 +47,7 @@ reorder-python-imports = "^3.1.0"
 pre-commit-hooks = "^4.2.0"
 sphinx-rtd-theme = "^1.0.0"
 sphinx-click = "^4.1.0"
-Pygments = "^2.11.2"
+numpy = "^1.22.1"
 
 [tool.poetry.scripts]
 jazzy = "jazzy.__main__:cli"
