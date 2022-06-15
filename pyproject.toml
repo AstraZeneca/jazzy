@@ -22,7 +22,7 @@ Changelog = "https://github.com/AstraZeneca/jazzy/releases"
 [tool.poetry.dependencies]
 python = "^3.8.0"
 click = "<8.0.0"
-rdkit-pypi = "<=2021.9.4"
+rdkit-pypi = "<2022.3.4"
 kallisto = "^1.0.7"
 
 [tool.poetry.dev-dependencies]
@@ -41,7 +41,7 @@ flake8-bandit = "^3.0.0"
 flake8-bugbear = "^22.4.25"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.5"
-pep8-naming = "^0.12.1"
+pep8-naming = "^0.13.0"
 darglint = "^1.8.1"
 reorder-python-imports = "^3.1.0"
 pre-commit-hooks = "^4.2.0"
