@@ -1,8 +1,8 @@
 """Test cases for the visualisations methods."""
 import base64
-import pytest
 
 import numpy as np
+import pytest
 from rdkit import Chem
 
 from jazzy.core import calculate_polar_strength_map
@@ -11,16 +11,16 @@ from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
 from jazzy.visualisation import _create_color_scale
-from jazzy.visualisation import depict_strengths
 from jazzy.visualisation import _exclude_hydrogens
 from jazzy.visualisation import _get_highlighted_atoms_and_strength_colors
-from jazzy.visualisation import _increase_explicit_hydrogens
 from jazzy.visualisation import _increase_explicit_hydrogen_for_bond_atom
+from jazzy.visualisation import _increase_explicit_hydrogens
 from jazzy.visualisation import _remove_excluded_hydrogens
 from jazzy.visualisation import _remove_strong_acceptor_hydrogens
 from jazzy.visualisation import _set_acceptor_props
 from jazzy.visualisation import _set_donor_props
 from jazzy.visualisation import _zero_positive_value_check
+from jazzy.visualisation import depict_strengths
 
 
 def test_depict_strengths():
@@ -60,7 +60,7 @@ def test_get_highlighted_atoms_and_strength_colors():
     ignore_sdc = False
     ignore_sdx = False
 
-    exclude_hydrogens = _exclude_hydrogens(
+    _exclude_hydrogens(
         mw,
         atomic_map,
         sa_threshold,
@@ -83,7 +83,7 @@ def test_get_highlighted_atoms_and_strength_colors():
     ignore_sdc = False
     ignore_sdx = False
 
-    exclude_hydrogens = _exclude_hydrogens(
+    _exclude_hydrogens(
         mw,
         atomic_map,
         sa_threshold,
@@ -169,14 +169,13 @@ def test_set_donor_props():
     condition = _set_donor_props(atom, sd, sd_threshold, ignore_sd)
     assert atom.GetProp("atomNote") == str(sd)
     assert atom.GetProp("sd") == str(sd)
-    assert condition == True
+    assert condition is True
 
-    atom2 = m.GetAtomWithIdx(0)
     sd = 0.0
     sd_threshold = 7.0
     ignore_sd = False
     condition = _set_donor_props(atom, sd, sd_threshold, ignore_sd)
-    assert condition == False
+    assert condition is False
 
     # RDKit oxygen molecule
     m = rdkit_molecule_from_smiles("O")
@@ -187,14 +186,13 @@ def test_set_donor_props():
     condition = _set_donor_props(atom, sd, sd_threshold, ignore_sd)
     assert atom.GetProp("atomNote") == str(sd)
     assert atom.GetProp("sd") == str(sd)
-    assert condition == True
+    assert condition is True
 
-    atom2 = m.GetAtomWithIdx(0)
     sd = 0.0
     sd_threshold = 7.0
     ignore_sd = False
     condition = _set_donor_props(atom, sd, sd_threshold, ignore_sd)
-    assert condition == False
+    assert condition is False
 
 
 def test_create_color_scale():
