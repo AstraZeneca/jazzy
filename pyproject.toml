@@ -10,8 +10,6 @@ repository = "https://github.com/AstraZeneca/jazzy"
 documentation = "https://jazzy.readthedocs.io"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
 ]
@@ -58,7 +56,6 @@ source = ["src", "*/site-packages"]
 [tool.coverage.run]
 branch = true
 source = ["jazzy"]
-omit = ["*visualisation*"]
 
 [tool.coverage.report]
 show_missing = true

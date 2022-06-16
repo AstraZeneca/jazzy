@@ -21,7 +21,7 @@ def _zero_positive_value_check(v: float):
         raise ValueError("The value should be zero or positive (got {})".format(v))
 
 
-def _fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
+def _increase_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
     """Increase number of explicit hydrogens for atom with index `idx`.
 
     Args:
@@ -32,6 +32,37 @@ def _fix_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
     oa = rwmol.GetAtomWithIdx(idx)
     if oa.GetAtomicNum() > 1:
         oa.SetNumExplicitHs(oa.GetNumExplicitHs() + 1)
+
+
+def _increase_explicit_hydrogen_for_bond_atom(
+    rwmol: Chem.rdchem.RWMol,
+    remove_bidx: bool,
+    bidx: int,
+    remove_eidx: bool,
+    eidx: int,
+    ai_to_remove: list,
+) -> Tuple[Chem.rdchem.RWMol, list]:
+    """Increase number of explicit hydrogens for atom in a bond.
+
+    Args:
+    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+    remove_bidx: Begin atom in bond will increase explicit hydrogens (bool)
+    remove_eidx: End atom in bond will increase explicit hydrogens (bool)
+
+    Returns:
+    Tuple with an RDKit RWmolecule and an updated list to remove
+    (rdkit.Chem.rdchem.RWMol, list).
+
+    """
+    if remove_bidx or remove_eidx:
+        if remove_bidx:
+            ai_to_remove.append(bidx)
+            _increase_explicit_hydrogens(rwmol, eidx)
+        if remove_eidx:
+            ai_to_remove.append(eidx)
+            _increase_explicit_hydrogens(rwmol, bidx)
+        rwmol.RemoveBond(bidx, eidx)
+    return rwmol, ai_to_remove
 
 
 def _remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: list):
@@ -51,21 +82,21 @@ def _remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: lis
     if not excluded_hydrogens:
         return rwmol
 
-    ai_to_remove = list()
+    ai_to_remove = list()  # type: ignore
     for bond_idx in reversed(range(rwmol.GetNumBonds())):
         b = rwmol.GetBondWithIdx(bond_idx)
         bidx = b.GetBeginAtomIdx()
         remove_bidx = bidx in excluded_hydrogens
         eidx = b.GetEndAtomIdx()
         remove_eidx = eidx in excluded_hydrogens
-        if remove_bidx or remove_eidx:
-            if remove_bidx:
-                ai_to_remove.append(bidx)
-                _fix_explicit_hydrogens(rwmol, eidx)
-            if remove_eidx:
-                ai_to_remove.append(eidx)
-                _fix_explicit_hydrogens(rwmol, bidx)
-            rwmol.RemoveBond(bidx, eidx)
+        rwmol, ai_to_remove = _increase_explicit_hydrogen_for_bond_atom(
+            rwmol,
+            remove_bidx,
+            bidx,
+            remove_eidx,
+            eidx,
+            ai_to_remove,
+        )
     for atom_idx in sorted(ai_to_remove, reverse=True):
         rwmol.RemoveAtom(atom_idx)
     rdkit.Chem.SanitizeMol(rwmol)
