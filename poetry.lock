@@ -479,14 +479,6 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
-name = "joblib"
-version = "1.1.0"
-description = "Lightweight pipelining with Python functions"
-category = "main"
-optional = true
-python-versions = ">=3.6"
-
-[[package]]
 name = "kallisto"
 version = "1.0.7"
 description = "The Kallisto software enables the efficient calculation of atomic features that can be used within a quantitative structure-activity relationship (QSAR) approach. Furthermore, several modelling helpers are implemented."
@@ -587,7 +579,7 @@ python-versions = ">=3.8"
 
 [[package]]
 name = "optuna"
-version = "2.3.0"
+version = "2.10.1"
 description = "A hyperparameter optimization framework"
 category = "main"
 optional = true
@@ -596,25 +588,25 @@ python-versions = ">=3.6"
 [package.dependencies]
 alembic = "*"
 cliff = "*"
-cmaes = ">=0.6.0"
+cmaes = ">=0.8.2"
 colorlog = "*"
-joblib = "*"
 numpy = "*"
 packaging = ">=20.0"
+PyYAML = "*"
 scipy = "!=1.4.0"
 sqlalchemy = ">=1.1.0"
 tqdm = "*"
 
 [package.extras]
-checking = ["black", "hacking", "isort", "mypy (==0.782)", "blackdoc"]
+benchmark = ["asv", "virtualenv"]
+checking = ["black", "hacking", "isort", "mypy (==0.790)", "blackdoc"]
 codecov = ["codecov", "pytest-cov"]
-doctest = ["cma", "matplotlib (>=3.0.0)", "pandas", "plotly (>=4.0.0)", "scikit-learn (>=0.19.0,<0.23.0)", "scikit-optimize", "mlflow"]
-document = ["sphinx (==3.0.4)", "sphinx_rtd_theme (<0.5.0)", "sphinx-gallery", "pillow", "matplotlib", "scikit-learn"]
-example = ["catboost", "chainer", "lightgbm", "mlflow", "mpi4py", "mxnet", "nbval", "scikit-image", "scikit-learn (>=0.19.0,<0.23.0)", "xgboost", "keras", "tensorflow (>=2.0.0)", "tensorflow-datasets", "pytorch-ignite", "pytorch-lightning (>=0.8.1)", "thop", "skorch", "stable-baselines3 (>=0.7.0)", "catalyst", "torch (==1.6.0+cpu)", "torchvision (==0.7.0+cpu)", "allennlp (==1.0.0)", "fastai (<2)", "dask", "dask-ml"]
+doctest = ["cma", "matplotlib (>=3.0.0)", "pandas", "plotly (>=4.0.0)", "scikit-learn (>=0.24.2,<1.0.0)", "scikit-optimize", "mlflow"]
+document = ["Jinja2 (<3.0.0)", "MarkupSafe (<=2.0.1)", "sphinx (<=3.5.4)", "sphinx-rtd-theme (<=1.0.0)", "sphinx-copybutton (<=0.4.0)", "sphinx-gallery (<=0.10.0)", "sphinx-plotly-directive (<=0.1.3)", "pillow", "matplotlib", "scikit-learn (<1.0.0)", "plotly (>=4.0.0)", "pandas", "lightgbm", "torch (==1.8.0)", "torchvision (==0.9.0)", "torchaudio (==0.8.0)", "thop"]
 experimental = ["redis"]
-integration = ["chainer (>=5.0.0)", "cma", "lightgbm", "mlflow", "mpi4py", "mxnet", "pandas", "scikit-learn (>=0.19.0,<0.23.0)", "scikit-optimize", "xgboost", "keras", "tensorflow", "tensorflow-datasets", "pytorch-ignite", "pytorch-lightning (>=0.8.1)", "skorch", "catalyst", "torch (==1.6.0+cpu)", "torchvision (==0.7.0+cpu)", "allennlp (==1.0.0)", "fastai (<2)"]
-optional = ["bokeh (<2.0.0)", "matplotlib (>=3.0.0)", "pandas", "plotly (>=4.0.0)", "redis", "scikit-learn (>=0.19.0,<0.23.0)"]
-testing = ["bokeh (<2.0.0)", "chainer (>=5.0.0)", "cma", "fakeredis", "lightgbm", "matplotlib (>=3.0.0)", "mlflow", "mpi4py", "mxnet", "pandas", "plotly (>=4.0.0)", "pytest", "scikit-learn (>=0.19.0,<0.23.0)", "scikit-optimize", "xgboost", "keras", "tensorflow", "tensorflow-datasets", "pytorch-ignite", "pytorch-lightning (>=0.8.1)", "skorch", "catalyst", "torch (==1.6.0+cpu)", "torchvision (==0.7.0+cpu)", "allennlp (==1.0.0)", "fastai (<2)"]
+integration = ["chainer (>=5.0.0)", "cma", "lightgbm", "mlflow", "wandb", "mpi4py", "mxnet", "pandas", "scikit-learn (>=0.24.2,<1.0.0)", "scikit-optimize", "xgboost", "tensorflow", "tensorflow-datasets", "pytorch-ignite", "pytorch-lightning (>=1.0.2)", "skorch", "catalyst (>=21.3)", "torchaudio (==0.8.0)", "allennlp (>=2.2.0,<2.7.0)", "fastai", "botorch (>=0.4.0)", "torch (==1.8.0+cpu)", "torchvision (==0.9.0+cpu)", "torch (==1.8.0)", "torchvision (==0.9.0)"]
+optional = ["bokeh (<2.0.0)", "matplotlib (>=3.0.0)", "pandas", "plotly (>=4.0.0)", "redis", "scikit-learn (>=0.24.2,<1.0.0)"]
+testing = ["bokeh (<2.0.0)", "chainer (>=5.0.0)", "cma", "fakeredis", "lightgbm", "matplotlib (>=3.0.0)", "mlflow", "mpi4py", "mxnet", "pandas", "plotly (>=4.0.0)", "pytest", "scikit-learn (>=0.24.2,<1.0.0)", "scikit-optimize", "xgboost", "tensorflow", "tensorflow-datasets", "pytorch-ignite", "pytorch-lightning (>=1.0.2)", "skorch", "catalyst (>=21.3)", "torchaudio (==0.8.0)", "allennlp (>=2.2.0,<2.7.0)", "fastai", "botorch (>=0.4.0)", "torch (==1.8.0+cpu)", "torchvision (==0.9.0+cpu)", "torch (==1.8.0)", "torchvision (==0.9.0)"]
 tests = ["fakeredis", "pytest"]
 
 [[package]]
@@ -1292,7 +1284,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.0"
-content-hash = "9fdee9064e045c56f2efb5e914565fe7bb88c5f29fa002954eeba0e86e9babd7"
+content-hash = "4faebf26537e97984672cdd4bd775846fc7fa6ea36bced1df117400ebbe36d6f"
 
 [metadata.files]
 alabaster = [
@@ -1547,10 +1539,6 @@ jinja2 = [
     {file = "Jinja2-3.1.2-py3-none-any.whl", hash = "sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61"},
     {file = "Jinja2-3.1.2.tar.gz", hash = "sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"},
 ]
-joblib = [
-    {file = "joblib-1.1.0-py2.py3-none-any.whl", hash = "sha256:f21f109b3c7ff9d95f8387f752d0d9c34a02aa2f7060c2135f465da0e5160ff6"},
-    {file = "joblib-1.1.0.tar.gz", hash = "sha256:4158fcecd13733f8be669be0683b96ebdbbd38d23559f54dca7205aea1bf1e35"},
-]
 kallisto = [
     {file = "kallisto-1.0.7-py3-none-any.whl", hash = "sha256:c4bbd83255dfaf6eb067bf0831c3ce8d412dce27455b4d4fb8f42b4135f6a768"},
     {file = "kallisto-1.0.7.tar.gz", hash = "sha256:f9eadd303010afc97bcb1d21da0f97aed08d3bf28e2916c849f0304a79c47765"},
@@ -1666,7 +1654,8 @@ numpy = [
     {file = "numpy-1.22.4.zip", hash = "sha256:425b390e4619f58d8526b3dcf656dde069133ae5c240229821f01b5f44ea07af"},
 ]
 optuna = [
-    {file = "optuna-2.3.0.tar.gz", hash = "sha256:876dad2e4d9f3b368f573c0c49724ce5f3b9abfcb14dde6a5ad1b427e73e6a2e"},
+    {file = "optuna-2.10.1-py3-none-any.whl", hash = "sha256:d57dc1fd911d20697098bdef83836f8078387a3be2a5400ab26db15f8341e1f4"},
+    {file = "optuna-2.10.1.tar.gz", hash = "sha256:8a12009b57757c1070b3bff2261c24824d6430c22926dd1e2ace33b3deff555f"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
