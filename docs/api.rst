@@ -133,3 +133,16 @@ Creates an SVG rendering of the molecule with its atomistic hydrogen bond donor 
 .. image:: _static/atomic_strength_vis_from_smiles.png
    :width: 300
    :alt: atomic_strength_vis_from_smiles
+
+If you wish to convert an SVG image into PNG and save it within your machine, you can couple Jazzy with a library such as CairoSVG as follows:
+
+.. code-block:: python
+
+   from IPython.display import SVG
+   from cairosvg import svg2png
+   from jazzy.api import atomic_strength_vis_from_smiles
+   svg2png(bytestring=(atomic_strength_vis_from_smiles(smiles="CC(=O)NC1=CC=C(C=C1)O",
+                                                       flatten_molecule=True,
+                                                       highlight_atoms=True,
+                                                       rounding_digits=2)),
+                                                       write_to='output.png')
