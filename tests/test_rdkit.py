@@ -61,7 +61,7 @@ def test_minimisation_works_for_valid_method() -> None:
 
 
 def test_minimisation_fails_for_nonvalid_method() -> None:
-    """It exists with a ValueError when a nonvalid method is entered."""
+    """It exits with a ValueError when a nonvalid method is entered."""
     with pytest.raises(Exception):
         smiles = "CC"
         minimisation_method = "MMFF95"

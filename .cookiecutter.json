@@ -1,12 +1,12 @@
 {
   "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
-  "author": "Eike Caldeweyher",
-  "development_status": "Development Status :: 2 - Pre-Alpha",
+  "author": "Eike Caldeweyher and Gian Marco Ghiandoni",
+  "development_status": "Development Status :: 3 - Alpha",
   "email": "e.caldeweyher@gmail.com",
   "friendly_name": "Jazzy",
   "github_user": "AstraZeneca",
   "license": "Apache-2.0",
   "package_name": "jazzy",
   "project_name": "jazzy",
-  "version": "0.0.0"
+  "version": "0.0.6"
 }
