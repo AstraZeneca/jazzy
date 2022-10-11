@@ -24,14 +24,6 @@ SQLAlchemy = ">=1.3.0"
 tz = ["python-dateutil"]
 
 [[package]]
-name = "aspy.refactor-imports"
-version = "3.0.1"
-description = "Utilities for refactoring imports in python-like syntax."
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[[package]]
 name = "atomicwrites"
 version = "1.4.0"
 description = "Atomic file writes."
@@ -143,6 +135,14 @@ python-versions = ">=3.5.0"
 
 [package.extras]
 unicode_backport = ["unicodedata2"]
+
+[[package]]
+name = "classify-imports"
+version = "4.2.0"
+description = "Utilities for refactoring imports in python-like syntax."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
 
 [[package]]
 name = "click"
@@ -516,7 +516,7 @@ name = "Mako"
 version = "1.2.2"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -857,14 +857,14 @@ Pillow = "*"
 
 [[package]]
 name = "reorder-python-imports"
-version = "3.1.0"
+version = "3.8.4"
 description = "Tool for reordering python imports"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
-"aspy.refactor-imports" = ">=2.3.0"
+classify-imports = ">=4.1"
 
 [[package]]
 name = "requests"
@@ -1306,7 +1306,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.0"
-content-hash = "4aae3e312a02c13540eaa4208db7e071c311745577e433a6ef399d6fe122bdf5"
+content-hash = "54f4969a95f9afa13c28ba389f79dc329383f8cac73ef694b6635a9d8ff51570"
 
 [metadata.files]
 alabaster = [
@@ -1316,10 +1316,6 @@ alabaster = [
 alembic = [
     {file = "alembic-1.8.0-py3-none-any.whl", hash = "sha256:b5ae4bbfc7d1302ed413989d39474d102e7cfa158f6d5969d2497955ffe85a30"},
     {file = "alembic-1.8.0.tar.gz", hash = "sha256:a2d4d90da70b30e70352cd9455e35873a255a31402a438fe24815758d7a0e5e1"},
-]
-"aspy.refactor-imports" = [
-    {file = "aspy.refactor_imports-3.0.1-py2.py3-none-any.whl", hash = "sha256:bc257946fdf5abd9c60393cfb8d0b5d45a2b87d1ee0ede46584c8be5567bc669"},
-    {file = "aspy.refactor_imports-3.0.1.tar.gz", hash = "sha256:df497c3726ee2931b03d403e58a4590f7f4e60059b115cf5df0e07e70c7c73be"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -1356,6 +1352,10 @@ cfgv = [
 charset-normalizer = [
     {file = "charset-normalizer-2.0.12.tar.gz", hash = "sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597"},
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
+]
+classify-imports = [
+    {file = "classify_imports-4.2.0-py2.py3-none-any.whl", hash = "sha256:dbbc264b70a470ed8c6c95976a11dfb8b7f63df44ed1af87328bbed2663f5161"},
+    {file = "classify_imports-4.2.0.tar.gz", hash = "sha256:7abfb7ea92149b29d046bd34573d247ba6e68cc28100c801eba4af17964fc40e"},
 ]
 click = [
     {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
@@ -1864,8 +1864,8 @@ rdkit-pypi = [
     {file = "rdkit_pypi-2021.9.4-cp39-cp39-win_amd64.whl", hash = "sha256:40a467123ebd3077fca5d4c51332ded123b741a66c3cd4616e799c222e5810bf"},
 ]
 reorder-python-imports = [
-    {file = "reorder_python_imports-3.1.0-py2.py3-none-any.whl", hash = "sha256:b0ad7c75d8dbf0941f005954764dc0c4673416a7cf15fe1710e89bdd2b965ef5"},
-    {file = "reorder_python_imports-3.1.0.tar.gz", hash = "sha256:6b7a810ee77a9be0e646033d034ce02457e32597c5f48e5faec1866ca9eb4957"},
+    {file = "reorder_python_imports-3.8.4-py2.py3-none-any.whl", hash = "sha256:7f68b8528dd483554d71769ef5eb6f53cfcacc641ec479cb3a9d4debf0cab0bc"},
+    {file = "reorder_python_imports-3.8.4.tar.gz", hash = "sha256:65d35e6df8ab083998d88b08c4e44b70dadfc75e53e0ac9ad5f8c797e97a26f5"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
