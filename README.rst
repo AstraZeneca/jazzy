@@ -44,14 +44,14 @@ Full Author List
 
 Introduction
 ------------
-*Jazzy* is an efficient computational tool for the calculation of hydration free energies and hydrogen bond acceptor and donor strengths.
+*Jazzy* is an efficient computational tool for the calculation of hydration free energies and hydrogen-bond acceptor and donor strengths.
 
 
 Features
 --------
 
 * Hydration free energies
-* Hydrogen bond strengths
+* Hydrogen-bond strengths
 * Visualisation functions (SVG)
 * Application programming interface
 * Command-line interface

@@ -5,15 +5,15 @@ Introduction
 ------------
 What is Jazzy?
 ^^^^^^^^^^^^^^
-Jazzy is a Python library that allows you to calculate a set of atomic/molecular descriptors which include the Gibbs free energy of hydration (kJ/mol), its polar/apolar components, and the hydrogen bond strength of donor and acceptor atoms using either SMILES or MOL/SDF inputs. Jazzy is easy to use, does not require expensive hardware, and produces accurate estimations within milliseconds to seconds for drug-like molecules. The library also exposes functionalities to depict molecules with atomistic hydrogen bond strengths in two or three dimensions.
+Jazzy is a Python library that allows you to calculate a set of atomic/molecular descriptors which include the Gibbs free energy of hydration (kJ/mol), its polar/apolar components, and the hydrogen-bond strength of donor and acceptor atoms using either SMILES or MOL/SDF inputs. Jazzy is easy to use, does not require expensive hardware, and produces accurate estimations within milliseconds to seconds for drug-like molecules. The library also exposes functionalities to depict molecules with atomistic hydrogen-bond strengths in two or three dimensions.
 
 What can I use Jazzy for?
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 The library was originally designed to support the processes of drug discovery and development but its applicability goes beyond life sciences. These are just some examples of the application of Jazzy:
 
-* To score compounds based on their molecular or atomic hydrogen bond strengths or free energies of hydrations.
+* To score compounds based on their molecular or atomic hydrogen-bond strengths or free energies of hydrations.
 * To describe molecules for machine learning purposes (e.g. physicochemical or ADME modelling).
-* To discriminate compounds on their C-H and X-H hydrogen bond donor strengths.
+* To discriminate compounds on their C-H and X-H hydrogen-bond donor strengths.
 * To determine polar and apolar contributions of free energies of hydration.
 
 What is this document for?

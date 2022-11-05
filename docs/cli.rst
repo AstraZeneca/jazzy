@@ -10,14 +10,14 @@ Example of calculation of Jazzy descriptors for an individual SMILES string from
 
 .. code:: console
 
-   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 2.8823, 'dga': -3.4321, 'dgp': -39.6424, 'tot': -43.0745, 'status': 'success', 'smiles': 'NC1=CC=C(C=C1)O'}
+   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 1.999, 'dga': -3.4321, 'dgp': -39.6424, 'tot': -43.0745, 'status': 'success', 'smiles': 'NC1=CC=C(C=C1)O'}
 
 
 Atomistic Strength Visualisation from SMILES
 """"""""""""""""""""""""""""""""""""""""""""
 **Please note that the CLI functionalities are beta and will be subjected to changes in the future.**
 
-Example of calculation of atomic hydrogen bond strengths for an individual SMILES string from the command line. Creates an SVG string of the molecule with its atomistic hydrogen bond donor and acceptor strengths within a dictionary from an input SMILES string.
+Example of calculation of atomic hydrogen-bond strengths for an individual SMILES string from the command line. Creates an SVG string of the molecule with its atomistic hydrogen-bond donor and acceptor strengths within a dictionary from an input SMILES string.
 
 .. code:: console
 

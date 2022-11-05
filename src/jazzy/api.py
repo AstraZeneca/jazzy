@@ -26,6 +26,8 @@ config = Config()
 
 def __smiles_to_molecule_objects(smiles, minimisation_method=MINIMISATION_METHOD):
     """Private method for converting SMILES into RDKit and kallisto objects."""
+    if smiles == "":
+        raise JazzyError("An empty SMILES string was passed.")
     rdkit_mol = rdkit_molecule_from_smiles(
         smiles, minimisation_method=minimisation_method
     )
