@@ -52,9 +52,5 @@ def sum_atomic_map(atomic_map: dict) -> dict:
     dct = dict()
     countable = ["sdc", "sdx", "sa"]
     for k in countable:
-        # multiply for number of lone pairs before summing up for acceptors
-        if k == "sa":
-            dct[k] = sum(d[k] * d["num_lp"] for d in atomic_map_values if d)
-        else:
-            dct[k] = sum(d[k] for d in atomic_map_values if d)
+        dct[k] = sum(d[k] for d in atomic_map_values if d)
     return {key: round(dct[key], 4) for key in dct}
