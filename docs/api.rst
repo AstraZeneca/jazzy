@@ -11,7 +11,7 @@ Creates a dictionary of molecular features from a SMILES string. Features includ
 
    {'sdc': 4.2822,
     'sdx': 1.3955,
-    'sa': 4.1564,
+    'sa': 2.461,
     'dga': -3.0161,
     'dgp': -51.2688,
     'dgtot': -54.5831}
@@ -103,9 +103,9 @@ The APIs also include ``atomic_map_from_smiles`` which is analoguous to ``atomic
      'sa': 0.0,
      'idx': 2}]
 
-Hydrogen Bond Strength Depiction
+Hydrogen-bond Strength Depiction
 """"""""""""""""""""""""""""""""
-Creates an SVG rendering of the molecule with its atomistic hydrogen bond donor and acceptor strengths from an input SMILES string. Note that, if the SMILES cannot be processed, the function raises a *JazzyError*. The depiction function accepts parameters to:
+Creates an SVG rendering of the molecule with its atomistic hydrogen-bond donor and acceptor strengths from an input SMILES string. Note that, if the SMILES cannot be processed, the function raises a *JazzyError*. The depiction function accepts parameters to:
 
 1. Create a two- or three-dimensional depiction (e.g. ``flatten_molecule=True`` generates a 2D molecule)
 2. Exclude specified types of strengths (e.g. ``ignore_sa=True`` excludes acceptor strengths from the rendering)

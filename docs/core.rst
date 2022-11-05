@@ -56,10 +56,7 @@ Jazzy wraps kallisto and maps its partial charges onto RDKit - i.e., the indices
 
 .. code-block:: python
 
-   array([-0.17493023, -0.00682252,  0.10203484, -0.05875352, -0.09164218,
-       -0.09044654, -0.09106715,  0.02688138, -0.27123285, -0.26225868,
-        0.14385973,  0.11008608,  0.13931009,  0.15133317,  0.127554  ,
-        0.12505421,  0.12104017])
+   [-0.6627001925559142, 0.11268080360767647, -0.0873075526419112, -0.10025584673427702, 0.11201856315343292, -0.07343308047161486, -0.08901274832446447, -0.4865928417376737, 0.26238853128287026, 0.2622190860687737, 0.11949194864178196, 0.11522856894442372, 0.13396962850629238, 0.11992126184542574, 0.2613838704151783]
 
 * **Atomic Strengths**
 
@@ -80,17 +77,17 @@ The same principle described above applies to the generation of atomistic featur
    {
     0: {'z': 7,
         'q': 0,
-        'eeq': -0.1749,
-        'alp': 7.2063,
+        'eeq': -0.6627,
+        'alp': 9.026,
         'hyb': 'sp2',
         'num_lp': 1,
-        'sdc': 0,
-        'sdx': 0,
-        'sa': 0.1523},
+        'sdc': 0.0,
+        'sdx': 0.0,
+        'sa': 1.1157},
     1: {'z': 6,
         'q': 0,
-        'eeq': -0.0068,
-        'alp': 8.9081,
+        'eeq': 0.1127,
+        'alp': 8.469,
         ...
         'hyb': 'unspecified',
         'num_lp': 0,
@@ -101,7 +98,7 @@ The same principle described above applies to the generation of atomistic featur
 
 * **Molecular Strengths**
 
-Atomic donor strengths are simply summed up to yield molecular donor strengths. Atomic acceptor strengths are slightly different as they represent the strength of a single lone pair, therefore, molecular acceptor strengths are represented by the sum of the atomic strengths multiplied by their corresponding atom lone pairs. This logic can be explained by considering a molecule of water against Jazzy: The two hydrogens have each a donor strength of 1.0, hence producing a molecular donor strength of 2.0; The oxygen has a strength of 1.0 but it has two lone pairs, each one capable to form a hydrogen bond, hence producing a molecular acceptor strength of 2.0. Jazzy implements ``sum_atomic_map()`` within its `helpers`_ that does the job for you.
+Atomic strengths are simply summed up to yield molecular strengths. Jazzy implements ``sum_atomic_map()`` within its `helpers`_ that does the job for you.
 
 .. code-block:: python
 
@@ -117,7 +114,7 @@ Atomic donor strengths are simply summed up to yield molecular donor strengths. 
 
 .. code-block:: python
 
-   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 2.8823}
+   {'sdc': 2.2437, 'sdx': 2.111, 'sa': 1.999}
 
 * **Free Energy of Hydration**
 

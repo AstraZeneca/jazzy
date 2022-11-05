@@ -51,12 +51,21 @@ def test_api_molecular_vector_from_smiles():
 def test_api_molecular_vector_from_smiles_fails_for_invalid_smiles():
     """Correcly fail for incorrect smiles."""
     smiles = "xxx"
-    # first only hydrogen bond strength
     minimisation_method = "MMFF94"
     only_strengths = True
     with pytest.raises(JazzyError) as error:
         molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
     assert error.value.args[0] == "The SMILES 'xxx' could not be processed."
+
+
+def test_api_molecular_vector_from_smiles_fails_for_empty_smiles():
+    """Correcly fail for empty smiles."""
+    smiles = ""
+    minimisation_method = "MMFF94"
+    only_strengths = True
+    with pytest.raises(JazzyError) as error:
+        molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
+    assert error.value.args[0] == "An empty SMILES string was passed."
 
 
 def test_deltag_from_smiles():
