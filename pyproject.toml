@@ -28,7 +28,7 @@ optuna = {version = "2.3.0", optional = true}
 pytest = "^7.2.0"
 coverage = {extras = ["toml"], version = "^6.4"}
 safety = "^1.10.3"
-mypy = "^0.961"
+mypy = "^0.990"
 typeguard = "^2.13.3"
 xdoctest = {extras = ["colors"], version = "^1.0.0"}
 sphinx = "^5.0.2"
