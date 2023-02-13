@@ -20,14 +20,14 @@ def test_cli_succeeds(runner: CliRunner) -> None:
 def test_vec_succeeds(runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     smiles = "CC"
-    result = runner.invoke(__main__.vec, [smiles])
+    result = runner.invoke(__main__.vec, [smiles])  # type: ignore
     assert result.exit_code == 0
 
 
 def test_vec_fails_without_smiles(runner: CliRunner) -> None:
     """It exits with no SMILES given."""
     smiles = None
-    result = runner.invoke(__main__.vec, [smiles])
+    result = runner.invoke(__main__.vec, [smiles])  # type: ignore
     assert result.exit_code == 1
 
 
