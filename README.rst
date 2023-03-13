@@ -45,6 +45,10 @@ Full Author List
 Introduction
 ------------
 *Jazzy* is an efficient computational tool for the calculation of hydration free energies and hydrogen-bond acceptor and donor strengths.
+A publication describing the implementation, fitting, and validation of *Jazzy* can be found at `doi.org/10.1038/s41598-023-30089-x`_.
+
+| If you are using *Jazzy* in your research, please remember to cite our publication as:
+| *Ghiandoni, G.M., Caldeweyher, E. Fast calculation of hydrogen-bond strengths and free energy of hydration of small molecules. Sci Rep 13, 4143 (2023)*
 
 
 Features
@@ -145,6 +149,7 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _file an issue: https://github.com/AstraZeneca/jazzy/issues
 .. _pip: https://pip.pypa.io/
+.. _doi.org/10.1038/s41598-023-30089-x: https://doi.org/10.1038/s41598-023-30089-x
 .. github-only
 .. _Contributor Guide: contributing.rst
 .. _Cookbook: https://jazzy.readthedocs.io/en/latest/cookbook.html
