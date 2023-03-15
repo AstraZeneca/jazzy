@@ -9,6 +9,7 @@ OPTUNA_DIRNAME = "optuna_fitting"
 ORIGINAL_DATA_FILENAME = "03-free_energies_gerber_curated.txt"
 PRECALCULATED_DATA_FILENAME = "01-precalculated_mol_data.pbz2"
 OPTUNA_DELTAG_STUDY_FILENAME = "02-optuna_deltag_fitting_study.pbz2"
+OPTUNA_DELTAG_PARAMETERS_FILENAME = "03-optuna_deltag_fitting_best_params.json"
 
 # logic configuration
 MINIMISATION_METHOD = "MMFF94"
