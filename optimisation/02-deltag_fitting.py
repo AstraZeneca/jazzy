@@ -1,6 +1,7 @@
 """Parameter fitting of Jazzy using Optuna and sklearn."""
 # optimisation/02-deltag_fitting.py
 import config
+from helpers import dump_parameters_to_json
 from helpers import load_data_configuration
 from helpers import run_optimisation
 from sklearn.metrics import mean_absolute_error
@@ -106,10 +107,13 @@ def deltag_objective(trial):
     return loss
 
 
-# load input/ouput configuration
-input_data, study_filepath = load_data_configuration(
-    config.OPTUNA_DELTAG_STUDY_FILENAME
+# load input/output configuration
+input_data, study_filepath, params_filepath = load_data_configuration(
+    config.OPTUNA_DELTAG_STUDY_FILENAME, config.OPTUNA_DELTAG_PARAMETERS_FILENAME
 )
 
 # run optimisation
 study = run_optimisation(deltag_objective, study_filepath, verbose=config.VERBOSE)
+
+# dump best parameters into json
+dump_parameters_to_json(study_filepath, params_filepath)

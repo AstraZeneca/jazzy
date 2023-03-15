@@ -2,6 +2,7 @@
 # optimisation/helpers.py
 import _pickle as cpickle
 import bz2
+import json
 import os
 
 import config
@@ -9,11 +10,12 @@ import optuna
 from optuna.samplers import TPESampler
 
 
-def load_data_configuration(study_filename):
+def load_data_configuration(study_filename, params_filename):
     """Abstraction for input and output loading and configuration setting.
 
-    The method only accepts the name of the output study file, whilst
-    the rest of the parameters must be defined in a config file.
+    The method only accepts the name of the output study and best parameters
+    files, whilst the rest of the parameters must be defined in a config file.
+
     """
     # load the input
     data_path = os.path.abspath(os.path.join(os.getcwd(), "..", config.DATA_PATH))
@@ -24,7 +26,8 @@ def load_data_configuration(study_filename):
 
     # configure output
     study_filepath = os.path.join(optuna_path, study_filename)
-    return input_data, study_filepath
+    params_filepath = os.path.join(optuna_path, params_filename)
+    return input_data, study_filepath, params_filepath
 
 
 def run_optimisation(objective, study_filepath, verbose=False):
@@ -80,3 +83,20 @@ def run_optimisation(objective, study_filepath, verbose=False):
     # write the results out
     with bz2.BZ2File(study_filepath, "w") as f:
         cpickle.dump(study, f)
+
+
+def dump_parameters_to_json(study_filepath, params_filepath):
+    """Helper for dumping the study best parameters.
+
+    Accepts the path to a study file, unpickles it,
+    and dumps the best parameters into a serialisable.
+
+    """
+    # read the parameters
+    with bz2.BZ2File(study_filepath, "rb") as f:
+        study = cpickle.load(f)
+    best_params = study.best_trial.params
+
+    # dump the parameters
+    with open(params_filepath, "w") as f:
+        json.dump(best_params, f, indent=4)
