@@ -1,5 +1,6 @@
 """Test cases for the visualisations methods."""
 import base64
+import hashlib
 
 import numpy as np
 import pytest
@@ -39,7 +40,10 @@ def test_depict_strengths():
     )
 
     base64_hash = base64.b64encode(img_txt.encode("utf-8"))
-    assert str(base64_hash[:20]) == "b'PD94bWwgdmVyc2lvbj0n'"
+    hash_object = hashlib.sha224(base64_hash)
+    hex_dig = hash_object.hexdigest()
+    expected = "74b3621478f91e71d30d5499b43e7d1508760a4a007765ddd9099b1a"
+    assert hex_dig == expected
 
 
 def test_get_highlighted_atoms_and_strength_colors():
