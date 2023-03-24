@@ -66,10 +66,10 @@ Requirements
 
 .. code:: console
 
-   click==8.0.4            # Composable command line interface toolkit
-   kallisto==1.0.9         # Atomic and molecular featurizer
-   numpy==1.24.2           # NumPy array computing package
-   rdkit-pypi<=2021.9.4    # Chemoinformatics toolkit
+   click         # Composable command line interface toolkit
+   kallisto      # Atomic and molecular featurizer
+   numpy         # NumPy array computing package
+   rdkit         # Chemoinformatics toolkit
 
 
 Installation
