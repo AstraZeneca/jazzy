@@ -23,6 +23,10 @@ python = "^3.8.0"
 click = "8.0.4"
 rdkit = "<=2022.9.5"
 kallisto = "^1.0.9"
+
+[tool.poetry.group.optuna]
+
+[tool.poetry.group.optuna.dependencies]
 optuna = {version = "2.3.0", optional = true}
 
 [tool.poetry.dev-dependencies]
