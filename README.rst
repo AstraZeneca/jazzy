@@ -72,8 +72,8 @@ Requirements
    rdkit         # Chemoinformatics toolkit
 
 
-Installation
-------------
+Installation via PyPI
+---------------------
 
 You can install *Jazzy* via pip_ from PyPI_:
 
@@ -82,23 +82,23 @@ You can install *Jazzy* via pip_ from PyPI_:
    $ pip install jazzy
 
 
-Installation from Source
-------------------------
+Installation via Poetry (for development)
+-----------------------------------------
 
-Requirements to install *Jazzy* from sources:
+Requirements to install *Jazzy* from the code repository:
 
 - `poetry`_
 - `pyenv`_ or `conda`_
 - python>=3.6
 
-First check that ``poetry`` is running correctly (v1.0.10 at the time of writing)
+First check that ``poetry`` is running (v1.4.1 at March 2023)
 
 .. code:: console
 
    $ poetry --version
-   Poetry version 1.0.10
+   Poetry version v1.4.1
 
-Create a virtual environment (via ``pyenv`` or ``conda``) and activate it. Afterwards, clone the *Jazzy* project from GitHub and install it using ``poetry``
+Create a virtual environment (via ``pyenv`` or ``conda``) and activate it. Afterwards, clone the *Jazzy* project from GitHub and install it using ``poetry``.
 
 .. code:: console
 
@@ -106,6 +106,14 @@ Create a virtual environment (via ``pyenv`` or ``conda``) and activate it. After
    $ cd jazzy
    $ poetry install
 
+If you wish to replicate our parameter fitting (see ``data/optuna_fitting`` and ``optimisation``), you need to install the specific version of ``optuna``.
+At the time of the study, we used ``optuna==2.3.0``. You can install that manually using ``pip`` or ``poetry``.
+
+.. code:: console
+
+   $ poetry install --with optuna
+   $ pip freeze | grep optuna
+   optuna==2.3.0
 
 Usage and Cookbook
 ------------------
