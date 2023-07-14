@@ -1,4 +1,4 @@
-exclude: ^notebooks|^data
+exclude: ^notebooks|^data|.github
 repos:
   - repo: local
     hooks:
