@@ -246,13 +246,13 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.0.4"
+version = "8.1.5"
 description = "Composable command line interface toolkit"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
-    {file = "click-8.0.4.tar.gz", hash = "sha256:8458d7b1287c5fb128c90e23381cf99dcde74beaf6c7ff6384ce84d6fe090adb"},
+    {file = "click-8.1.5-py3-none-any.whl", hash = "sha256:e576aa487d679441d7d30abb87e1b43d24fc53bffb8758443b1a9e1cee504548"},
+    {file = "click-8.1.5.tar.gz", hash = "sha256:4be4b1af8d665c6d942909916d31a213a106800c47d0eeba73d34da3cbc11367"},
 ]
 
 [package.dependencies]
@@ -2242,4 +2242,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.0"
-content-hash = "cf733a146f87e46927aebfb72111dcca1a2234c6505cbdeb688c87aef1c5a651"
+content-hash = "435b379e36632fe9c456b1ff1c1d6dafdbe1f85deb668929dcad67c20c655ce5"
