@@ -20,7 +20,7 @@ Changelog = "https://github.com/AstraZeneca/jazzy/releases"
 
 [tool.poetry.dependencies]
 python = "^3.8.0"
-click = "8.0.4"
+click = "8.1.6"
 rdkit = "<=2023.3.1"
 kallisto = "^1.0.9"
 
