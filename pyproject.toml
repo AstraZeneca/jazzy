@@ -28,7 +28,7 @@ kallisto = "^1.0.9"
 optional = true
 
 [tool.poetry.group.optuna.dependencies]
-optuna = {version = "2.3.0"}
+optuna = {version = "3.3.0"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.0"

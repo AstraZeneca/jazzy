@@ -51,17 +51,6 @@ tests = ["attrs[tests-no-zope]", "zope.interface"]
 tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy (>=0.971,<0.990)", "mypy (>=0.971,<0.990)", "pympler", "pympler", "pytest (>=4.3.0)", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-mypy-plugins", "pytest-xdist[psutil]", "pytest-xdist[psutil]"]
 
 [[package]]
-name = "autopage"
-version = "0.5.1"
-description = "A library to provide automatic paging for console output"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "autopage-0.5.1-py3-none-any.whl", hash = "sha256:0fbf5efbe78d466a26753e1dee3272423a3adc989d6a778c700e89a3f8ff0d88"},
-    {file = "autopage-0.5.1.tar.gz", hash = "sha256:01be3ee61bb714e9090fcc5c10f4cf546c396331c620c6ae50a2321b28ed3199"},
-]
-
-[[package]]
 name = "babel"
 version = "2.12.1"
 description = "Internationalization utilities"
@@ -259,33 +248,14 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
-name = "cliff"
-version = "4.2.0"
-description = "Command Line Interface Formulation Framework"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "cliff-4.2.0-py3-none-any.whl", hash = "sha256:5538a03299f40f83268ba102ed513c2a693ffeb6ac01de7cc119ae9cfc55e55d"},
-    {file = "cliff-4.2.0.tar.gz", hash = "sha256:97fc31e93552e3bec664be9d55ad7f90dc2ab42aad8df29a5b985b644c9b8cf2"},
-]
-
-[package.dependencies]
-autopage = ">=0.4.0"
-cmd2 = ">=1.0.0"
-importlib-metadata = ">=4.4"
-PrettyTable = ">=0.7.2"
-PyYAML = ">=3.12"
-stevedore = ">=2.0.1"
-
-[[package]]
 name = "cmaes"
-version = "0.9.1"
+version = "0.10.0"
 description = "Lightweight Covariance Matrix Adaptation Evolution Strategy (CMA-ES) implementation for Python 3."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "cmaes-0.9.1-py3-none-any.whl", hash = "sha256:6e2930b6a99dd94621bf62966c13d29e6a7f90a909b4e4266010d5f3a7fb74b8"},
-    {file = "cmaes-0.9.1.tar.gz", hash = "sha256:d122f8d46377f643a150c85ffc81c4e33909a34cfdcb522ee7a6fb17ea4f232c"},
+    {file = "cmaes-0.10.0-py3-none-any.whl", hash = "sha256:72cea747ad37b1780b0eb6f3c098cee33907fafbf6690c0c02db1e010cab72f6"},
+    {file = "cmaes-0.10.0.tar.gz", hash = "sha256:48afc70df027114739872b50489ae6b32461c307b92d084a63c7090a9742faf9"},
 ]
 
 [package.dependencies]
@@ -293,28 +263,6 @@ numpy = "*"
 
 [package.extras]
 cmawm = ["scipy"]
-
-[[package]]
-name = "cmd2"
-version = "2.4.3"
-description = "cmd2 - quickly build feature-rich and user-friendly interactive command line applications in Python"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "cmd2-2.4.3-py3-none-any.whl", hash = "sha256:f1988ff2fff0ed812a2d25218a081b0fa0108d45b48ba2a9272bb98091b654e6"},
-    {file = "cmd2-2.4.3.tar.gz", hash = "sha256:71873c11f72bd19e2b1db578214716f0d4f7c8fa250093c601265a9a717dee52"},
-]
-
-[package.dependencies]
-attrs = ">=16.3.0"
-pyperclip = ">=1.6"
-pyreadline3 = {version = "*", markers = "sys_platform == \"win32\""}
-wcwidth = ">=0.1.7"
-
-[package.extras]
-dev = ["codecov", "doc8", "flake8", "invoke", "mypy", "nox", "pytest (>=4.6)", "pytest-cov", "pytest-mock", "sphinx", "sphinx-autobuild", "sphinx-rtd-theme", "twine (>=1.11)"]
-test = ["codecov", "coverage", "gnureadline", "pytest (>=4.6)", "pytest-cov", "pytest-mock"]
-validate = ["flake8", "mypy", "types-pkg-resources"]
 
 [[package]]
 name = "colorama"
@@ -802,17 +750,6 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
-name = "joblib"
-version = "1.2.0"
-description = "Lightweight pipelining with Python functions"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "joblib-1.2.0-py3-none-any.whl", hash = "sha256:091138ed78f800342968c523bdde947e7a305b8594b910a0fea2ab83c3c6d385"},
-    {file = "joblib-1.2.0.tar.gz", hash = "sha256:e1cee4a79e4af22881164f218d4311f60074197fb707e082e803b61f6d137018"},
-]
-
-[[package]]
 name = "kallisto"
 version = "1.0.9"
 description = "The Kallisto software enables the efficient calculation of atomic features that can be used within a quantitative structure-activity relationship (QSAR) approach. Furthermore, several modelling helpers are implemented."
@@ -1077,37 +1014,32 @@ files = [
 
 [[package]]
 name = "optuna"
-version = "2.3.0"
+version = "3.3.0"
 description = "A hyperparameter optimization framework"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "optuna-2.3.0.tar.gz", hash = "sha256:876dad2e4d9f3b368f573c0c49724ce5f3b9abfcb14dde6a5ad1b427e73e6a2e"},
+    {file = "optuna-3.3.0-py3-none-any.whl", hash = "sha256:3eefaed56a5fabf442036d51ef2001dbabfbe1a8ce33bc0c6b61ff5d15b30c82"},
+    {file = "optuna-3.3.0.tar.gz", hash = "sha256:76126c6e52354892488e75fc7743eaddcd397c5aba8fa1f964a1c5b5f942eaf6"},
 ]
 
 [package.dependencies]
-alembic = "*"
-cliff = "*"
-cmaes = ">=0.6.0"
+alembic = ">=1.5.0"
+cmaes = ">=0.10.0"
 colorlog = "*"
-joblib = "*"
 numpy = "*"
 packaging = ">=20.0"
-scipy = "!=1.4.0"
-sqlalchemy = ">=1.1.0"
+PyYAML = "*"
+sqlalchemy = ">=1.3.0"
 tqdm = "*"
 
 [package.extras]
-checking = ["black", "blackdoc", "hacking", "isort", "mypy (==0.782)"]
-codecov = ["codecov", "pytest-cov"]
-doctest = ["cma", "matplotlib (>=3.0.0)", "mlflow", "pandas", "plotly (>=4.0.0)", "scikit-learn (>=0.19.0,<0.23.0)", "scikit-optimize"]
-document = ["matplotlib", "pillow", "scikit-learn", "sphinx (==3.0.4)", "sphinx-gallery", "sphinx_rtd_theme (<0.5.0)"]
-example = ["allennlp (==1.0.0)", "catalyst", "catboost", "chainer", "dask-ml", "dask[dataframe]", "fastai (<2)", "keras", "lightgbm", "mlflow", "mpi4py", "mxnet", "nbval", "pytorch-ignite", "pytorch-lightning (>=0.8.1)", "scikit-image", "scikit-learn (>=0.19.0,<0.23.0)", "skorch", "stable-baselines3 (>=0.7.0)", "tensorflow (>=2.0.0)", "tensorflow-datasets", "thop", "torch (==1.6.0+cpu)", "torchvision (==0.7.0+cpu)", "xgboost"]
-experimental = ["redis"]
-integration = ["allennlp (==1.0.0)", "catalyst", "chainer (>=5.0.0)", "cma", "fastai (<2)", "keras", "lightgbm", "mlflow", "mpi4py", "mxnet", "pandas", "pytorch-ignite", "pytorch-lightning (>=0.8.1)", "scikit-learn (>=0.19.0,<0.23.0)", "scikit-optimize", "skorch", "tensorflow", "tensorflow-datasets", "torch (==1.6.0+cpu)", "torchvision (==0.7.0+cpu)", "xgboost"]
-optional = ["bokeh (<2.0.0)", "matplotlib (>=3.0.0)", "pandas", "plotly (>=4.0.0)", "redis", "scikit-learn (>=0.19.0,<0.23.0)"]
-testing = ["allennlp (==1.0.0)", "bokeh (<2.0.0)", "catalyst", "chainer (>=5.0.0)", "cma", "fakeredis", "fastai (<2)", "keras", "lightgbm", "matplotlib (>=3.0.0)", "mlflow", "mpi4py", "mxnet", "pandas", "plotly (>=4.0.0)", "pytest", "pytorch-ignite", "pytorch-lightning (>=0.8.1)", "scikit-learn (>=0.19.0,<0.23.0)", "scikit-optimize", "skorch", "tensorflow", "tensorflow-datasets", "torch (==1.6.0+cpu)", "torchvision (==0.7.0+cpu)", "xgboost"]
-tests = ["fakeredis", "pytest"]
+benchmark = ["asv (>=0.5.0)", "botorch", "cma", "scikit-optimize", "virtualenv"]
+checking = ["black", "blackdoc", "flake8", "isort", "mypy", "mypy-boto3-s3", "types-PyYAML", "types-redis", "types-setuptools", "types-tqdm", "typing-extensions (>=3.10.0.0)"]
+document = ["botorch", "cma", "distributed", "fvcore", "lightgbm", "matplotlib (!=3.6.0)", "mlflow", "pandas", "pillow", "plotly (>=4.9.0)", "scikit-learn", "scikit-optimize", "sphinx", "sphinx-copybutton", "sphinx-gallery", "sphinx-plotly-directive", "sphinx-rtd-theme (>=1.2.0)", "torch", "torchaudio", "torchvision"]
+integration = ["botorch (>=0.4.0)", "catboost (>=0.26)", "catboost (>=0.26,<1.2)", "cma", "distributed", "fastai", "lightgbm", "mlflow", "pandas", "pytorch-ignite", "pytorch-lightning (>=1.6.0)", "scikit-learn (>=0.24.2)", "scikit-optimize", "shap", "tensorflow", "torch", "torchaudio", "torchvision", "wandb", "xgboost"]
+optional = ["boto3", "botorch", "matplotlib (!=3.6.0)", "pandas", "plotly (>=4.9.0)", "redis", "scikit-learn (>=0.24.2)"]
+test = ["coverage", "fakeredis[lua]", "kaleido", "moto", "pytest", "scipy (>=1.9.2)"]
 
 [[package]]
 name = "packaging"
@@ -1313,23 +1245,6 @@ files = [
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 
 [[package]]
-name = "prettytable"
-version = "3.6.0"
-description = "A simple Python library for easily displaying tabular data in a visually appealing ASCII table format"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "prettytable-3.6.0-py3-none-any.whl", hash = "sha256:3b767129491767a3a5108e6f305cbaa650f8020a7db5dfe994a2df7ef7bad0fe"},
-    {file = "prettytable-3.6.0.tar.gz", hash = "sha256:2e0026af955b4ea67b22122f310b90eae890738c08cb0458693a49b6221530ac"},
-]
-
-[package.dependencies]
-wcwidth = "*"
-
-[package.extras]
-tests = ["pytest", "pytest-cov", "pytest-lazy-fixture"]
-
-[[package]]
 name = "pycodestyle"
 version = "2.8.0"
 description = "Python style guide checker"
@@ -1395,27 +1310,6 @@ files = [
 
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
-
-[[package]]
-name = "pyperclip"
-version = "1.8.2"
-description = "A cross-platform clipboard module for Python. (Only handles plain text for now.)"
-optional = false
-python-versions = "*"
-files = [
-    {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
-]
-
-[[package]]
-name = "pyreadline3"
-version = "3.4.1"
-description = "A python implementation of GNU readline."
-optional = false
-python-versions = "*"
-files = [
-    {file = "pyreadline3-3.4.1-py3-none-any.whl", hash = "sha256:b0efb6516fd4fb07b45949053826a62fa4cb353db5be2bbb4a7aa1fdd1e345fb"},
-    {file = "pyreadline3-3.4.1.tar.gz", hash = "sha256:6f3d1f7b8a31ba32b73917cefc1f28cc660562f39aea8646d30bd6eff21f7bae"},
-]
 
 [[package]]
 name = "pytest"
@@ -2185,17 +2079,6 @@ docs = ["furo (>=2022.12.7)", "proselint (>=0.13)", "sphinx (>=6.1.3)", "sphinx-
 test = ["covdefaults (>=2.2.2)", "coverage (>=7.1)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=23)", "pytest (>=7.2.1)", "pytest-env (>=0.8.1)", "pytest-freezegun (>=0.4.2)", "pytest-mock (>=3.10)", "pytest-randomly (>=3.12)", "pytest-timeout (>=2.1)"]
 
 [[package]]
-name = "wcwidth"
-version = "0.2.6"
-description = "Measures the displayed width of unicode strings in a terminal"
-optional = false
-python-versions = "*"
-files = [
-    {file = "wcwidth-0.2.6-py2.py3-none-any.whl", hash = "sha256:795b138f6875577cd91bba52baf9e445cd5118fd32723b460e30a0af30ea230e"},
-    {file = "wcwidth-0.2.6.tar.gz", hash = "sha256:a5220780a404dbe3353789870978e472cfe477761f06ee55077256e509b156d0"},
-]
-
-[[package]]
 name = "xdoctest"
 version = "1.1.1"
 description = "A rewrite of the builtin doctest module"
@@ -2242,4 +2125,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.0"
-content-hash = "36bf14151034f1f4a87b116ea7453dc9550a272f537e6be5c62f25a063d2dc29"
+content-hash = "e2a9753f97dcfc80b71d4ec6531b579e4e0dcbe5c9d927090cf08a75a888c900"
