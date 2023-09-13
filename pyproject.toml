@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jazzy"
-version = "0.0.11"
+version = "0.0.12"
 description = "Jazzy"
 authors = ["Gian Marco Ghiandoni <ghiandoni.g@gmail.com>", "Eike Caldeweyher <e.caldeweyher@gmail.com>"]
 license = "Apache-2.0"
@@ -20,8 +20,8 @@ Changelog = "https://github.com/AstraZeneca/jazzy/releases"
 
 [tool.poetry.dependencies]
 python = "^3.8.0"
-click = "8.0.4"
-rdkit = "<=2023.3.1"
+click = "^8.0.4"
+rdkit = "^2023.3.1"
 kallisto = "^1.0.9"
 
 [tool.poetry.group.optuna]
@@ -41,7 +41,7 @@ sphinx = "^6.2.1"
 sphinx-autobuild = "^2021.3.14"
 pre-commit = "^3.3.3"
 flake8 = "^4.0.1"
-black = "^21.12b0"
+black = "^22.1.0"
 flake8-bandit = "^3.0.0"
 flake8-bugbear = "^22.4.25"
 flake8-docstrings = "^1.6.0"
