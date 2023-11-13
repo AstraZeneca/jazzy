@@ -1506,31 +1506,36 @@ files = [
 
 [[package]]
 name = "rdkit"
-version = "2023.3.3"
+version = "2023.9.1"
 description = "A collection of chemoinformatics and machine-learning software written in C++ and Python"
 optional = false
 python-versions = "*"
 files = [
-    {file = "rdkit-2023.3.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:933a9a8411034f367dd0c683cb3be0d13f801fdc1c3a01fcc0a06814d6a0206f"},
-    {file = "rdkit-2023.3.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:beeb32ee75b35d29563f32ccbf34979878813ae53f173345dc395d9dcb2451db"},
-    {file = "rdkit-2023.3.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:83f0cbddd7d65c72b3b286dcb8e8d25242e9c42f8fa9678280ec292d1d21ed83"},
-    {file = "rdkit-2023.3.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e455df1c75fc0d6eebb173f17f9660697a9f8c2b5b32643c162362e294e83af8"},
-    {file = "rdkit-2023.3.3-cp310-cp310-win_amd64.whl", hash = "sha256:75acf8c4cc2c833055529921de9e86758e08f8bf49a294ed5871a8909bd02b5c"},
-    {file = "rdkit-2023.3.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:3e5dfee0b6dbd6b0fe9206fadc275b40034f60f9395ef74da7b86695d9508213"},
-    {file = "rdkit-2023.3.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:4a041d22c5977b26c5abbeebdc3dc5ee4569ce53fd34622cc6b81ebfa4cc321d"},
-    {file = "rdkit-2023.3.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bcd520b5eb457931b20643fb5efccdab111d2f18f1067f19d9370bae3fde469f"},
-    {file = "rdkit-2023.3.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:89cf60a2369bea768d50e0d3bcb8219993c105c999631daea492f86cf6c6cba6"},
-    {file = "rdkit-2023.3.3-cp311-cp311-win_amd64.whl", hash = "sha256:470cff7f7f27fc7ebb8b4eaa5b2bf381a413b8c1f1ee2c05a2c62ba5b25e33a0"},
-    {file = "rdkit-2023.3.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:c3d03b3da3a363bc5181c7e6ea7bff91b28645c84ac54d83fb4cdc9655aa646e"},
-    {file = "rdkit-2023.3.3-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:c3fbe026e508e4b18f237b962ba64664a73472aefb7a233a96111a44cbde017e"},
-    {file = "rdkit-2023.3.3-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:369fc4cc6f9c7c9617df1735a8c7b66c2a31a72ea40e104f570e333e17b5d3aa"},
-    {file = "rdkit-2023.3.3-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7a4db9c23386063348a080fa966bda20f12d3b13cd5d10018305cea370f32cea"},
-    {file = "rdkit-2023.3.3-cp38-cp38-win_amd64.whl", hash = "sha256:28594d256703d2b1ad685130935adcd8670debafe2308f3fa3d65bee75778474"},
-    {file = "rdkit-2023.3.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:c066738f62fc07d6c14b5699ad8e61ee10b1da67953792caf1bfc3b02346edc4"},
-    {file = "rdkit-2023.3.3-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:edf690b0d340343e7281d3f9c446767185be80a4918a68d755992d0f7818579b"},
-    {file = "rdkit-2023.3.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7832a9da7b9be0652b1dfdf539b3d5c9a95be34c72681135757ac0767a6f8c38"},
-    {file = "rdkit-2023.3.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4b416727674d93c11a4576c7f7f6d40349c4f86fba03c094fdd4f6197ec71682"},
-    {file = "rdkit-2023.3.3-cp39-cp39-win_amd64.whl", hash = "sha256:870147c1966bc3938977986fb64c1516d11fbd08da7dfa37c0f3acdbaa141314"},
+    {file = "rdkit-2023.9.1-cp310-cp310-macosx_10_13_x86_64.whl", hash = "sha256:eb17cb07e49ddbd338512a9548b4b7dcdec01d06d037005d8370ae47363af975"},
+    {file = "rdkit-2023.9.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:e73c02f760798a0baac7ffe17b19fd3b100026c4f3ac217ead7aac22b6e52268"},
+    {file = "rdkit-2023.9.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:795d278c8a175a142c7ac073f2fe7dd897b9cccf9a84b6f859c0054a25e746a5"},
+    {file = "rdkit-2023.9.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ca6018c870537cf8aa83bd2d55d4a869772987dade3d19259174c7e2f2408aab"},
+    {file = "rdkit-2023.9.1-cp310-cp310-win_amd64.whl", hash = "sha256:036e921ae0832cb39cc20a9cdb073f16b19c7b2d89bf8c4a4e66b2572f08445c"},
+    {file = "rdkit-2023.9.1-cp311-cp311-macosx_10_13_x86_64.whl", hash = "sha256:94bbac5c8ef729e973650f4e14e309a8b50fa6d61815d4edaabf5d3087cab19f"},
+    {file = "rdkit-2023.9.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:f30df21779ec6e06c4ddbd22d11db23d85fd8c1c0c5f998c920f1ac673531e01"},
+    {file = "rdkit-2023.9.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3fc471085e671e484b08d9417edbbcf93e5d22b46a42291deb1a3f47caada13c"},
+    {file = "rdkit-2023.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:075449d53011cebec1ed46d5b160a17ee6e1f9a1f933205215e3c52ad08fc33f"},
+    {file = "rdkit-2023.9.1-cp311-cp311-win_amd64.whl", hash = "sha256:8ca461da7caf47892d90160dc2446e46f6c5e2d1eeb91c9abf0b6e81d10f5ea5"},
+    {file = "rdkit-2023.9.1-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:3c9d713460a68ffcd917ab1b6ec6b67ab04cb3dabf56688a1a2c8a0cf5a60edc"},
+    {file = "rdkit-2023.9.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:a06f43ee9c3126ccb7f803f6f3c774f7ab461bc2d65a5c9b1b6fe0b0c6e84cca"},
+    {file = "rdkit-2023.9.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5e25424d5b7a8b965e485ae2f28a075f739dca1619b073c3acd3d0af06af602e"},
+    {file = "rdkit-2023.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dd548ab0c6690caf2e0012db9b74f98a46b057476f8f5bfe4029dacbf6e9ae58"},
+    {file = "rdkit-2023.9.1-cp312-cp312-win_amd64.whl", hash = "sha256:2002c7555e595113ae25c38c13bb7acccd231793138e55cedf19cd894b9a23e0"},
+    {file = "rdkit-2023.9.1-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:b069106f0b8081e07a20c7c03754893efca95ba33ecadabc58a91f3d23e2c857"},
+    {file = "rdkit-2023.9.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:0f4a040ae71c2a26653a55e270968d762ca8019909cc80524f032985b3be39b0"},
+    {file = "rdkit-2023.9.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:17e37df513b73d29c17058b062a2023aa8a68056f2dced2b697e5cd60c385c4d"},
+    {file = "rdkit-2023.9.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:54232b1a2577a636e2d374a009814345448acbbaf0972f34624e26229f1b54cb"},
+    {file = "rdkit-2023.9.1-cp38-cp38-win_amd64.whl", hash = "sha256:ac6ddb1b7462e2cf18671610240e7bb65e39506172c6c8e3276a675fd64fb8d7"},
+    {file = "rdkit-2023.9.1-cp39-cp39-macosx_10_13_x86_64.whl", hash = "sha256:ad4f6344b89940e85601eaeb98d36523775ef9fc59ce9446d78dc40ba9ee030b"},
+    {file = "rdkit-2023.9.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:aeb85fb01d69b2a8509c66688c1b13c31a9ed30ddc9a4ed292fb513ff34d4a85"},
+    {file = "rdkit-2023.9.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1555e0a239b05ebaaeb48a3d67396fcab3757b1378347bdce2d0d7a94375357b"},
+    {file = "rdkit-2023.9.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f5bab7ca08b5be0ab74a3a111b874a8979daddacb40188711b5c0f1f2a2efe5f"},
+    {file = "rdkit-2023.9.1-cp39-cp39-win_amd64.whl", hash = "sha256:a09eba04622cfbb4f26814b8335824ffec10a5dc1407a10278ed6d313b04cb86"},
 ]
 
 [package.dependencies]
