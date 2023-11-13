@@ -61,17 +61,6 @@ Features
 * Command-line interface
 
 
-Requirements
-------------
-
-.. code:: console
-
-   click         # Composable command line interface toolkit
-   kallisto      # Atomic and molecular featurizer
-   numpy         # NumPy array computing package
-   rdkit         # Chemoinformatics toolkit
-
-
 Installation via PyPI
 ---------------------
 

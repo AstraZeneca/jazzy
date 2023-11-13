@@ -227,12 +227,13 @@ def calculate_polar_strength_map(
 
             # distinguish between Carbon and other non-Hydrogen atoms
             nbr = atom.GetNeighbors()
-            # Carbon case
-            if nbr[0].GetAtomicNum() == 6:
-                sdc = sd
-            # other non-Hydrogen case
-            else:
-                sdx = sd
+            if nbr:
+                # Carbon case
+                if nbr[0].GetAtomicNum() == 6:
+                    sdc = sd
+                # other non-Hydrogen case
+                else:
+                    sdx = sd
         else:
             nlps = get_lone_pairs(atom)
             if nlps > 0:
@@ -354,7 +355,7 @@ def get_atom_and_nbrs_charges(
     q_gamma = get_charges_from_atom_list(gamma, charges)
 
     # equation 9
-    q_delta = t * sum(q_alpha) + (t ** 2) * sum(q_beta) + (t ** 3) * sum(q_gamma)
+    q_delta = t * sum(q_alpha) + (t**2) * sum(q_beta) + (t**3) * sum(q_gamma)
     return q, q_delta
 
 
@@ -506,8 +507,8 @@ def calculate_delta_polar(
         nlps = atom["num_lp"]
         sak = atom["sa"]
 
-        don += sdi * (nh ** expd)
-        acc += sak * (nlps ** expa)
+        don += sdi * (nh**expd)
+        acc += sak * (nlps**expa)
     # equation 14
     return float(gd * don + ga * acc)
 
@@ -536,7 +537,7 @@ def interaction_strength(idx: int, mol_map: dict, acceptor_exp: float) -> float:
     acceptor_strength = mol_map[idx]["sa"]
     num_lp = mol_map[idx]["num_lp"]
     if num_lp != 0:
-        return acceptor_strength * (num_lp ** acceptor_exp)
+        return acceptor_strength * (num_lp**acceptor_exp)
     return 0.0
 
 

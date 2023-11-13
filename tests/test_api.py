@@ -77,6 +77,16 @@ def test_deltag_from_smiles():
     assert np.isclose(scalar, 4.599630151706878)
 
 
+def test_deltag_from_smiles_hydrogen():
+    """Incorrect with successful calculation."""
+    # [H] has no neighbours but should not break the logic
+    smiles = "[H]"
+    # first only hydrogen bond strength
+    minimisation_method = "MMFF94"
+    scalar = deltag_from_smiles(smiles, minimisation_method)
+    assert np.isclose(scalar, 1.884)
+
+
 def test_api_deltag_from_smiles_fails_for_invalid_smiles():
     """Correcly fails for incorrect smiles."""
     smiles = "xxx"
