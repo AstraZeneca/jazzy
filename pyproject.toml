@@ -51,7 +51,7 @@ darglint = "^1.8.1"
 reorder-python-imports = "^3.12.0"
 pre-commit-hooks = "^4.3.0"
 sphinx-rtd-theme = "^2.0.0"
-sphinx-click = "^5.0.1"
+sphinx-click = "^5.1.0"
 numpy = "^1.24.4"
 
 [tool.poetry.scripts]
