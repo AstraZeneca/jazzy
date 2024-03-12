@@ -1,7 +1,5 @@
 """Core functions of the jazzy package."""
 # src/jazzy/core.py
-import logging
-
 import numpy as np
 from kallisto.atom import Atom
 from kallisto.methods import getPolarizabilities
@@ -16,14 +14,8 @@ from rdkit.Chem import rdchem
 from rdkit.Chem import rdMolDescriptors
 
 from jazzy.config import ROUNDING_DIGITS
+from jazzy.logging import logger
 from jazzy.utils import KallistoError
-
-
-logging.basicConfig(
-    format="Jazzy %(levelname)s: [%(asctime)s] %(message)s",
-    level=logging.WARNING,
-    datefmt="%H:%M:%S",
-)
 
 
 def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
@@ -45,14 +37,12 @@ def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
     # create molecule, add hydrogens, and generate embedding
     m = Chem.MolFromSmiles(smiles)
     if m is None:
-        logging.error(
-            "The RDKit SMILES parsing has failed for the molecule: %s", smiles
-        )
+        logger.error("The RDKit SMILES parsing has failed for the molecule: %s", smiles)
         return None
     mh = Chem.AddHs(m)
     emb_code = AllChem.EmbedMolecule(mh, randomSeed=11)
     if emb_code == -1:
-        logging.error("The RDKit embedding has failed for the molecule: %s", smiles)
+        logger.error("The RDKit embedding has failed for the molecule: %s", smiles)
         return None
 
     # energy minimisation
