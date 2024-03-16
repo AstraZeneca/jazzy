@@ -1,5 +1,6 @@
 """Test cases for the free energy contributions."""
 import numpy as np
+import pytest
 
 from jazzy.core import any_hydrogen_neighbors
 from jazzy.core import calculate_delta_apolar
@@ -11,6 +12,7 @@ from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import interaction_strength
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
+from jazzy.exception import NegativeLonePairsError
 
 
 def test_calculate_delta_apolar():
@@ -85,6 +87,35 @@ def test_calculate_delta_polar():
             expa=parameter[3],
         )
         assert np.isclose(got, want[idx], 3)
+
+
+def test_negative_lone_pairs_delta_polar():
+    """Exception calculating the polar free energy contribution."""
+    smiles = "C12C3C4C5C1[Fe]23456789C%10C6C7C8C9%10"
+    # mock parameters
+    parameter = [0, 0, 0, 0]
+    rdkit_molecule = rdkit_molecule_from_smiles(
+        smiles=smiles, minimisation_method="MMFF94"
+    )
+    kallisto_molecule = kallisto_molecule_from_rdkit_molecule(
+        rdkit_molecule=rdkit_molecule
+    )
+    eeq = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
+    aan = get_covalent_atom_idxs(rdkit_molecule)
+    mol_map = calculate_polar_strength_map(rdkit_molecule, kallisto_molecule, aan, eeq)
+    with pytest.raises(NegativeLonePairsError) as error:
+        calculate_delta_polar(
+            mol_map=mol_map,
+            atoms_and_nbrs=aan,
+            gd=parameter[0],
+            ga=parameter[1],
+            expd=parameter[2],
+            expa=parameter[3],
+        )
+    assert (
+        "The input compound contains atoms with negative lone pairs"
+        in error.value.args[0]
+    )
 
 
 def test_correct_interaction_strength():

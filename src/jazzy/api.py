@@ -13,10 +13,11 @@ from jazzy.core import get_charges_from_kallisto_molecule
 from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
+from jazzy.exception import exception_handling
+from jazzy.exception import JazzyError
 from jazzy.helpers import condense_atomic_map
 from jazzy.helpers import convert_map_to_tuples
 from jazzy.helpers import sum_atomic_map
-from jazzy.utils import JazzyError
 from jazzy.visualisation import depict_strengths
 
 
@@ -37,6 +38,7 @@ def __smiles_to_molecule_objects(smiles, minimisation_method=MINIMISATION_METHOD
     return rdkit_mol, kallisto_mol
 
 
+@exception_handling
 def molecular_vector_from_smiles(
     smiles: str, minimisation_method=MINIMISATION_METHOD, only_strengths=False
 ):
@@ -92,6 +94,7 @@ def molecular_vector_from_smiles(
     return mol_vector
 
 
+@exception_handling
 def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     """API route to calculate molecular free energy scalar.
 
@@ -134,6 +137,7 @@ def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     return round(sum(dg.values()), ROUNDING_DIGITS)
 
 
+@exception_handling
 def atomic_tuples_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     """API route to generate a tuple representation on the atomic map.
 
@@ -160,6 +164,7 @@ def atomic_tuples_from_smiles(smiles: str, minimisation_method=MINIMISATION_METH
     return convert_map_to_tuples(atomic_map)
 
 
+@exception_handling
 def atomic_map_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
     """API route to generate a condensed representation on the atomic map.
 
@@ -186,6 +191,7 @@ def atomic_map_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD)
     return condense_atomic_map(atomic_map)
 
 
+@exception_handling
 def atomic_strength_vis_from_smiles(
     smiles: str,
     minimisation_method=MINIMISATION_METHOD,
