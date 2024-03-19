@@ -14,8 +14,9 @@ from rdkit.Chem import rdchem
 from rdkit.Chem import rdMolDescriptors
 
 from jazzy.config import ROUNDING_DIGITS
+from jazzy.exception import KallistoError
+from jazzy.exception import NegativeLonePairsError
 from jazzy.logging import logger
-from jazzy.utils import KallistoError
 
 
 def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
@@ -494,8 +495,13 @@ def calculate_delta_polar(
             sdi = sdi / nh
 
         # acceptor contribution
-        nlps = atom["num_lp"]
         sak = atom["sa"]
+        nlps = atom["num_lp"]
+        if nlps < 0:
+            raise NegativeLonePairsError(
+                "The input compound contains atoms with "
+                f"negative lone pairs (got {nlps} for atom at idx {idx})"
+            )
 
         don += sdi * (nh**expd)
         acc += sak * (nlps**expa)

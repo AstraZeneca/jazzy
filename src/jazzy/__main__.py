@@ -6,7 +6,7 @@ import click
 from jazzy.api import atomic_strength_vis_from_smiles
 from jazzy.api import molecular_vector_from_smiles
 from jazzy.config import Config
-from jazzy.utils import JazzyError
+from jazzy.exception import JazzyError
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
 

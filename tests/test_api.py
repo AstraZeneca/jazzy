@@ -9,7 +9,7 @@ from jazzy.api import deltag_from_smiles
 from jazzy.api import molecular_vector_from_smiles
 from jazzy.config import Config
 from jazzy.config import ROUNDING_DIGITS
-from jazzy.utils import JazzyError
+from jazzy.exception import JazzyError
 
 # global jazzy config (parameter)
 config = Config()
@@ -66,6 +66,19 @@ def test_api_molecular_vector_from_smiles_fails_for_empty_smiles():
     with pytest.raises(JazzyError) as error:
         molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
     assert error.value.args[0] == "An empty SMILES string was passed."
+
+
+def test_api_molecular_vector_from_smiles_complex_numbers():
+    """Exception for structure containing negative lone pairs."""
+    smiles = "C12C3C4C5C1[Fe]23456789C%10C6C7C8C9%10"
+    minimisation_method = "MMFF94"
+    only_strengths = False
+    with pytest.raises(JazzyError) as error:
+        molecular_vector_from_smiles(smiles, minimisation_method, only_strengths)
+    assert (
+        "The input compound contains atoms with negative lone pairs"
+        in error.value.args[0]
+    )
 
 
 def test_deltag_from_smiles():

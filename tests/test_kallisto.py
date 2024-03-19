@@ -9,7 +9,7 @@ from tests.store import pyridine
 from jazzy.core import get_charges_from_kallisto_molecule
 from jazzy.core import kallisto_molecule_from_rdkit_molecule
 from jazzy.core import rdkit_molecule_from_smiles
-from jazzy.utils import KallistoError
+from jazzy.exception import KallistoError
 
 
 def test_kallisto_charges_are_correct_from_molecule():
