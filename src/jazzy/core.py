@@ -1,5 +1,7 @@
 """Core functions of the jazzy package."""
 # src/jazzy/core.py
+from typing import Optional
+
 import numpy as np
 from kallisto.atom import Atom
 from kallisto.methods import getPolarizabilities
@@ -11,7 +13,9 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import GetPeriodicTable
 from rdkit.Chem import PeriodicTable
 from rdkit.Chem import rdchem
+from rdkit.Chem import rdDistGeom
 from rdkit.Chem import rdMolDescriptors
+from rdkit.Chem.rdchem import Mol
 
 from jazzy.config import ROUNDING_DIGITS
 from jazzy.exception import KallistoError
@@ -19,29 +23,42 @@ from jazzy.exception import NegativeLonePairsError
 from jazzy.logging import logger
 
 
-def rdkit_molecule_from_smiles(smiles: str, minimisation_method=None):
+def rdkit_molecule_from_smiles(
+    smiles: str, minimisation_method=None, **kwargs
+) -> Optional[Mol]:
     """Molecule preparation: Parse SMILES, add hydrogens, and does energy minimisation.
 
     Args:
-    smiles: A molecule SMILES string representation (default '')
-    minimisation_method: One of the conformer energy minimisation methods
-    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+        smiles: A molecule SMILES string representation (default '')
+        minimisation_method: One of the conformer energy minimisation methods
+            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+             (default None)
+        kwargs: Keyword arguments
+
+    Keyword Args:
+        embedding_seed: Integer seed for the embedding process (default 11)
+        embedding_max_iterations: Maximum number of iterations for the embedding
 
     Returns:
-    An RDKit molecule (rdkit.Chem.rdchem.Mol) or None if the process fails
+        An RDKit molecule (rdkit.Chem.rdchem.Mol) or None if the process fails
 
-    Returns:
-    ValueError: If 'minimisation_method' does not correspond to one of the
-    available methods.
+    Raises:
+        ValueError: If 'minimisation_method' does not correspond to one of the
+            available methods.
 
     """
-    # create molecule, add hydrogens, and generate embedding
+    # create molecule, add hydrogens
     m = Chem.MolFromSmiles(smiles)
     if m is None:
         logger.error("The RDKit SMILES parsing has failed for the molecule: %s", smiles)
         return None
     mh = Chem.AddHs(m)
-    emb_code = AllChem.EmbedMolecule(mh, randomSeed=11)
+
+    # generate embedding
+    params = rdDistGeom.ETDG()  # ETDG over others as it seems produce fewer failures
+    params.randomSeed = kwargs.get("embedding_seed", 11)
+    params.maxIterations = kwargs.get("embedding_max_iterations", 0)
+    emb_code = AllChem.EmbedMolecule(mh, params)
     if emb_code == -1:
         logger.error("The RDKit embedding has failed for the molecule: %s", smiles)
         return None
@@ -84,10 +101,11 @@ def get_all_neighbors(rdkit_molecule: Chem.rdchem.Mol, molecule_covalent_nbrs: l
     neighbours as the value.
 
     Args:
-    rdkit_molecule: RDKit molecule
+        rdkit_molecule: RDKit molecule
+        molecule_covalent_nbrs: List of lists containing covalent neighbours
 
     Returns:
-    Dictionaries for alpha, beta, and gamma neighbours
+        Dictionaries for alpha, beta, and gamma neighbours
 
     """
     alpha = dict()
@@ -103,13 +121,13 @@ def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Chem.rdchem.Mol) -> Mo
     """Create a kallisto molecule from RDKit molecule.
 
     Args:
-    rdkit_molecule: RDKit molecule
+        rdkit_molecule: RDKit molecule
 
     Returns:
-    A kallisto molecule (kallisto.molecule.Molecule)
+        A kallisto molecule (kallisto.molecule.Molecule)
 
     Raises:
-    KallistoError: An error if the kallisto molecule cannot be created
+        KallistoError: An error if the kallisto molecule cannot be created
 
     """
     # get the name of the molecule if it comes from SDF
@@ -151,11 +169,11 @@ def get_charges_from_kallisto_molecule(
     """Calculate electronegativity equilibration (EEQ) atomic partial charges.
 
     Args:
-    kallisto_molecule: kallisto molecule
-    charge: molecular charge (int)
+        kallisto_molecule: kallisto molecule
+        charge: molecular charge (int)
 
     Returns:
-    List of electronegativity equilibration atomic partial charges
+        List of electronegativity equilibration atomic partial charges
 
     """
     return list(kallisto_molecule.get_eeq(charge=charge))
@@ -179,18 +197,18 @@ def calculate_polar_strength_map(
     pairs (num_lp), atomic number (z), and formal charge (q).
 
     Args:
-    rdkit_molecule: RDKit molecule
-    kallisto_molecule: kallisto molecule
-    atoms_and_nbrs: list of lists of atoms and their bonded atoms
-    charges: list of atomic partial charges
-    d: parameter that ensures that the donor strength (sdx) of
-    Hydrogen in H2O is equal to 1.000
-    a: parameter that ensures that the acceptor strength (sa) of
-    one lone pair on Oxygen in H2O is equal to 1.000
-    t: bond reduction factor (fixed to ensure conditions above)
+        rdkit_molecule: RDKit molecule
+        kallisto_molecule: kallisto molecule
+        atoms_and_nbrs: list of lists of atoms and their bonded atoms
+        charges: list of atomic partial charges
+        d: parameter that ensures that the donor strength (sdx) of
+            Hydrogen in H2O is equal to 1.000
+        a: parameter that ensures that the acceptor strength (sa) of
+            one lone pair on Oxygen in H2O is equal to 1.000
+        t: bond reduction factor (fixed to ensure conditions above)
 
     Returns:
-    Map of molecular polar properties (plus some extras)
+        Map of molecular polar properties (plus some extras)
 
     """
     # atomic numbers (e.g., C=6, H=1)
@@ -291,13 +309,13 @@ def get_atom_neighbours(atom_idx: int, molecule_covalent_nbrs: list):
     'atom_idx'.
 
     Args:
-    atom_idx: index of atom to extract neighbours for
-    molecule_covalent_list: list of covalent partners of each atom
+        atom_idx: index of atom to extract neighbours for
+        molecule_covalent_nbrs: List of lists containing covalent neighbours
 
     Returns:
-    alpha: list of all covalent bonding atom indices of atom_idx
-    beta: list of nearest neighbour atom indices of atom_idx
-    gamma: list of nearest-nearest neighbour atom indices of atom_idx
+        alpha: list of all covalent bonding atom indices of atom_idx
+        beta: list of nearest neighbour atom indices of atom_idx
+        gamma: list of nearest-nearest neighbour atom indices of atom_idx
 
     """
     # extract alpha neighbours
@@ -365,16 +383,16 @@ def calculate_delta_apolar(
     Equation 7-8 - parameter names are adapted.
 
     Args:
-    rdkit_molecule: RDKit molecule
-    mol_map: molecular map of polar properties
-    g0: zeroth order parameter
-    gs: surface parameter
-    gr: ring parameter
-    gpi1: first pi parameter
-    gpi2: second pi parameter
+        rdkit_molecule: RDKit molecule
+        mol_map: molecular map of polar properties
+        g0: zeroth order parameter
+        gs: surface parameter
+        gr: ring parameter
+        gpi1: first pi parameter
+        gpi2: second pi parameter
 
     Returns:
-    Apolar free energy contribution (float)
+        Apolar free energy contribution (float)
 
     """
     # get atoms from rdkit molecule
@@ -451,16 +469,20 @@ def calculate_delta_polar(
     Equation 14 - parameter names adapted.
 
     Args:
-    mol_map: molecular map of polar properties as obtained by
-    the `calculate_polar_strength_map()` function
-    atoms_and_nbrs: list of lists of atoms and their bonded atoms
-    gd: hydrogen bond donor parameter
-    ga: hydrogen bond acceptor parameter
-    expd: exponent for hydrogen bond donor
-    expa: exponent for hydrogen bond acceptor
+        mol_map: molecular map of polar properties as obtained by
+            the `calculate_polar_strength_map()` function
+        atoms_and_nbrs: list of lists of atoms and their bonded atoms
+        gd: hydrogen bond donor parameter
+        ga: hydrogen bond acceptor parameter
+        expd: exponent for hydrogen bond donor
+        expa: exponent for hydrogen bond acceptor
 
     Returns:
-    Polar free energy contribution (float)
+        Polar free energy contribution (float)
+
+    Raises:
+        NegativeLonePairsError: if the input compound contains atoms with
+            negative number of lone pairs (lone pairs < 0)
 
     """
     don = 0.0
@@ -516,10 +538,10 @@ def any_hydrogen_neighbors(rdkit_atom: Chem.rdchem.Atom):
     embedded molecules.
 
     Args:
-    rdkit_atom: rdkit.Chem.rdchem.Atom object
+        rdkit_atom: rdkit.Chem.rdchem.Atom object
 
     Returns:
-    Boolean
+        Boolean
 
     """
     for nbr in rdkit_atom.GetNeighbors():
@@ -551,14 +573,15 @@ def calculate_delta_interaction(
     Equation 15 - parameter names adapted.
 
     Args:
-    rdkit_molecule: RDKit molecule
-    mol_map: molecular map of polar properties as obtained by
-    atoms_and_nbrs: list of lists of atoms and their bonded atoms
-    gd: interaction parameter
-    f: correction parameter
+        rdkit_molecule: RDKit molecule
+        mol_map: molecular map of polar properties as obtained by
+        atoms_and_nbrs: list of lists of atoms and their bonded atoms
+        gi: interaction parameter
+        expa: exponent hydrogen bond acceptor
+        f: correction parameter
 
     Returns:
-    Interaction free energy contribution (float)
+        Interaction free energy contribution (float)
 
     """
     # extract neighbors

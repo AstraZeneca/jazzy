@@ -25,12 +25,14 @@ from jazzy.visualisation import depict_strengths
 config = Config()
 
 
-def __smiles_to_molecule_objects(smiles, minimisation_method=MINIMISATION_METHOD):
+def __smiles_to_molecule_objects(
+    smiles, minimisation_method=MINIMISATION_METHOD, **kwargs
+):
     """Private method for converting SMILES into RDKit and kallisto objects."""
     if smiles == "":
         raise JazzyError("An empty SMILES string was passed.")
     rdkit_mol = rdkit_molecule_from_smiles(
-        smiles, minimisation_method=minimisation_method
+        smiles, minimisation_method=minimisation_method, **kwargs
     )
     if rdkit_mol is None:
         raise JazzyError("The SMILES '{}' could not be processed.".format(smiles))
@@ -40,7 +42,7 @@ def __smiles_to_molecule_objects(smiles, minimisation_method=MINIMISATION_METHOD
 
 @exception_handling
 def molecular_vector_from_smiles(
-    smiles: str, minimisation_method=MINIMISATION_METHOD, only_strengths=False
+    smiles: str, minimisation_method=MINIMISATION_METHOD, only_strengths=False, **kwargs
 ):
     """API route to calculate molecular free energy vector.
 
@@ -48,20 +50,27 @@ def molecular_vector_from_smiles(
     contribution to the free energy.
 
     Args:
-    smiles: A molecule SMILES string representation (default '')
-    minimisation_method: One of the conformer energy minimisation methods
-    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
-    only_strengths: Boolean value that determines wheather to calculate only
-    strengts or even more.
+        smiles: A molecule SMILES string representation (default '')
+        minimisation_method: One of the conformer energy minimisation methods
+            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+             (default None)
+        only_strengths: Boolean value that determines wheather to calculate only
+            strengts or even more
+        kwargs: Keyword arguments
+
+    Keyword Args:
+        embedding_seed: Integer seed for the embedding process (default 11)
+        embedding_max_iterations: Maximum number of iterations for the embedding
+
 
     Returns:
-    Molecular strength vector with or without free energy contributions.
+        Molecular strength vector with or without free energy contributions
 
     """
     mol_vector = dict()
     # generate an RDKit molecule
     rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
-        smiles, minimisation_method
+        smiles, minimisation_method, **kwargs
     )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
@@ -95,21 +104,27 @@ def molecular_vector_from_smiles(
 
 
 @exception_handling
-def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
+def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD, **kwargs):
     """API route to calculate molecular free energy scalar.
 
     Args:
-    smiles: A molecule SMILES string representation (default '')
-    minimisation_method: One of the conformer energy minimisation methods
-    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+        smiles: A molecule SMILES string representation (default '')
+        minimisation_method: One of the conformer energy minimisation methods
+            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+             (default None)
+        kwargs: Keyword arguments
+
+    Keyword Args:
+        embedding_seed: Integer seed for the embedding process (default 11)
+        embedding_max_iterations: Maximum number of iterations for the embedding
 
     Returns:
-    Free energy as scalar rounded.
+        Free energy as scalar rounded
 
     """
     # generate basic descriptors
     rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
-        smiles, minimisation_method
+        smiles, minimisation_method, **kwargs
     )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
@@ -138,23 +153,32 @@ def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
 
 
 @exception_handling
-def atomic_tuples_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
+def atomic_tuples_from_smiles(
+    smiles: str, minimisation_method=MINIMISATION_METHOD, **kwargs
+):
     """API route to generate a tuple representation on the atomic map.
 
     Not recommended if serialization is needed.
 
     Args:
-    smiles: A molecule SMILES string representation (default '')
-    minimisation_method: One of the conformer energy minimisation methods
-    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+        smiles: A molecule SMILES string representation (default '')
+        minimisation_method: One of the conformer energy minimisation methods
+            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+             (default None)
+        kwargs: Keyword arguments
+
+    Keyword Args:
+        embedding_seed: Integer seed for the embedding process (default 11)
+        embedding_max_iterations: Maximum number of iterations for the embedding
+
 
     Returns:
-    Tuple representation of the atomic map.
+        Tuple representation of the atomic map.
 
     """
     # generate basic descriptors
     rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
-        smiles, minimisation_method
+        smiles, minimisation_method, **kwargs
     )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
@@ -165,23 +189,32 @@ def atomic_tuples_from_smiles(smiles: str, minimisation_method=MINIMISATION_METH
 
 
 @exception_handling
-def atomic_map_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD):
+def atomic_map_from_smiles(
+    smiles: str, minimisation_method=MINIMISATION_METHOD, **kwargs
+):
     """API route to generate a condensed representation on the atomic map.
 
     Recommended if serialization is needed.
 
     Args:
-    smiles: A molecule SMILES string representation (default '')
-    minimisation_method: One of the conformer energy minimisation methods
-    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+        smiles: A molecule SMILES string representation (default '')
+        minimisation_method: One of the conformer energy minimisation methods
+            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+             (default None)
+        kwargs: Keyword arguments
+
+    Keyword Args:
+        embedding_seed: Integer seed for the embedding process (default 11)
+        embedding_max_iterations: Maximum number of iterations for the embedding
+
 
     Returns:
-    Condensed representation of the atomic map.
+        Condensed representation of the atomic map.
 
     """
     # generate basic descriptors
     rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
-        smiles, minimisation_method
+        smiles, minimisation_method, **kwargs
     )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)
@@ -206,21 +239,43 @@ def atomic_strength_vis_from_smiles(
     sdx_threshold=0.0,
     sa_threshold=0.0,
     rounding_digits=ROUNDING_DIGITS,
+    **kwargs
 ):
     """API route to generate an SVG image from SMILES string.
 
     Args:
-    smiles: A molecule SMILES string representation (default '')
-    minimisation_method: One of the conformer energy minimisation methods
-    as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF') (default None)
+        smiles: A molecule SMILES string representation (default '')
+        minimisation_method: One of the conformer energy minimisation methods
+            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+             (default None)
+        encode: If True, returns the base64-encoded SVG image (default False)
+        fig_size: Tuple representing the size of the generated image
+             (default (500, 500))
+        flatten_molecule: If True, flattens the molecule (default False)
+        highlight_atoms: If True, highlights the atoms (default False)
+        ignore_sa: Ignore acceptor contributions (default False)
+        ignore_sdc: Ignore Carbon-donor contributions (default False)
+        ignore_sdx: Ignore Heteroatom-donor contributions (default False)
+        rounding_digits: Number of digits to round the strengths
+        sa_threshold: Acceptor threshold (default 0.0)
+        sdc_threshold: Carbon-donor threshold (default 0.0)
+        sdx_threshold: Heteroatom-donor threshold (default 0.0)
+        kwargs: Keyword arguments
+
+
+    Keyword Args:
+        embedding_seed: Integer seed for the embedding process (default 11)
+        embedding_max_iterations: Maximum number of iterations
+             for the embedding
+
 
     Returns:
-    SVG image either 2D or 3D.
+        SVG image either 2D or 3D.
 
     """
     # generate basic descriptors
     rdkit_molecule, kallisto_molecule = __smiles_to_molecule_objects(
-        smiles, minimisation_method
+        smiles, minimisation_method, **kwargs
     )
     atoms_and_nbrs = get_covalent_atom_idxs(rdkit_molecule)
     kallisto_charges = get_charges_from_kallisto_molecule(kallisto_molecule, 0)

@@ -13,8 +13,11 @@ from jazzy.config import ROUNDING_DIGITS
 def _zero_positive_value_check(v: float):
     """Assert that the input is zero or positive.
 
+    Args:
+        v: the input value to check (float)
+
     Raises:
-    ValueError: An error if the input is negative
+        ValueError: An error if the input is negative
 
     """
     if v < 0:
@@ -25,8 +28,8 @@ def _increase_explicit_hydrogens(rwmol: Chem.rdchem.RWMol, idx: int):
     """Increase number of explicit hydrogens for atom with index `idx`.
 
     Args:
-    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    idx: index of atom (int)
+        rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        idx: index of atom (int)
 
     """
     oa = rwmol.GetAtomWithIdx(idx)
@@ -45,13 +48,16 @@ def _increase_explicit_hydrogen_for_bond_atom(
     """Increase number of explicit hydrogens for atom in a bond.
 
     Args:
-    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    remove_bidx: Begin atom in bond will increase explicit hydrogens (bool)
-    remove_eidx: End atom in bond will increase explicit hydrogens (bool)
+        rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        remove_bidx: Begin atom in bond will increase explicit hydrogens (bool)
+        remove_eidx: End atom in bond will increase explicit hydrogens (bool)
+        bidx: Beginning atom index of a bond (int)
+        eidx: End atom index of a bond (int)
+        ai_to_remove: List of atoms to remove from the molecule (list)
 
     Returns:
-    Tuple with an RDKit RWmolecule and an updated list to remove
-    (rdkit.Chem.rdchem.RWMol, list).
+        Tuple with an RDKit RWmolecule and an updated list to remove
+            (rdkit.Chem.rdchem.RWMol, list).
 
     """
     if remove_bidx or remove_eidx:
@@ -72,11 +78,11 @@ def _remove_excluded_hydrogens(rwmol: Chem.rdchem.RWMol, excluded_hydrogens: lis
     they are bonded. E.g., H-N-H is converted to NH2.
 
     Args:
-    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    excluded_hydrogens: list of implicit Hydrogens to convert into explicit ones.
+        rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        excluded_hydrogens: list of implicit Hydrogens to convert into explicit ones.
 
     Returns:
-    rdkit_molecule: An RDKit molecule (rdkit.Chem.rdchem.Mol)
+        rdkit_molecule: An RDKit molecule (rdkit.Chem.rdchem.Mol)
 
     """
     if not excluded_hydrogens:
@@ -111,11 +117,11 @@ def _remove_strong_acceptor_hydrogens(rwmol: Chem.rdchem.RWMol, hs_to_remove: li
     from the removal list to avoid it to collapse with the acceptor atom.
 
     Args:
-    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    hs_to_remove: list of implicit Hydrogens to convert into explicit ones.
+        rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        hs_to_remove: list of implicit Hydrogens to convert into explicit ones.
 
     Returns:
-    Updated list for hydrogen atoms to be removed.
+        Updated list for hydrogen atoms to be removed.
 
     """
     updated_hs_to_remove = list()
@@ -139,11 +145,14 @@ def _create_color_scale(idx2strength: dict, mode: str):
     that might hide atoms rendered with blue fonts (e.g., Nitrogen atoms).
 
     Args:
-    idx2strength: mapping between indices and strengths (dict)
-    mode: `acceptor` or `donor` (str)
+        idx2strength: mapping between indices and strengths (dict)
+        mode: `acceptor` or `donor` (str)
 
     Returns:
-    Mapping between indices and RGB colors (dict).
+        Mapping between indices and RGB colors (dict).
+
+    Raises:
+        ValueError: An error if mode is not valid.
 
     """
     valid_modes = ["donor", "acceptor"]
@@ -179,10 +188,13 @@ def _draw_molecule(
     """Draw an RDKit molecule.
 
     Args:
-    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        fig_size: Size of the figure (tuple)
+        atoms_to_highlight: List of atoms to highlight (list)
+        idx2rgb: Mapping between indices and RGB colors (dict)
 
     Returns:
-    Text of an SVG image.
+        Text of an SVG image.
 
     """
     d2d = rdMolDraw2D.MolDraw2DSVG(fig_size[0], fig_size[1])
@@ -204,13 +216,13 @@ def _set_acceptor_props(
     """Setting two props to acceptor to avoid mistakes in the highlighting function.
 
     Args:
-    atom: An RDKit atom (rdkit.Chem.rdchem.Atom)
-    sa: acceptor strength (float)
-    sa_threshold: threshold to show acceptor contribution (float)
-    ignore_sa: ignore acceptor contributions (bool)
+        atom: An RDKit atom (rdkit.Chem.rdchem.Atom)
+        sa: Acceptor strength (float)
+        sa_threshold: Threshold to show acceptor contribution (float)
+        ignore_sa: Ignore acceptor contributions (bool)
 
     Returns:
-    If properties have been set to atom (bool).
+        If properties have been set to atom (bool).
 
     """
     condition = False
@@ -227,13 +239,13 @@ def _set_donor_props(
     """Setting two props to donor to avoid mistakes in the highlighting function.
 
     Args:
-    atom: An RDKit atom (rdkit.Chem.rdchem.Atom)
-    sd: donor strength (float)
-    sd_threshold: threshold to show donor contribution (float)
-    ignore_sd: ignore donor contributions (bool)
+        atom: An RDKit atom (rdkit.Chem.rdchem.Atom)
+        sd: donor strength (float)
+        sd_threshold: threshold to show donor contribution (float)
+        ignore_sd: ignore donor contributions (bool)
 
     Returns:
-    If properties have been set to atom (bool).
+        If properties have been set to atom (bool).
 
     """
     condition = False
@@ -258,17 +270,18 @@ def _exclude_hydrogens(
     """Create `excluded_hydrogens` list from RDKit molecule.
 
     Args:
-    rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    atomic_map: molecular map of polar properties (dict)
-    sa_threshold: threshold to show acceptor contribution (float)
-    sdc_threshold: threshold to show donor contribution on Carbon (float)
-    sdx_threshold: threshold to show donor contribution on non-Carbon (float)
-    ignore_sa: ignore acceptor contributions (bool)
-    ignore_sdc: ignore donor contributions on Carbon (bool)
-    ignore_sdx: ignore donor contributions on non-Carbon (bool)
+        rwmol: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        atomic_map: molecular map of polar properties (dict)
+        sa_threshold: threshold to show acceptor contribution (float)
+        sdc_threshold: threshold to show donor contribution on Carbon (float)
+        sdx_threshold: threshold to show donor contribution on non-Carbon (float)
+        ignore_sa: ignore acceptor contributions (bool)
+        ignore_sdc: ignore donor contributions on Carbon (bool)
+        ignore_sdx: ignore donor contributions on non-Carbon (bool)
+        rounding_digits: rounding digits (int)
 
     Returns:
-    `excluded_hydrogens` list.
+        `excluded_hydrogens` list.
 
     """
     excluded_hydrogens = list()
@@ -315,11 +328,11 @@ def _get_highlighted_atoms_and_strength_colors(
     """Get donor and acceptor strengths and create RGB colors from them.
 
     Args:
-    rdkit_molecule: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
-    highlight_atoms: show donors in red and acceptors in blue (bool)
+        rdkit_molecule: An RDKit RWmolecule (rdkit.Chem.rdchem.RWMol)
+        highlight_atoms: show donors in red and acceptors in blue (bool)
 
     Returns:
-    `atoms_to_highlight`, `idx2sa`, `idx2sd`, and `idx2rgb` lists.
+        `atoms_to_highlight`, `idx2sa`, `idx2sd`, and `idx2rgb` lists.
 
     """
     idx2sd = dict()
@@ -368,20 +381,21 @@ def depict_strengths(
     under which strengths are not included in the output depiction.
 
     Args:
-    rdkit_molecule: An RDKit molecule (rdkit.Chem.rdchem.Mol)
-    atomic_map: molecular map of polar properties (dict)
-    fig_size: size of the depiction in pixels (tuple)
-    flatten_molecule: boolean to create 2D depiction (bool)
-    highlight_atoms: show donors in red and acceptors in blue (bool)
-    ignore_sdc: ignore donor contributions on Carbon (bool)
-    ignore_sdx: ignore donor contributions on non-Carbon (bool)
-    ignore_sa: ignore acceptor contributions (bool)
-    sdc_threshold: threshold to show donor contribution on Carbon (float)
-    sdx_threshold: threshold to show donor contribution on non-Carbon (float)
-    sa_threshold: threshold to show acceptor contribution (float)
+        rdkit_molecule: An RDKit molecule (rdkit.Chem.rdchem.Mol)
+        atomic_map: Molecular map of polar properties (dict)
+        fig_size: Size of the depiction in pixels (tuple)
+        flatten_molecule: Boolean to create 2D depiction (bool)
+        highlight_atoms: Show donors in red and acceptors in blue (bool)
+        ignore_sdc: Ignore donor contributions on Carbon (bool)
+        ignore_sdx: Ignore donor contributions on non-Carbon (bool)
+        ignore_sa: Ignore acceptor contributions (bool)
+        sdc_threshold: Threshold to show donor contribution on Carbon (float)
+        sdx_threshold: Threshold to show donor contribution on non-Carbon (float)
+        sa_threshold: Threshold to show acceptor contribution (float)
+        rounding_digits: Rounding digits (int)
 
     Returns:
-    SVG depiction of given RDKit molecule and its atomic strength map.
+        SVG depiction of given RDKit molecule and its atomic strength map.
 
     """
     # assert that thresholds are zero or positive
