@@ -72,11 +72,18 @@ def test_minimisation_fails_for_nonvalid_method() -> None:
         assert m is None
 
 
-def test_embedding_fails_for_particular_smiles() -> None:
+def test_embedding_fails_with_fewer_iterations() -> None:
     """It returns a None when a particular molecule cannot be embedded."""
-    smiles = "COc1cc2cc(OC(=C2C=C)N)c1OC"
-    m = rdkit_molecule_from_smiles(smiles=smiles)
+    smiles = "Bc1ccc(cc1)S(=O)(=O)c2ccc3SC(CC=C)[C@@H](C(=O)N4[C@@H]5C[C@@H]4[C@H]6C[C@@H]56)c3c2"  # noqa
+    m = rdkit_molecule_from_smiles(smiles=smiles, embedding_max_iterations=1)
     assert m is None
+
+
+def test_embedding_succeeds_with_more_iterations() -> None:
+    """It returns a None when a particular molecule cannot be embedded."""
+    smiles = "Bc1ccc(cc1)S(=O)(=O)c2ccc3SC(CC=C)[C@@H](C(=O)N4[C@@H]5C[C@@H]4[C@H]6C[C@@H]56)c3c2"  # noqa
+    m = rdkit_molecule_from_smiles(smiles=smiles, embedding_max_iterations=100)
+    assert m is not None
 
 
 def test_calculate_correct_number_of_lone_pairs():

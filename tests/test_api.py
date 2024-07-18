@@ -83,18 +83,24 @@ def test_api_molecular_vector_from_smiles_complex_numbers():
 
 def test_deltag_from_smiles():
     """Correcly calculates free energy scalar."""
-    smiles = "CC"
-    # first only hydrogen bond strength
+    smiles = "COCOCOCOCOCO"
     minimisation_method = "MMFF94"
     scalar = deltag_from_smiles(smiles, minimisation_method)
-    assert np.isclose(scalar, 4.599630151706878)
+    assert np.isclose(scalar, -48.8041)
+
+
+def test_deltag_from_smiles_custom_seed():
+    """Calculates free energy scalar using a custom embedding seed."""
+    smiles = "COCOCOCOCOCO"
+    minimisation_method = "MMFF94"
+    scalar = deltag_from_smiles(smiles, minimisation_method, embedding_seed=89)
+    assert np.isclose(scalar, -47.0112)
 
 
 def test_deltag_from_smiles_hydrogen():
     """Incorrect with successful calculation."""
     # [H] has no neighbours but should not break the logic
     smiles = "[H]"
-    # first only hydrogen bond strength
     minimisation_method = "MMFF94"
     scalar = deltag_from_smiles(smiles, minimisation_method)
     assert np.isclose(scalar, 1.884)
@@ -103,7 +109,6 @@ def test_deltag_from_smiles_hydrogen():
 def test_api_deltag_from_smiles_fails_for_invalid_smiles():
     """Correcly fails for incorrect smiles."""
     smiles = "xxx"
-    # first only hydrogen bond strength
     minimisation_method = "MMFF94"
     with pytest.raises(Exception) as error:
         deltag_from_smiles(smiles, minimisation_method)
@@ -113,7 +118,6 @@ def test_api_deltag_from_smiles_fails_for_invalid_smiles():
 def test_atomic_tuples_from_smiles():
     """Correcly calculates atomic tuples from atomic map."""
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
-    # first only hydrogen bond strength
     minimisation_method = "MMFF94"
     tuple_map = atomic_tuples_from_smiles(smiles, minimisation_method)
     assert tuple_map[0][0] == ("z", 6)
@@ -147,7 +151,6 @@ def test_atomic_tuples_from_smiles_fails_for_invalid_smiles():
 def test_atomic_map_from_smiles():
     """It correctly condenses an atomic map."""
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
-    # first only hydrogen bond strength
     minimisation_method = "MMFF94"
     condensed_map = atomic_map_from_smiles(smiles, minimisation_method)
     assert np.isclose(condensed_map[0]["alp"], 7.4365)

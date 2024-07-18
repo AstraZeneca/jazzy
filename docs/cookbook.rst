@@ -56,3 +56,29 @@ Core Functions
 .. include:: core.rst
 
 .. _Contributor Guide: https://jazzy.readthedocs.io/en/latest/contributing.html
+
+Additional Functionalities
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Jazzy now supports passing certain parameters as keyword arguments to control its logic granularly. You can refer to `Usage`_ to see which functions accept which keywords.
+Parameters include the following:
+
+Embedding Seed
+""""""""""""""
+`embedding_seed` controls the seed used to embed the input molecule by RDKit (referred to as `randomSeed`).
+
+.. code-block:: python
+
+   from jazzy.api import molecular_vector_from_smiles
+   molecular_vector_from_smiles("CC(=O)NC1=CC=C(C=C1)O", embedding_seed=89)
+
+Embedding Max Iterations
+""""""""""""""""""""""""
+`embedding_max_iterations` configures the maximum number of iterations/attempts done by RDKit to embed the input molecule (referred to as `maxIterations` or `maxAttempts`).
+This parameter can be used to force to make Jazzy succeed/fail fast, which can be very beneficial for featurisation in real time.
+
+.. code-block:: python
+
+   from jazzy.api import molecular_vector_from_smiles
+   molecular_vector_from_smiles("CC(=O)NC1=CC=C(C=C1)O", embedding_max_iterations=3)
+
+.. _Usage: https://jazzy.readthedocs.io/en/latest/usage.html
