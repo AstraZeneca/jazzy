@@ -1,7 +1,8 @@
 """Core functions of the jazzy package."""
 # src/jazzy/core.py
+from typing import Optional
+
 import numpy as np
-import rdkit
 from kallisto.atom import Atom
 from kallisto.methods import getPolarizabilities
 from kallisto.methods import getVanDerWaalsRadii
@@ -14,6 +15,7 @@ from rdkit.Chem import PeriodicTable
 from rdkit.Chem import rdchem
 from rdkit.Chem import rdDistGeom
 from rdkit.Chem import rdMolDescriptors
+from rdkit.Chem.rdchem import Mol
 
 from jazzy.config import ROUNDING_DIGITS
 from jazzy.exception import KallistoError
@@ -23,7 +25,7 @@ from jazzy.logging import logger
 
 def rdkit_molecule_from_smiles(
     smiles: str, minimisation_method=None, **kwargs
-) -> rdkit.Chem.rdchem.Mol:
+) -> Optional[Mol]:
     """Molecule preparation: Parse SMILES, add hydrogens, and does energy minimisation.
 
     Args:
