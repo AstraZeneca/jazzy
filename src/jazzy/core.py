@@ -21,6 +21,8 @@ from jazzy.config import ROUNDING_DIGITS
 from jazzy.exception import KallistoError
 from jazzy.exception import NegativeLonePairsError
 from jazzy.logging import logger
+from jazzy.model import ChargeKey
+from jazzy.model import IdxKey
 
 
 def rdkit_molecule_from_smiles(
@@ -113,9 +115,9 @@ def get_all_neighbours(rdkit_molecule: Chem.rdchem.Mol, molecule_covalent_nbrs: 
     gamma = dict()
     for i, _ in enumerate(rdkit_molecule.GetAtoms()):
         atom_idxs_dict = get_atom_and_nbrs_idxs_dict(i, molecule_covalent_nbrs)
-        alpha[i] = atom_idxs_dict["alpha"]
-        beta[i] = atom_idxs_dict["beta"]
-        gamma[i] = atom_idxs_dict["gamma"]
+        alpha[i] = atom_idxs_dict[IdxKey.Alpha]
+        beta[i] = atom_idxs_dict[IdxKey.Beta]
+        gamma[i] = atom_idxs_dict[IdxKey.Gamma]
     return alpha, beta, gamma
 
 
@@ -287,22 +289,6 @@ def get_lone_pairs(atom) -> int:
     return int(free_electrons / 2)
 
 
-def get_donor_atom_strength(
-    atom_idx: int, atoms_and_nbrs: list, charges: list, d=63.7, t=0.274
-) -> float:
-    """Donor strength calculation - equation 10."""
-    q, q_delta = calculate_q_and_delta_q(atom_idx, atoms_and_nbrs, charges, t)
-    return d * (q + q_delta)
-
-
-def get_acceptor_atom_strength(
-    atom_idx: int, atoms_and_nbrs: list, charges: list, a=-4.4362, t=0.274
-) -> float:
-    """Acceptor strength calculation - equation 12 and 13."""
-    q, q_delta = calculate_q_and_delta_q(atom_idx, atoms_and_nbrs, charges, t)
-    return a * (q + q_delta)
-
-
 def get_atom_and_nbrs_idxs_dict(atom_idx: int, molecule_covalent_nbrs: list):
     """Get all neighbours for atom_idx.
 
@@ -340,10 +326,10 @@ def get_atom_and_nbrs_idxs_dict(atom_idx: int, molecule_covalent_nbrs: list):
         gamma_idxs.extend(diff)
     gamma_idxs = list(dict.fromkeys(gamma_idxs))
     return {
-        "atom": atom_idx,
-        "alpha": alpha_idxs,
-        "beta": beta_idxs,
-        "gamma": gamma_idxs,
+        IdxKey.Atom: atom_idx,
+        IdxKey.Alpha: alpha_idxs,
+        IdxKey.Beta: beta_idxs,
+        IdxKey.Gamma: gamma_idxs,
     }
 
 
@@ -357,6 +343,22 @@ def _get_value_from_list(idxs: list, values: list) -> list:
     return [values[idx] for idx in idxs]
 
 
+def get_donor_atom_strength(
+    atom_idx: int, atoms_and_nbrs: list, charges: list, d=63.7, t=0.274
+) -> float:
+    """Donor strength calculation - equation 10."""
+    q, q_delta = calculate_q_and_delta_q(atom_idx, atoms_and_nbrs, charges, t)
+    return d * (q + q_delta)
+
+
+def get_acceptor_atom_strength(
+    atom_idx: int, atoms_and_nbrs: list, charges: list, a=-4.4362, t=0.274
+) -> float:
+    """Acceptor strength calculation - equation 12 and 13."""
+    q, q_delta = calculate_q_and_delta_q(atom_idx, atoms_and_nbrs, charges, t)
+    return a * (q + q_delta)
+
+
 def calculate_q_and_delta_q(
     atom_idx: int, atoms_and_nbrs: list, charges: list, t=0.274
 ):
@@ -365,27 +367,41 @@ def calculate_q_and_delta_q(
     Suitable for both donor and acceptor strength calculations.
 
     """
+    # get idxs and charges
+    atom_idxs_dict, q_dict = _get_idxs_and_q_dicts(atom_idx, atoms_and_nbrs, charges)
+
+    # calculate q delta
+    q_delta = _calculate_q_delta(
+        q_dict[ChargeKey.Alpha], q_dict[ChargeKey.Beta], q_dict[ChargeKey.Gamma], t
+    )
+    return q_dict[ChargeKey.Atom], q_delta
+
+
+def _get_idxs_and_q_dicts(atom_idx: int, atoms_and_nbrs: list, charges: list):
+    """Wraps get_atom_and_nbrs_idxs_dict and _get_q_dict."""
     # get indices
     atom_idxs_dict = get_atom_and_nbrs_idxs_dict(atom_idx, atoms_and_nbrs)
 
     # get charges
-    q_dict = _get_charges_dict(atom_idxs_dict, charges)
-    q = q_dict["q"]
-
-    # calculate q delta
-    q_delta = _calculate_q_delta(
-        q_dict["q_alpha"], q_dict["q_beta"], q_dict["q_gamma"], t
-    )
-    return q, q_delta
+    q_dict = _get_q_dict(atom_idxs_dict, charges)
+    return atom_idxs_dict, q_dict
 
 
-def _get_charges_dict(atom_idxs_dict, charges):
+def _get_q_dict(atom_idxs_dict, charges):
     """Generates a dictionary of list of charges for each group of atoms."""
     q_dict = dict()
-    q_dict["q"] = get_charges_from_atom_list([atom_idxs_dict["atom"]], charges)[0]
-    q_dict["q_alpha"] = get_charges_from_atom_list(atom_idxs_dict["alpha"], charges)
-    q_dict["q_beta"] = get_charges_from_atom_list(atom_idxs_dict["beta"], charges)
-    q_dict["q_gamma"] = get_charges_from_atom_list(atom_idxs_dict["gamma"], charges)
+    q_dict[ChargeKey.Atom] = get_charges_from_atom_list(
+        [atom_idxs_dict[IdxKey.Atom]], charges
+    )[0]
+    q_dict[ChargeKey.Alpha] = get_charges_from_atom_list(
+        atom_idxs_dict[IdxKey.Alpha], charges
+    )
+    q_dict[ChargeKey.Beta] = get_charges_from_atom_list(
+        atom_idxs_dict[IdxKey.Beta], charges
+    )
+    q_dict[ChargeKey.Gamma] = get_charges_from_atom_list(
+        atom_idxs_dict[IdxKey.Gamma], charges
+    )
     return q_dict
 
 
