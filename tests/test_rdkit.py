@@ -1,7 +1,7 @@
 """Test cases for the rdkit methods."""
 import pytest
 
-from jazzy.core import get_all_neighbors
+from jazzy.core import get_all_neighbours
 from jazzy.core import get_covalent_atom_idxs
 from jazzy.core import get_lone_pairs
 from jazzy.core import rdkit_molecule_from_smiles
@@ -125,7 +125,7 @@ def test_calculate_correct_all_neighbours_for_atom():
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
     rdkit_molecule = rdkit_molecule_from_smiles(smiles=smiles)
     atoms_and_idxs = get_covalent_atom_idxs(rdkit_molecule=rdkit_molecule)
-    alpha, beta, gamma = get_all_neighbors(rdkit_molecule, atoms_and_idxs)
+    alpha, beta, gamma = get_all_neighbours(rdkit_molecule, atoms_and_idxs)
     assert sorted(alpha[8]) == sorted(want[0])
     assert sorted(beta[8]) == sorted(want[1])
     assert sorted(gamma[8]) == sorted(want[2])
