@@ -18,6 +18,7 @@ from rdkit.Chem import rdMolDescriptors
 from rdkit.Chem.rdchem import Mol
 
 from jazzy.config import ROUNDING_DIGITS
+from jazzy.exception import EmbeddingError
 from jazzy.exception import KallistoError
 from jazzy.exception import NegativeLonePairsError
 from jazzy.logging import logger
@@ -34,10 +35,12 @@ def rdkit_molecule_from_smiles(
         smiles: A molecule SMILES string representation (default '')
         minimisation_method: One of the conformer energy minimisation methods
             as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
-             (default None)
+            (default None)
         kwargs: Keyword arguments
 
     Keyword Args:
+        embedding_type: Molecule embedding method (available as '2d' or '3d')
+            (default '3d')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
@@ -57,12 +60,9 @@ def rdkit_molecule_from_smiles(
     mh = Chem.AddHs(m)
 
     # generate embedding
-    params = rdDistGeom.ETDG()  # ETDG over others as it seems produce fewer failures
-    params.randomSeed = kwargs.get("embedding_seed", 11)
-    params.maxIterations = kwargs.get("embedding_max_iterations", 0)
-    emb_code = AllChem.EmbedMolecule(mh, params)
-    if emb_code == -1:
-        logger.error("The RDKit embedding has failed for the molecule: %s", smiles)
+    try:
+        _embed_molecule(mh, **kwargs)
+    except EmbeddingError:
         return None
 
     # energy minimisation
@@ -77,6 +77,30 @@ def rdkit_molecule_from_smiles(
         if minimisation_method == valid_methods[3]:
             AllChem.UFFOptimizeMolecule(mh)
     return mh
+
+
+def _embed_molecule(rdkit_molecule: Chem.rdchem.Mol, **kwargs) -> None:
+    """Molecule embedding using the specified method."""
+    embedding_type = kwargs.get("embedding_type", "3D")
+    valid_types = ["2D", "3D"]
+    if embedding_type not in valid_types:
+        raise ValueError(f"Select a valid embedding type {valid_types}")
+    if embedding_type == valid_types[0]:
+        AllChem.Compute2DCoords(rdkit_molecule)
+    if embedding_type == valid_types[1]:
+        params = (
+            rdDistGeom.ETDG()
+        )  # ETDG over others as it seems produce fewer failures
+        params.randomSeed = kwargs.get("embedding_seed", 11)
+        params.maxIterations = kwargs.get("embedding_max_iterations", 0)
+        emb_code = AllChem.EmbedMolecule(rdkit_molecule, params)
+        if emb_code == -1:
+            error_msg = (
+                "The RDKit embedding has failed for the molecule: "
+                f"{Chem.MolToSmiles(rdkit_molecule)}"
+            )
+            logger.error(error_msg)
+            raise EmbeddingError(error_msg)
 
 
 def get_covalent_atom_idxs(rdkit_molecule: Chem.rdchem.Mol) -> list:
