@@ -62,6 +62,15 @@ Additional Functionalities
 Jazzy now supports passing certain parameters as keyword arguments to control its logic granularly. You can refer to `Usage`_ to see which functions accept which keywords.
 Parameters include the following:
 
+Embedding Type
+""""""""""""""
+`embedding_type` configures whether the input molecule is embedded in 2D or 3D. Note that 2D embedding is much faster and less prone to failures but less accurate (see `notebooks/gerber_deltag_validation.ipynb`)
+
+.. code-block:: python
+
+   from jazzy.api import molecular_vector_from_smiles
+   molecular_vector_from_smiles("CC(=O)NC1=CC=C(C=C1)O", embedding_type="2D")
+
 Embedding Seed
 """"""""""""""
 `embedding_seed` controls the seed used to embed the input molecule by RDKit (referred to as `randomSeed`).

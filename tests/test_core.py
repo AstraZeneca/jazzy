@@ -1,5 +1,6 @@
 """Test cases for the core methods."""
 import numpy as np
+import pytest
 
 from jazzy.core import calculate_q_and_delta_q
 from jazzy.core import get_atom_and_nbrs_idxs_dict
@@ -62,3 +63,18 @@ def test_calculate_q_and_delta_q():
     q_at, q_delta = calculate_q_and_delta_q(1, atoms_and_idxs, eeq)
     assert np.isclose(q_at, want[0], 5)
     assert np.isclose(q_delta, want[1], 5)
+
+
+def test_2d_embedding_success():
+    """It embeds the molecule using only 2D coordinates."""
+    smiles = "O"
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, embedding_type="2D")
+    assert bool(rdkit_molecule.GetConformer())
+
+
+def test_2d_embedding_failure():
+    """It embeds the molecule using only 2D coordinates."""
+    smiles = "xxx"
+    rdkit_molecule = rdkit_molecule_from_smiles(smiles, embedding_type="2D")
+    with pytest.raises(AttributeError):
+        rdkit_molecule.GetConformer()

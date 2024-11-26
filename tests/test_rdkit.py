@@ -60,14 +60,25 @@ def test_minimisation_works_for_valid_method() -> None:
     assert atomic_nums[2] == want[2]
 
 
-def test_minimisation_fails_for_nonvalid_method() -> None:
-    """It exits with a ValueError when a nonvalid method is entered."""
+def test_invalid_minimisation_method() -> None:
+    """It exits with a ValueError when an invalid method is entered."""
     with pytest.raises(Exception):
         smiles = "CC"
         minimisation_method = "MMFF95"
         m = rdkit_molecule_from_smiles(
             smiles=smiles,
             minimisation_method=minimisation_method,
+        )
+        assert m is None
+
+
+def test_invalid_embedding_type() -> None:
+    """It exits with a ValueError when an invalid method is entered."""
+    with pytest.raises(Exception):
+        smiles = "CC"
+        m = rdkit_molecule_from_smiles(
+            smiles=smiles,
+            embedding_type="4d",
         )
         assert m is None
 

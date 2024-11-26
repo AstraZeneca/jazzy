@@ -20,6 +20,12 @@ class NegativeLonePairsError(Exception):
     pass
 
 
+class EmbeddingError(Exception):
+    """Raised when the embedding fails for a molecule."""
+
+    pass
+
+
 def exception_handling(func):
     """Catches core exceptions and raises a JazzyError."""
 

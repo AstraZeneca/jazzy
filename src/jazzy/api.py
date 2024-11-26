@@ -52,13 +52,15 @@ def molecular_vector_from_smiles(
     Args:
         smiles: A molecule SMILES string representation (default '')
         minimisation_method: One of the conformer energy minimisation methods
-            as available in RDKit (available is 'MMFF94', 'MMFF94s', or 'UFF')
+            as available in RDKit (available as 'MMFF94', 'MMFF94s', or 'UFF')
              (default None)
         only_strengths: Boolean value that determines wheather to calculate only
             strengts or even more
         kwargs: Keyword arguments
 
     Keyword Args:
+        embedding_type: Molecule embedding method (available as '2D' or '3D')
+            (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
@@ -115,6 +117,8 @@ def deltag_from_smiles(smiles: str, minimisation_method=MINIMISATION_METHOD, **k
         kwargs: Keyword arguments
 
     Keyword Args:
+        embedding_type: Molecule embedding method (available as '2D' or '3D')
+            (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
@@ -168,6 +172,8 @@ def atomic_tuples_from_smiles(
         kwargs: Keyword arguments
 
     Keyword Args:
+        embedding_type: Molecule embedding method (available as '2D' or '3D')
+            (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
@@ -204,6 +210,8 @@ def atomic_map_from_smiles(
         kwargs: Keyword arguments
 
     Keyword Args:
+        embedding_type: Molecule embedding method (available as '2D' or '3D')
+            (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
@@ -264,6 +272,8 @@ def atomic_strength_vis_from_smiles(
 
 
     Keyword Args:
+        embedding_type: Molecule embedding method (available as '2D' or '3D')
+            (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations
              for the embedding
