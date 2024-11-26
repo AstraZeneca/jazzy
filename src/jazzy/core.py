@@ -39,8 +39,8 @@ def rdkit_molecule_from_smiles(
         kwargs: Keyword arguments
 
     Keyword Args:
-        embedding_type: Molecule embedding method (available as '2d' or '3d')
-            (default '3d')
+        embedding_type: Molecule embedding method (available as '2D' or '3D')
+            (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
@@ -82,16 +82,17 @@ def rdkit_molecule_from_smiles(
 def _embed_molecule(rdkit_molecule: Chem.rdchem.Mol, **kwargs) -> None:
     """Molecule embedding using the specified method."""
     embedding_type = kwargs.get("embedding_type", "3D")
+    embedding_seed = kwargs.get("embedding_seed", 11)
     valid_types = ["2D", "3D"]
     if embedding_type not in valid_types:
         raise ValueError(f"Select a valid embedding type {valid_types}")
     if embedding_type == valid_types[0]:
-        AllChem.Compute2DCoords(rdkit_molecule)
+        AllChem.Compute2DCoords(rdkit_molecule, sampleSeed=embedding_seed)
     if embedding_type == valid_types[1]:
         params = (
             rdDistGeom.ETDG()
         )  # ETDG over others as it seems produce fewer failures
-        params.randomSeed = kwargs.get("embedding_seed", 11)
+        params.randomSeed = embedding_seed
         params.maxIterations = kwargs.get("embedding_max_iterations", 0)
         emb_code = AllChem.EmbedMolecule(rdkit_molecule, params)
         if emb_code == -1:
