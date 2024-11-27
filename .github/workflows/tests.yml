@@ -78,7 +78,7 @@ jobs:
         run: |
           nox --force-color --python=${{ matrix.python-version }}
           echo "Listing out the files in the test directory"
-          ls -artl
+          dir -artl
 
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
