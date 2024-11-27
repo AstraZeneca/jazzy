@@ -80,7 +80,7 @@ def rdkit_molecule_from_smiles(
 
 
 def _embed_molecule(rdkit_molecule: Chem.rdchem.Mol, **kwargs) -> None:
-    """Molecule embedding using the specified method."""
+    """Molecule embedding using either the 2D or 3D method."""
     embedding_type = kwargs.get("embedding_type", "3D")
     embedding_seed = kwargs.get("embedding_seed", 11)
     valid_types = ["2D", "3D"]
@@ -98,7 +98,8 @@ def _embed_molecule(rdkit_molecule: Chem.rdchem.Mol, **kwargs) -> None:
         if emb_code == -1:
             error_msg = (
                 "The RDKit embedding has failed for the molecule: "
-                f"{Chem.MolToSmiles(rdkit_molecule)}"
+                f"{Chem.MolToSmiles(rdkit_molecule)} (Seed: {embedding_seed}, "
+                f"Max Iterations: {params.maxIterations})"
             )
             logger.error(error_msg)
             raise EmbeddingError(error_msg)
