@@ -205,8 +205,13 @@ def get_charges_from_kallisto_molecule(
     Returns:
         List of electronegativity equilibration atomic partial charges
 
+    Raises:
+        KallistoError: If 'charges' contains any NaNs.
     """
-    return list(kallisto_molecule.get_eeq(charge=charge))
+    charges = list(kallisto_molecule.get_eeq(charge=charge))
+    if np.isnan(charges).any():
+        raise KallistoError("EEQ calculation resulted in NaNs")
+    return charges
 
 
 def calculate_polar_strength_map(

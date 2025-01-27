@@ -46,6 +46,16 @@ def test_kallisto_creation_fails_for_nonembedded_molecule() -> None:
         )
 
 
+def test_kallisto_eeq_calculation_fails() -> None:
+    """It raises a KallistoError the EEQ calculation returns NaNs."""
+    with pytest.raises(KallistoError) as error:
+        smiles = "CCC(=O)N[C@@H](CCC(=O)N)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](C)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](CO)C=O"  # noqa
+        m = rdkit_molecule_from_smiles(smiles, embedding_type="2D")
+        kallisto_molecule = kallisto_molecule_from_rdkit_molecule(m)
+        get_charges_from_kallisto_molecule(kallisto_molecule, charge=0)
+        assert error.value.args[0] == "EEQ calculation resulted in NaNs"
+
+
 def test_kallisto_coordinates_match_rdkit_coordinates():
     """Both molecules have the same coordinates."""
     smiles = "C1CC2=C3C(=CC=C2)C(=CN3C1)"
