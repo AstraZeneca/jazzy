@@ -1,5 +1,6 @@
 """Test cases for the rdkit methods."""
 import pytest
+from rdkit.Chem.rdchem import Mol
 
 from jazzy.core import get_all_neighbours
 from jazzy.core import get_covalent_atom_idxs
@@ -62,25 +63,32 @@ def test_minimisation_works_for_valid_method() -> None:
 
 def test_invalid_minimisation_method() -> None:
     """It exits with a ValueError when an invalid method is entered."""
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         smiles = "CC"
         minimisation_method = "MMFF95"
-        m = rdkit_molecule_from_smiles(
+        rdkit_molecule_from_smiles(
             smiles=smiles,
             minimisation_method=minimisation_method,
         )
-        assert m is None
 
 
 def test_invalid_embedding_type() -> None:
     """It exits with a ValueError when an invalid method is entered."""
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         smiles = "CC"
-        m = rdkit_molecule_from_smiles(
+        rdkit_molecule_from_smiles(
             smiles=smiles,
             embedding_type="4d",
         )
-        assert m is None
+
+
+def test_warning_2d_embedding_with_minimisation() -> None:
+    """It ignores the clash between 2D embedding and energy minimisation."""
+    smiles = "CC"
+    m = rdkit_molecule_from_smiles(
+        smiles=smiles, embedding_type="2D", minimisation_method="MMFF94"
+    )
+    assert isinstance(m, Mol)
 
 
 def test_embedding_fails_with_fewer_iterations() -> None:

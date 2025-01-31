@@ -17,6 +17,7 @@ from rdkit.Chem import rdDistGeom
 from rdkit.Chem import rdMolDescriptors
 from rdkit.Chem.rdchem import Mol
 
+from jazzy.config import EMBEDDING_TYPES
 from jazzy.config import ROUNDING_DIGITS
 from jazzy.exception import EmbeddingError
 from jazzy.exception import KallistoError
@@ -47,10 +48,6 @@ def rdkit_molecule_from_smiles(
     Returns:
         An RDKit molecule (rdkit.Chem.rdchem.Mol) or None if the process fails
 
-    Raises:
-        ValueError: If 'minimisation_method' does not correspond to one of the
-            available methods.
-
     """
     # create molecule, add hydrogens
     m = Chem.MolFromSmiles(smiles)
@@ -66,29 +63,19 @@ def rdkit_molecule_from_smiles(
         return None
 
     # energy minimisation
-    valid_methods = [None, "MMFF94", "MMFF94s", "UFF"]
-    if minimisation_method is not None:
-        if minimisation_method not in valid_methods:
-            raise ValueError(f"Select a valid minimisation method {valid_methods}")
-        if minimisation_method == valid_methods[1]:
-            AllChem.MMFFOptimizeMolecule(mh)
-        if minimisation_method == valid_methods[2]:
-            AllChem.MMFFOptimizeMolecule(mh, mmffVariant="MMFF94s")
-        if minimisation_method == valid_methods[3]:
-            AllChem.UFFOptimizeMolecule(mh)
+    _minimise_molecule(mh, minimisation_method, **kwargs)
     return mh
 
 
-def _embed_molecule(rdkit_molecule: Chem.rdchem.Mol, **kwargs) -> None:
+def _embed_molecule(rdkit_molecule: Mol, **kwargs) -> None:
     """Molecule embedding using either the 2D or 3D method."""
     embedding_type = kwargs.get("embedding_type", "3D")
     embedding_seed = kwargs.get("embedding_seed", 11)
-    valid_types = ["2D", "3D"]
-    if embedding_type not in valid_types:
-        raise ValueError(f"Select a valid embedding type {valid_types}")
-    if embedding_type == valid_types[0]:
+    if embedding_type not in EMBEDDING_TYPES:
+        raise ValueError(f"Select a valid embedding type {EMBEDDING_TYPES}")
+    if embedding_type == EMBEDDING_TYPES[0]:
         AllChem.Compute2DCoords(rdkit_molecule, sampleSeed=embedding_seed)
-    if embedding_type == valid_types[1]:
+    if embedding_type == EMBEDDING_TYPES[1]:
         params = (
             rdDistGeom.ETDG()
         )  # ETDG over others as it seems produce fewer failures
@@ -105,7 +92,26 @@ def _embed_molecule(rdkit_molecule: Chem.rdchem.Mol, **kwargs) -> None:
             raise EmbeddingError(error_msg)
 
 
-def get_covalent_atom_idxs(rdkit_molecule: Chem.rdchem.Mol) -> list:
+def _minimise_molecule(rdkit_molecule: Mol, minimisation_method: str, **kwargs) -> None:
+    """Minimise the energy of a molecule. Only works for 3D molecules."""
+    valid_methods = (None, "MMFF94", "MMFF94s", "UFF")
+    if not minimisation_method:
+        return
+    embedding_type = kwargs.get("embedding_type", "3D")
+    if embedding_type == EMBEDDING_TYPES[0]:
+        logger.warning("Energy minimisation is not supported for 2D molecules.")
+        return
+    if minimisation_method == valid_methods[1]:
+        AllChem.MMFFOptimizeMolecule(rdkit_molecule)
+    elif minimisation_method == valid_methods[2]:
+        AllChem.MMFFOptimizeMolecule(rdkit_molecule, mmffVariant="MMFF94s")
+    elif minimisation_method == valid_methods[3]:
+        AllChem.UFFOptimizeMolecule(rdkit_molecule)
+    else:
+        raise ValueError(f"Select a valid minimisation method {valid_methods}")
+
+
+def get_covalent_atom_idxs(rdkit_molecule: Mol) -> list:
     """Get covalent indices for atom_idx.
 
     Creates a list of lists, where indices are atom indices and the content
@@ -120,7 +126,7 @@ def get_covalent_atom_idxs(rdkit_molecule: Chem.rdchem.Mol) -> list:
     return atoms_and_idxs
 
 
-def get_all_neighbours(rdkit_molecule: Chem.rdchem.Mol, molecule_covalent_nbrs: list):
+def get_all_neighbours(rdkit_molecule: Mol, molecule_covalent_nbrs: list):
     """Get all alpha, beta, and gamma neighbours.
 
     Create dictionaries for covalent bonding partner (alpha), all nearest
@@ -147,7 +153,7 @@ def get_all_neighbours(rdkit_molecule: Chem.rdchem.Mol, molecule_covalent_nbrs: 
     return alpha, beta, gamma
 
 
-def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Chem.rdchem.Mol) -> Molecule:
+def kallisto_molecule_from_rdkit_molecule(rdkit_molecule: Mol) -> Molecule:
     """Create a kallisto molecule from RDKit molecule.
 
     Args:
@@ -215,7 +221,7 @@ def get_charges_from_kallisto_molecule(
 
 
 def calculate_polar_strength_map(
-    rdkit_molecule: Chem.rdchem.Mol,
+    rdkit_molecule: Mol,
     kallisto_molecule: Molecule,
     atoms_and_nbrs: list,
     charges: list,
@@ -442,7 +448,7 @@ def _calculate_q_delta(q_alpha, q_beta, q_gamma, t):
 
 
 def calculate_delta_apolar(
-    rdkit_molecule: Chem.rdchem.Mol,
+    rdkit_molecule: Mol,
     mol_map: dict,
     g0: float,
     gs: float,
@@ -633,7 +639,7 @@ def interaction_strength(idx: int, mol_map: dict, acceptor_exp: float) -> float:
 
 
 def calculate_delta_interaction(
-    rdkit_molecule: Chem.rdchem.Mol,
+    rdkit_molecule: Mol,
     mol_map: dict,
     atoms_and_nbrs: list,
     gi: float,
