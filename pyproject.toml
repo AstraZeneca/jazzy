@@ -33,7 +33,7 @@ optuna = {version = "3.4.0"}
 [tool.poetry.dev-dependencies]
 pytest = "^8.2.2"
 coverage = {extras = ["toml"], version = "^7.4"}
-safety = "^2.3.5"
+safety = "^3.2.8"
 mypy = "^1.8"
 typeguard = "^2.13.3"
 xdoctest = {extras = ["colors"], version = "^1.0.0"}
