@@ -82,7 +82,7 @@ jobs:
         if: always() && matrix.session == 'tests'
         uses: "actions/upload-artifact@v4"
         with:
-          name: coverage-data-${{ runner.os }}-${{ matrix.python-version }}
+          name: coverage-data-${{ runner.os }}-py${{ matrix.python-version }}
           include-hidden-files: true
           path: ".coverage.*"
 
@@ -131,6 +131,7 @@ jobs:
       - name: Collect coverage data files
         run: |
           find coverage-artifacts -name ".coverage.*" -exec mv {} . \;
+          ls
 
       - name: Combine coverage data and display human readable report
         run: |
