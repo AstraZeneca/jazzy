@@ -64,7 +64,6 @@ def molecular_vector_from_smiles(
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
-
     Returns:
         Molecular strength vector with or without free energy contributions
 
@@ -177,7 +176,6 @@ def atomic_tuples_from_smiles(
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
 
-
     Returns:
         Tuple representation of the atomic map.
 
@@ -214,7 +212,6 @@ def atomic_map_from_smiles(
             (default '3D')
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations for the embedding
-
 
     Returns:
         Condensed representation of the atomic map.
@@ -277,7 +274,6 @@ def atomic_strength_vis_from_smiles(
         embedding_seed: Integer seed for the embedding process (default 11)
         embedding_max_iterations: Maximum number of iterations
              for the embedding
-
 
     Returns:
         SVG image either 2D or 3D.

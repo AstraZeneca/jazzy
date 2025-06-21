@@ -1,5 +1,6 @@
 """Anything about exceptions and their handling."""
 # src/jazzy/exception.py
+from functools import wraps
 
 
 class JazzyError(Exception):
@@ -29,6 +30,7 @@ class EmbeddingError(Exception):
 def exception_handling(func):
     """Catches core exceptions and raises a JazzyError."""
 
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
