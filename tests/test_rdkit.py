@@ -84,7 +84,7 @@ def test_invalid_embedding_type() -> None:
 
 def test_warning_2d_embedding_with_minimisation() -> None:
     """It ignores the clash between 2D embedding and energy minimisation."""
-    smiles = "CC"
+    smiles = "Brc1ccccc1OCCCOc1cccc2cccnc12"
     m = rdkit_molecule_from_smiles(
         smiles=smiles, embedding_type="2D", minimisation_method="MMFF94"
     )

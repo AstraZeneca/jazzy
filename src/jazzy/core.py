@@ -92,7 +92,9 @@ def _embed_molecule(rdkit_molecule: Mol, **kwargs) -> None:
             raise EmbeddingError(error_msg)
 
 
-def _minimise_molecule(rdkit_molecule: Mol, minimisation_method: str, **kwargs) -> None:
+def _minimise_molecule(
+    rdkit_molecule: Mol, minimisation_method: Optional[str], **kwargs
+) -> None:
     """Minimise the energy of a molecule. Only works for 3D molecules."""
     valid_methods = (None, "MMFF94", "MMFF94s", "UFF")
     if not minimisation_method:
