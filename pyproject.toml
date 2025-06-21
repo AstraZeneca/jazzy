@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jazzy"
-version = "0.1.2"
+version = "0.1.3"
 description = "Jazzy allows calculating a set of atomic/molecular descriptors including the Gibbs free energy of hydration (kJ/mol), its polar/apolar components, and the hydrogen-bond strength of donor and acceptor atoms."
 authors = ["Gian Marco Ghiandoni <ghiandoni.g@gmail.com>", "Eike Caldeweyher <e.caldeweyher@gmail.com>"]
 license = "Apache-2.0"
