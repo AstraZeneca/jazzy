@@ -541,20 +541,20 @@ flake8 = "*"
 
 [[package]]
 name = "flake8-rst-docstrings"
-version = "0.3.0"
+version = "0.3.1"
 description = "Python docstring reStructuredText (RST) validator for flake8"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "flake8-rst-docstrings-0.3.0.tar.gz", hash = "sha256:d1ce22b4bd37b73cd86b8d980e946ef198cfcc18ed82fedb674ceaa2f8d1afa4"},
-    {file = "flake8_rst_docstrings-0.3.0-py3-none-any.whl", hash = "sha256:f8c3c6892ff402292651c31983a38da082480ad3ba253743de52989bdc84ca1c"},
+    {file = "flake8_rst_docstrings-0.3.1-py3-none-any.whl", hash = "sha256:ed831afca7ee47851e2162d5fa726b823b446fd46085c2164d7979ae5d9a96d7"},
+    {file = "flake8_rst_docstrings-0.3.1.tar.gz", hash = "sha256:26dcc1338caf985990677696a8a6a274f73a0c6845b85f567befd3b648db78e2"},
 ]
 
 [package.dependencies]
 flake8 = ">=3"
 pygments = "*"
-restructuredtext-lint = "*"
+restructuredtext_lint = "*"
 
 [package.extras]
 develop = ["build", "twine"]
@@ -2229,4 +2229,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.8.0"
-content-hash = "a9dbfddb899b5a8327d76e236c5bc6a89d3650ba4bb0c010b2e9fccbbd8a8587"
+content-hash = "7d2e9d54149e6c026b37860b27a74ea71ca5c51530070ba7bd828d57d1fe46bb"
