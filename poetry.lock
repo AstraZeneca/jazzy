@@ -1508,14 +1508,14 @@ Pillow = "*"
 
 [[package]]
 name = "reorder-python-imports"
-version = "3.12.0"
+version = "3.14.0"
 description = "Tool for reordering python imports"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "reorder_python_imports-3.12.0-py2.py3-none-any.whl", hash = "sha256:930c23a42192b365e20e191a4d304d93e645bd44c242d8bc64accc4a3b2b0f3d"},
-    {file = "reorder_python_imports-3.12.0.tar.gz", hash = "sha256:f93106a662b0c034ca81c91fd1c2f21a1e94ece47c9f192672e2a13c8ec1856c"},
+    {file = "reorder_python_imports-3.14.0-py2.py3-none-any.whl", hash = "sha256:5b0c4cdf1dbead8c415f96bebb93944fc7758b968132b5c56b610aeba0abf960"},
+    {file = "reorder_python_imports-3.14.0.tar.gz", hash = "sha256:5fc3aea31cdd9dcf9de381c79bf14a03c1e3f792450e35b48325c56599b9e039"},
 ]
 
 [package.dependencies]
@@ -2229,4 +2229,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.8.0"
-content-hash = "a9dbfddb899b5a8327d76e236c5bc6a89d3650ba4bb0c010b2e9fccbbd8a8587"
+content-hash = "b1b78d62e4475f4cba5e5b11a5632a32af0452b1242379b2f5a41e7ad42ff14a"
