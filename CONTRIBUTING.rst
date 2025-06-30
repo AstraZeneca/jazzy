@@ -53,7 +53,7 @@ Install the package with development requirements:
 
 .. code:: console
 
-   $ poetry install
+   $ poetry install --with dev
 
 You can now run an interactive Python session,
 or the command-line interface:
